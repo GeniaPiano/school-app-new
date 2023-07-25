@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "types": [
-        "../school-app-be/types"
+        "../api/types"
       ]
     }
   }

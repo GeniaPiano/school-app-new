@@ -1,47 +1,45 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
-import {CourseEntity, GetSingleCourseRes} from 'types';
-import {useParams} from "react-router-dom";
+import {CourseEntity, CourseResponseData} from "types";
 
-interface AppContextType {
-    coursesData: CourseEntity[] | null;
-}
-
-export const DataContext = createContext<AppContextType>({
-    coursesData: [],
-
-});
 
 interface AppProviderProps {
     children: ReactNode,
 }
 
+interface AppContextType {
+    coursesList: CourseEntity[] | null
+}
+
+export const DataContext = createContext<AppContextType>({
+ coursesList: null,
+});
+
+
 
 export const DataProvider: React.FC<AppProviderProps> = ({children}) => {
 
-    const [coursesData, setCoursesData] = useState<CourseEntity[] | null>(null);
+    const [coursesData, setCoursesData] = useState<CourseResponseData | null>(null)
 
-
-
-    const fetchCoursesList = async () => {
-        const res = await fetch('http://localhost:3001/course');
+    const fetchCourses = async() => {
+        const res = await fetch('http://localhost:3001/school-app/course');
         const data = await res.json();
-        setCoursesData(data.coursesList);
-       }
-
-
-
-
+        setCoursesData(data);
+    }
 
     useEffect(()=> {
-        fetchCoursesList();
+       fetchCourses();
+
     }, [])
+
+    const value =  {
+        coursesList:  coursesData?.coursesList ?? null,
+    }
 
 
     return (
-        <DataContext.Provider value={{
-            coursesData,
-           }}>
-              {children}
-       </DataContext.Provider>
-)
+                <DataContext.Provider value={value}>
+                      {children}
+               </DataContext.Provider>
+    )
 }
+

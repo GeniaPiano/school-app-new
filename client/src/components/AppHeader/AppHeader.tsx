@@ -7,9 +7,9 @@ export const AppHeader = () => {
     return (
     <>
         <header className="App-header"> School App </header>
-        Menu:
-        <NavLink className='NavLink' to='/course' >Courses</NavLink>
-        <NavLink className='NavLink' to='/teacher'>Teachers</NavLink>
+        Menu:<br/>
+        <NavLink className='NavLink' to='/course' >Courses &bull;</NavLink>
+        <NavLink className='NavLink' to='/teacher'>Teachers &bull;</NavLink>
         <NavLink className='NavLink' to='/student'>Student</NavLink>
 
 
