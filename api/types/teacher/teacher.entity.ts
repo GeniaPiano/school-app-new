@@ -3,7 +3,7 @@ export interface TeacherEntity {
     name: string;
     last_name: string;
     email: string;
-    password: string;
-
+    password?: string;
+    is_admin: number;
 }
 

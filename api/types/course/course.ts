@@ -12,8 +12,10 @@ export interface CourseResponseData {
 
 export interface UpdateCourseReq {
     name: string;
-    teacher_id: string;
+    teacher_id?: string;
 }
 
-export type CreateCourseReq = Omit <CourseEntity, 'id'>
-
+export interface CreateCourseReq {
+    name: string;
+    teacher_id?: string;
+}

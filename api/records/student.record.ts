@@ -4,7 +4,6 @@ import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
-import * as bcrypt from 'bcryptjs';
 import {generatePassword} from "../utils/generatePassword";
 
 
@@ -47,18 +46,16 @@ export class StudentRecord implements StudentEntity {
         this.is_admin = obj.is_admin;
     }
 
-    async insert():Promise<string>  {
+    async insert(hash:string):Promise<string>  {
         if (!this.id) {
             this.id = uuid();
         }
-
-
         await pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `is_admin`) VALUES(:id, :name, :last_name, :email, :password, :is_admin)", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
             email: this.email,
-            password: this.password, //zahaszować przed zapisem do bazy danych
+            password: hash,
             is_admin: 0,
 
         });
@@ -110,6 +107,9 @@ export class StudentRecord implements StudentEntity {
 
     async delete(id:string): Promise<void> {
         const student = await StudentRecord.getOne(id);
+        if (!student) {
+            throw new ValidationError('Student not found.')
+        }
         await pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
             id: student.id
         })
@@ -130,12 +130,6 @@ export class StudentRecord implements StudentEntity {
             email: this.email,
             password: this.password, // zahaszować!!!
         });
-
-
     }
-
-
-
-
 }
 

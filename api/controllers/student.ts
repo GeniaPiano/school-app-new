@@ -1,10 +1,14 @@
 import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response, Router} from 'express';
 import {ValidationError} from "../utils/errors";
-import {DataCoursesResForSingleStudent, GetSingleStudentRes, StudentReq,} from "../types";
+import {
+    DataCoursesResForSingleStudent,
+    GetSingleStudentRes,
+    StudentReq,
+    } from "../types";
 import {StudentRecord} from "../records/student.record";
 import {getListOfUsersMails} from "../utils/listOfMails";
-
+import {generatePassword} from "../utils/generatePassword";
 
 
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
@@ -36,22 +40,28 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
 }
 
 export const createStudent = async (req: Request, res: Response, next: NextFunction) => {
-    const newStudent = new StudentRecord(req.body);
+    const {name, last_name } = req.body as StudentReq
+    const studentData = {
+        ...req.body,
+        password: generatePassword(name, last_name),
+        is_admin: 0,
+    } as StudentRecord
+
+    const student = new StudentRecord(studentData);
     const listOfMails = await getListOfUsersMails();
-    const data = listOfMails.filter((mail) => mail === newStudent.email);
+    const data = listOfMails.filter((mail) => mail === student.email);
     if (data.length !== 0) {
         throw new ValidationError('Email already exists. ')
     }
-
-
-
-    const studentId = await newStudent.insert();
+    //@todo miejsce na wysłanie hasła na maila użytkownika
+    const hash = await bcrypt.hash(student.password, 10);
+    await student.insert(hash);
 
     const selectedCourses = req.body.selectedCourses as DataCoursesResForSingleStudent[];
 
     if (selectedCourses.length !== 0) {
         for (const course of selectedCourses) {
-            await newStudent.insertCourseForStudent(String(course))
+            await student.insertCourseForStudent(String(course))
         }
     }
 
@@ -59,7 +69,7 @@ export const createStudent = async (req: Request, res: Response, next: NextFunct
 
     res.json(
         {
-            student: newStudent, // BEZ PASSWORDU CZY TO MA ZNACZENIE JEŚLI TYLKO ADMIN OTRZYMUJE DANE??
+            student: student,
             selectedCourses,
         }
     )
@@ -107,8 +117,8 @@ export const updateStudent = async (req: Request, res: Response, next: NextFunct
         if (student === null) {
             throw new ValidationError('Student with given ID does not exist.');
         }
-        const { name, last_name, email, password} = req.body;
-        const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email, password };
+        const { name, last_name, email} = req.body;
+        const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
         for (const key in fieldsToUpdate) {
             if (fieldsToUpdate[key as keyof StudentReq]) {
                 student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;

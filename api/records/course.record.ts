@@ -41,7 +41,7 @@ export class CourseRecord implements CourseEntity {
     }
 
 
-    //akutalizacja tabeli relacyjnej @todo zmienić konfigurację bazy danych, żeby aktualizowało się automatycznie
+    //akutalizacja tabeli relacyjnej
     async _updateRelationCoursesTeachers(teacher_id:string, course_id: string):Promise<void> {
 
          await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`) VALUES(:id, :course_id, :teacher_id)", {
@@ -69,7 +69,7 @@ export class CourseRecord implements CourseEntity {
             id: this.id,
         })
 
-        //AKTUALIZACJA tabeli courses_teachers
+        //AKTUALIZCJA TABEL RELACYJNYCH
         if (this.teacher_id !== null) {
             await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :id", {
                 id: this.id

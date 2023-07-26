@@ -12,5 +12,10 @@ export interface StudentReq {
     name: string;
     last_name: string;
     email: string;
+
+}
+
+
+export interface StudentUpdateReq {
     password: string;
 }
