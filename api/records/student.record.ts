@@ -17,8 +17,6 @@ type StudentRecordResults = [StudentRecord[], FieldPacket[]]
 type StudentCoursesRelatedData = [RelatedData[], FieldPacket[]]
 
 
-
-
 export class StudentRecord implements StudentEntity {
     id?: string;
     name: string;

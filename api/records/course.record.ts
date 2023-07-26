@@ -13,8 +13,8 @@ export class CourseRecord implements CourseEntity {
     teacher_id: string | null;
 
     constructor(obj: CourseEntity) {
-        if (!obj.name || obj.name.length < 6 || obj.name.length > 40) {
-            throw new ValidationError('CoursesView name should contain from 5 to 40 characters');
+        if (!obj.name || obj.name.length < 4 || obj.name.length > 40) {
+            throw new ValidationError('Courses name should contain from 4 to 40 characters');
         }
 
         this.id = obj.id;
@@ -42,11 +42,11 @@ export class CourseRecord implements CourseEntity {
 
 
     //akutalizacja tabeli relacyjnej
-    async _updateRelationCoursesTeachers(teacher_id:string, course_id: string):Promise<void> {
+    async _updateRelationCoursesTeachers(teacher_id:string,):Promise<void> {
 
          await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`) VALUES(:id, :course_id, :teacher_id)", {
              id: uuid(),
-             course_id: course_id,
+             course_id: this.id,
              teacher_id: teacher_id,
 
             });

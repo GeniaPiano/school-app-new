@@ -59,11 +59,13 @@ export const createCourse = async (req: Request, res: Response, next: NextFuncti
         const { name, teacher_id} = req.body as CreateCourseReq;
         const newCourse = new CourseRecord({
             name,
-            teacher_id: teacher_id !== undefined? null : teacher_id
+            teacher_id: teacher_id === undefined ? null : teacher_id
         });
-        const course_id = await newCourse.insert();
-        if (teacher_id !== null) {
-            await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id, course_id)
+
+        await newCourse.insert();
+
+        if (newCourse.teacher_id !== null) {
+            await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id)
         }
         res.json(newCourse);
 }
