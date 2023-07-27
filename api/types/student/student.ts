@@ -16,6 +16,6 @@ export interface StudentReq {
 }
 
 
-export interface StudentUpdateReq {
-    password: string;
+export interface StudentAssignCourseReq {
+    courseId: string;
 }

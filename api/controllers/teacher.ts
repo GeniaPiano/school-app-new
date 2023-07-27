@@ -2,12 +2,10 @@ import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from "express";
 import {TeacherRecord} from "../records/teacher.record";
 import {ValidationError} from "../utils/errors";
-import {GetSingleTeacherRes, TeacherEntity, TeacherReq} from "../types";
-import {getListOfUsersMails} from "../utils/listOfMails";
+import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherUpdateReq} from "../types";
+import {checkMailAvaible} from "../utils/listOfMails";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
-
-
 
 
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
@@ -37,18 +35,14 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
     } as TeacherRecord
 
     const teacher = new TeacherRecord(TeacherData);
-    const listOfMails = await getListOfUsersMails();
-    const data = listOfMails.filter((mail) => mail === teacher.email);
-    if (data.length !== 0) {
-        throw new ValidationError('Email already exists. ')
+    const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
+    if (!checkOkMail) {
+        throw new ValidationError('Email already exists.')
     }
 
-
     // miejsce na wysłanie hasła na maila użytkownika
-
-
     const hash = await bcrypt.hash(teacher.password, 10)
-    await teacher.insert(req.body.email, hash);
+    await teacher.insert(hash);
     res.json(teacher);
 
 }
@@ -58,13 +52,14 @@ export const updateTeacher = async (req: Request, res: Response, next: NextFunct
     if (teacher === null) {
         throw new ValidationError('The teacher with given ID does not exist.');
     }
-    const { name, last_name, email } = req.body;
+    const { name, last_name, email } = req.body as TeacherUpdateReq;
     const fieldsToUpdate: Partial<TeacherReq> = { name, last_name, email };
     for (const key in fieldsToUpdate) {
         if (fieldsToUpdate[key as keyof TeacherReq]) {
             teacher[key as keyof TeacherReq] = fieldsToUpdate[key as keyof TeacherReq]!;
         }
     }
+    console.log(teacher)
     await teacher.update();
     res.json(teacher);
 }

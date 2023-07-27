@@ -23,7 +23,7 @@ export class StudentRecord implements StudentEntity {
     last_name: string;
     email: string;
     password: string;
-    is_admin: number;
+    readonly is_admin: number;
 
     constructor(obj: StudentRecord) {
         if (!obj.name || obj.name.length <=2  || obj.name.length > 40) {
@@ -41,10 +41,10 @@ export class StudentRecord implements StudentEntity {
         this.last_name = obj.last_name;
         this.email = obj.email;
         this.password = generatePassword(obj.name, obj.last_name)
-        this.is_admin = obj.is_admin;
+        this.is_admin = 0;
     }
 
-    async insert(hash:string):Promise<string>  {
+    async insert(hashedPassword:string):Promise<string>  {
         if (!this.id) {
             this.id = uuid();
         }
@@ -53,8 +53,8 @@ export class StudentRecord implements StudentEntity {
             name: this.name,
             last_name: this.last_name,
             email: this.email,
-            password: hash,
-            is_admin: 0,
+            password: hashedPassword,
+            is_admin: this.is_admin,
 
         });
         return this.id;
@@ -78,6 +78,7 @@ export class StudentRecord implements StudentEntity {
             student_id: this.id,
             course_id,
         });
+
     }
 
     async removeFromSelected(course_id:string): Promise<void> {
@@ -117,7 +118,6 @@ export class StudentRecord implements StudentEntity {
                 student_id: id,
             })
         }
-
     }
 
     async update(): Promise<void> {

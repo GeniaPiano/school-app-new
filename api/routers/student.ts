@@ -16,7 +16,7 @@ studentRouter
     .post('/', createStudent)
     .patch('/:id', updateStudent)
     .delete('/:id', deleteStudent)
-    .post('/:id/add-course', addCourseToStudent) //PRZYPISANIE KURSU DO STUDENTA
+    .patch('/:id/assign-course', addCourseToStudent) //PRZYPISANIE KURSU DO STUDENTA
     .delete('/:id/remove-course', removeCourseFromStudent)  //USUWANIE PRZYPISANEGO KURSU
 
 

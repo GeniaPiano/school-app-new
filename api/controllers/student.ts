@@ -1,14 +1,16 @@
 import * as bcrypt from 'bcryptjs';
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {ValidationError} from "../utils/errors";
 import {
-    DataCoursesResForSingleStudent,
     GetSingleStudentRes,
     StudentReq,
-    } from "../types";
+} from "../types";
 import {StudentRecord} from "../records/student.record";
-import {getListOfUsersMails} from "../utils/listOfMails";
+
 import {generatePassword} from "../utils/generatePassword";
+import {checkMailAvaible} from "../utils/listOfMails";
+import {AlreadyExistsRelations} from "../utils/checkAlreadyExistsRelaions";
+import {CourseRecord} from "../records/course.record";
 
 
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,8 +24,7 @@ export const getAllStudents = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const getOneStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+export const getOneStudent = async (req: Request, res: Response) => {
         const student = await StudentRecord.getOne(req.params.id);
         if (!student) throw new ValidationError('Student not found.');
 
@@ -34,12 +35,10 @@ export const getOneStudent = async (req: Request, res: Response, next: NextFunct
             selectedCourses,
         } as  GetSingleStudentRes)
 
-    } catch (err) {
-        next (err)
-    }
+
 }
 
-export const createStudent = async (req: Request, res: Response, next: NextFunction) => {
+export const createStudent = async (req: Request, res: Response) => {
     const {name, last_name } = req.body as StudentReq
     const studentData = {
         ...req.body,
@@ -48,71 +47,57 @@ export const createStudent = async (req: Request, res: Response, next: NextFunct
     } as StudentRecord
 
     const student = new StudentRecord(studentData);
-    const listOfMails = await getListOfUsersMails();
-    const data = listOfMails.filter((mail) => mail === student.email);
-    if (data.length !== 0) {
-        throw new ValidationError('Email already exists. ')
+    const checkOkMail = checkMailAvaible(student.email) //sprawdzanie dostępności maila
+        if (!checkOkMail) {
+        throw new ValidationError('Mail already exists.')
     }
+
     //@todo miejsce na wysłanie hasła na maila użytkownika
+
     const hash = await bcrypt.hash(student.password, 10);
     await student.insert(hash);
 
-    const selectedCourses = req.body.selectedCourses as DataCoursesResForSingleStudent[];
 
-    if (selectedCourses.length !== 0) {
-        for (const course of selectedCourses) {
-            await student.insertCourseForStudent(String(course))
-        }
-    }
-
-
-
-    res.json(
-        {
+    res.json({
             student: student,
-            selectedCourses,
-        }
-    )
+
+        })
 }
 
 
-export const addCourseToStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+export const addCourseToStudent = async (req: Request, res: Response ) => {
+
         const student = await StudentRecord.getOne(req.params.id);
         if (!student) throw new ValidationError('Cannot find student');
-        const coursesToAdd: string[] = req.body.selectedCourses;
-        if (coursesToAdd.length !== 0 ){
-            for (const courseId of coursesToAdd) {
-                await student.insertCourseForStudent(courseId);
-            }
-        }
-        const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(req.params.id)
+        const courseId: string = req.body.courseId
+        const courseToAdd = await CourseRecord.getOne(courseId)
+        if (!courseToAdd) throw new ValidationError('Course wanted to assign to student not found.')
+        const check = await AlreadyExistsRelations(student.id, courseToAdd.id)
+        if (check) throw new ValidationError('Cannot assign this course to student. Chosen course is already assigned to this student.')
+        await student.insertCourseForStudent(courseToAdd.id);
+
         res.json({
-            selectedCourses,
+            message: "ok"
         })
-    } catch (err) {
-        next(err)
-    }
+
 }
 
 
 export const removeCourseFromStudent =  async (req: Request, res: Response, next: NextFunction) => {
-    try {
+
         const student = await StudentRecord.getOne(req.params.id);
         if (!student) {
             throw new ValidationError('Cannot find student.')
         }
-        if (req.body.course_id) {
-            await student.removeFromSelected(req.body.course_id)
+        if (req.body.courseId) {
+            await student.removeFromSelected(req.body.courseId)
         } else throw new ValidationError("No courses to delete.")
         res.end();
-    } catch (err) {
-        next(err)
-    }
+
 }
 
-export const updateStudent = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+export const updateStudent = async (req: Request, res: Response, ) => {
+
         const student = await StudentRecord.getOne(req.params.id);
         if (student === null) {
             throw new ValidationError('Student with given ID does not exist.');
@@ -126,9 +111,7 @@ export const updateStudent = async (req: Request, res: Response, next: NextFunct
         }
         await student.update();
         res.json(student);
-    } catch(err) {
-        next(err)
-    }
+
 }
 
 export const deleteStudent = async (req: Request, res: Response, next: NextFunction) => {

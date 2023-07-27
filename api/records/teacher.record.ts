@@ -15,14 +15,14 @@ export class TeacherRecord implements TeacherEntity {
     last_name: string;
     email: string;
     password?: string;
-    is_admin: number;
+    readonly is_admin: number;
 
     constructor(obj: TeacherRecord) {
-        if (!obj.name || obj.name.length <= 2 || obj.name.length > 40) {
-            throw new ValidationError('Teacher name should contain from 3 to 40 characters');
+        if (!obj.name || obj.name.length < 2 || obj.name.length > 40) {
+            throw new ValidationError('Teacher name should contain from to 40 characters');
         }
-        if (!obj.last_name || obj.last_name.length <= 2 || obj.last_name.length > 40) {
-            throw new ValidationError('Teacher last name should contain from 3 to 40 characters');
+        if (!obj.last_name || obj.last_name.length < 2 || obj.last_name.length > 40) {
+            throw new ValidationError('Teacher last name should contain from 2 to 40 characters');
         }
             if (!obj.email || obj.email.length < 4 || obj.email.length > 40) {
             throw new ValidationError('Teacher email should contain from 4 to 40 characters');
@@ -41,7 +41,7 @@ export class TeacherRecord implements TeacherEntity {
         this.is_admin = 0;
     }
 
-    async insert(mailData: string, hashedPassword:string):Promise<string>  {
+    async insert(hashedPassword:string):Promise<string>  {
         if (!this.id) {
             this.id = uuid();
         }
@@ -52,7 +52,7 @@ export class TeacherRecord implements TeacherEntity {
             last_name: this.last_name,
             email: this.email,
             password: hashedPassword,
-            is_admin: 0,
+            is_admin: this.is_admin,
         });
         return this.id;
     }
@@ -122,7 +122,7 @@ export class TeacherRecord implements TeacherEntity {
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `teachers` SET `name` = :name, `last_name` = :last_name, `email`= :email,  WHERE `id` = :id", {
+        await pool.execute("UPDATE `teachers` SET `name` = :name, `last_name` = :last_name, `email`=:email  WHERE `id` =:id ", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,

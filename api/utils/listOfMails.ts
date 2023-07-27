@@ -7,7 +7,7 @@ interface MailReq {
 }
 type RecordResults = [MailReq[], FieldPacket[]];
 
-export const getListOfUsersMails = async()  => {
+export const checkMailAvaible = async (mail:string):Promise<boolean> => {
 
     const [dataTeachers] = await pool.execute("SELECT  `email` FROM `teachers` ") as RecordResults
     const [dataStudents] = await pool.execute("SELECT `email` FROM `students`") as RecordResults
@@ -17,8 +17,12 @@ export const getListOfUsersMails = async()  => {
     let mails: string[] = [];
     dataTeachersStudents.map(el => {
     mails.push(el.email)
-})
-return mails;
+       })
+
+    const check = mails.filter(one => one === mail)
+    if (check.length !== 0) return false;
+    if (check.length === 0) return true;
+
 
 }
 
