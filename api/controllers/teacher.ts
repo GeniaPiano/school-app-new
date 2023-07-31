@@ -3,7 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {TeacherRecord} from "../records/teacher.record";
 import {ValidationError} from "../utils/errors";
 import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherUpdateReq} from "../types";
-import {checkMailAvaible} from "../utils/listOfMails";
+import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
 

@@ -6,9 +6,8 @@ import {
     StudentReq,
 } from "../types";
 import {StudentRecord} from "../records/student.record";
-
 import {generatePassword} from "../utils/generatePassword";
-import {checkMailAvaible} from "../utils/listOfMails";
+import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {AlreadyExistsRelations} from "../utils/checkAlreadyExistsRelaions";
 import {CourseRecord} from "../records/course.record";
 

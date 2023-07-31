@@ -6,7 +6,6 @@ import {CourseEntity} from "../types";
 
 type CourseRecordResults = [CourseRecord[], FieldPacket[]]
 
-
 export class CourseRecord implements CourseEntity {
     id?: string;
     name: string;
