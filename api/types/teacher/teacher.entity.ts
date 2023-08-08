@@ -4,6 +4,6 @@ export interface TeacherEntity {
     last_name: string;
     email: string;
     password?: string;
-    is_admin: number;
+    role: 'teacher';
 }
 

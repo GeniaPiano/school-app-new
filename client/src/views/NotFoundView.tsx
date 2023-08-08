@@ -1,0 +1,1 @@
+export const NotFoundView =()=> <div>Not found view</div>

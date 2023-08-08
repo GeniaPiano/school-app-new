@@ -1,5 +1,6 @@
+
 import * as bcrypt from 'bcryptjs';
-import {NextFunction, Request, Response} from 'express';
+import {NextFunction, raw, Request, Response} from 'express';
 import {ValidationError} from "../utils/errors";
 import {
     GetSingleStudentRes,
@@ -12,10 +13,11 @@ import {AlreadyExistsRelations} from "../utils/checkAlreadyExistsRelaions";
 import {CourseRecord} from "../records/course.record";
 
 
+
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const students: StudentRecord[] = await StudentRecord.listAll();
-        res.json( {
+            res.json( {
             students,
         });
     } catch(err) {
@@ -33,17 +35,18 @@ export const getOneStudent = async (req: Request, res: Response) => {
             student,
             selectedCourses,
         } as  GetSingleStudentRes)
-
-
 }
 
-export const createStudent = async (req: Request, res: Response) => {
-    const {name, last_name } = req.body as StudentReq
-    const studentData = {
-        ...req.body,
-        password: generatePassword(name, last_name),
-        is_admin: 0,
-    } as StudentRecord
+    export const createStudent = async (req: Request, res: Response) => {
+        const { name, last_name } = req.body as StudentReq;
+        const rawPassword = generatePassword(name, last_name);
+        const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+        const studentData = {
+            ...req.body,
+            password: hashedPassword,
+            is_admin: 0,
+        } as StudentRecord;
 
     const student = new StudentRecord(studentData);
     const checkOkMail = checkMailAvaible(student.email) //sprawdzanie dostępności maila
@@ -53,11 +56,11 @@ export const createStudent = async (req: Request, res: Response) => {
 
     //@todo miejsce na wysłanie hasła na maila użytkownika
 
-    const hash = await bcrypt.hash(student.password, 10);
-    await student.insert(hash);
+    await student.insert();
 
 
     res.json({
+            password: rawPassword,
             student: student,
 
         })

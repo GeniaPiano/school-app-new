@@ -23,7 +23,7 @@ export class StudentRecord implements StudentEntity {
     last_name: string;
     email: string;
     password: string;
-    readonly is_admin: number;
+    readonly role: 'student';
 
     constructor(obj: StudentRecord) {
         if (!obj.name || obj.name.length <=2  || obj.name.length > 40) {
@@ -40,21 +40,22 @@ export class StudentRecord implements StudentEntity {
         this.name = obj.name;
         this.last_name = obj.last_name;
         this.email = obj.email;
-        this.password = generatePassword(obj.name, obj.last_name)
-        this.is_admin = 0;
+        this.password = obj.password;
+        this.role = 'student'
     }
 
-    async insert(hashedPassword:string):Promise<string>  {
+    async insert():Promise<string>  {
         if (!this.id) {
             this.id = uuid();
         }
-        await pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `is_admin`) VALUES(:id, :name, :last_name, :email, :password, :is_admin)", {
+
+        await pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
             email: this.email,
-            password: hashedPassword,
-            is_admin: this.is_admin,
+            password: this.password,
+            role: this.role,
 
         });
         return this.id;
@@ -63,6 +64,13 @@ export class StudentRecord implements StudentEntity {
     static async listAll(): Promise <StudentRecord[]> {
         const [results] = await pool.execute("SELECT * FROM `students`") as StudentRecordResults;
         return results.map(obj => new StudentRecord(obj));
+    }
+
+    static async getByEmail(email: string) :Promise <StudentRecord> | null {
+        const [results] = (await pool.execute("SELECT * FROM `students` WHERE `email` = :email", {
+            email,
+        })) as StudentRecordResults;
+        return results.length === 0 ? null : new StudentRecord(results[0]);
     }
 
     static async getOne(id: string): Promise<StudentRecord | null> {

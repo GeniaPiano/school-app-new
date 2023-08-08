@@ -5,7 +5,6 @@ import {FieldPacket} from "mysql2";
 import {DataCoursesResForSingleTeacher, TeacherEntity} from "../types";
 import {CourseRecord} from "./course.record";
 
-
 type TeacherRecordResults = [TeacherRecord[], FieldPacket[]]
 type TeacherSelectedCoursesResults = [CourseRecord[], FieldPacket[]]
 
@@ -15,7 +14,7 @@ export class TeacherRecord implements TeacherEntity {
     last_name: string;
     email: string;
     password?: string;
-    readonly is_admin: number;
+    readonly role: 'teacher';
 
     constructor(obj: TeacherRecord) {
         if (!obj.name || obj.name.length < 2 || obj.name.length > 40) {
@@ -38,7 +37,7 @@ export class TeacherRecord implements TeacherEntity {
         this.last_name = obj.last_name;
         this.email = obj.email;
         this.password = obj.password;
-        this.is_admin = 0;
+        this.role = 'teacher';
     }
 
     async insert(hashedPassword:string):Promise<string>  {
@@ -46,13 +45,13 @@ export class TeacherRecord implements TeacherEntity {
             this.id = uuid();
         }
 
-        await pool.execute("INSERT INTO `teachers`(`id`, `name`, `last_name`, `email`, `password`, `is_admin`) VALUES(:id, :name, :last_name, :email, :password, :is_admin)", {
+        await pool.execute("INSERT INTO `teachers`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
             email: this.email,
             password: hashedPassword,
-            is_admin: this.is_admin,
+            role: this.role,
         });
         return this.id;
     }
@@ -68,6 +67,14 @@ export class TeacherRecord implements TeacherEntity {
         })) as TeacherRecordResults;
         return results.length === 0 ? null : new TeacherRecord(results[0]);
     }
+
+    static async getByEmail(email: string): Promise<TeacherRecord | null> {
+        const [results] = (await pool.execute("SELECT * FROM `teachers` WHERE `email` = :email", {
+            email,
+        })) as TeacherRecordResults;
+        return results.length === 0 ? null : new TeacherRecord(results[0]);
+    }
+
 
     async assignCourseToTeacher(courseId: string) : Promise<void>{
         await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`) VALUES(:id, :course_id, :teacher_id)", {
