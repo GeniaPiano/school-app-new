@@ -3,6 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import {NextFunction, raw, Request, Response} from 'express';
 import {ValidationError} from "../utils/errors";
 import {
+    CleanedStudent,
     GetSingleStudentRes,
     StudentReq,
 } from "../types";
@@ -11,6 +12,7 @@ import {generatePassword} from "../utils/generatePassword";
 import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {AlreadyExistsRelations} from "../utils/checkAlreadyExistsRelaions";
 import {CourseRecord} from "../records/course.record";
+
 
 
 
@@ -37,6 +39,19 @@ export const getOneStudent = async (req: Request, res: Response) => {
         } as  GetSingleStudentRes)
 }
 
+export const getStudentsByCourseId = async(req: Request, res:Response) => {
+    const students = await StudentRecord.getAllStudentsByCourseId(req.params.courseId) as CleanedStudent[]
+    const studentsWithSelectedCourses = await Promise.all(students.map(async (student) => {
+        const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(student.id);
+        return {
+            student,
+            selectedCourses,
+        };
+    }));
+
+    res.json({ students: studentsWithSelectedCourses });
+}
+
     export const createStudent = async (req: Request, res: Response) => {
         const { name, last_name } = req.body as StudentReq;
         const rawPassword = generatePassword(name, last_name);
@@ -45,7 +60,6 @@ export const getOneStudent = async (req: Request, res: Response) => {
         const studentData = {
             ...req.body,
             password: hashedPassword,
-            is_admin: 0,
         } as StudentRecord;
 
     const student = new StudentRecord(studentData);

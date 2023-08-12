@@ -1,6 +1,17 @@
 import * as express from "express";
 import * as cors from 'cors';
 import 'express-async-errors';
+// import rateLimit from 'express-rate-limit'
+//
+// const limiter = rateLimit({
+//     windowMs: 5 * 60 * 1000,
+//     max: 200,
+//     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//     legacyHeaders: false,
+// })
+
+
+
 import {handleError} from "./utils/errors";
 import "./utils/db"; //połączenie z bazą danych
 
@@ -11,9 +22,15 @@ import {authRouter} from "./routers/auth";
 
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:3000'
-}))
+
+
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+};
+
+app.use(cors(corsOptions));
+
+// app.use(limiter)
 app.use(express.json());
 app.use('/school-app/course', courseRouter);
 app.use('/school-app/teacher', teacherRouter);

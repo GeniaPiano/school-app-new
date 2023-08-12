@@ -2,8 +2,10 @@ import {NextFunction, Request, Response, Router} from "express";
 
 import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
-import {GetUserReturnType, getUserWithRoleByEmail} from "../utils/checkRoleByEmail";
-
+import { getUserWithRoleByEmail} from "../utils/checkRoleByEmail";
+import {TeacherRecord} from "../records/teacher.record";
+import {AdminRecord} from "../records/admin.record";
+import {StudentRecord} from "../records/student.record";
 
 export const authRouter = Router();
 
@@ -18,8 +20,12 @@ authRouter.post('/login', async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
     console.log('Wynik porównania hasła:', passwordMatch);
 
+    if (!passwordMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-    const userWithoutPassword = (userObj: GetUserReturnType) => {
+
+   const cleared = (userObj: TeacherRecord | AdminRecord | StudentRecord) => {
         const {password, ...rest} = userObj
         return {
             ...rest
@@ -27,14 +33,9 @@ authRouter.post('/login', async (req, res) => {
     }
 
 
-
-    if (!passwordMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
     const token = jwt.sign({ userId: user.id, role: user.role }, 'your-secret-key', { expiresIn: '1h' });
     res.json({
-        user: userWithoutPassword(user),
+        user: cleared(user),
         token,
     });
 })

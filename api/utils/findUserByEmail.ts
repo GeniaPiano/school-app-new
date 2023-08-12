@@ -11,7 +11,7 @@ type RecordResults = [UserReq[], FieldPacket[]];
 
 export const getUserByEmail = async(email:string): Promise<UserReq>=> {
     const [dataTeachers] = await pool.execute("SELECT  `email`,`password` FROM `teachers` ") as RecordResults
-    const [dataStudents] = await pool.execute("SELECT `email`, `password`  FROM `students`") as RecordResults
+    const [dataStudents] = await pool.execute("SELECT `email`, `password`  FROM `Students`") as RecordResults
     const [dataAdmin] = await pool.execute("SELECT `email`, `password`  FROM `admin`") as RecordResults
 
     const data = [ ...dataTeachers,...dataStudents,...dataAdmin]

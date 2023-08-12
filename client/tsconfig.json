@@ -22,11 +22,6 @@
 
     /* paths */
     "baseUrl": ".",
-    "paths": {
-      "types": ["../api/types"]}
-
-
-
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -63,6 +63,7 @@ export class CourseRecord implements CourseEntity {
         return results.length === 0 ? null : new CourseRecord(results[0]);
     }
 
+
     async delete(): Promise<void> {
         await pool.execute("DELETE FROM `courses` WHERE `id` = :id ", {
             id: this.id,

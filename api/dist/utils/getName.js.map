@@ -1,0 +1,1 @@
+{"version":3,"file":"getName.js","sourceRoot":"","sources":["../../utils/getName.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,6BAA0B;AAEnB,MAAM,OAAO,GAAG,CAAM,EAAS,EAAkB,EAAE;IACtD,MAAM,CAAC,OAAO,CAAC,GAAG,MAAM,SAAI,CAAC,OAAO,CAAC,iCAAiC,CAAC,CAAC;IACxE,OAAO,OAAO,CAAA;AAClB,CAAC,CAAA,CAAA;AAHY,QAAA,OAAO,WAGnB"}

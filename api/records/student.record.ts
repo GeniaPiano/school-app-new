@@ -4,7 +4,7 @@ import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
-import {generatePassword} from "../utils/generatePassword";
+
 
 
 interface RelatedData {
@@ -49,7 +49,7 @@ export class StudentRecord implements StudentEntity {
             this.id = uuid();
         }
 
-        await pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
+        await pool.execute("INSERT INTO `Students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
@@ -62,19 +62,32 @@ export class StudentRecord implements StudentEntity {
     }
 
     static async listAll(): Promise <StudentRecord[]> {
-        const [results] = await pool.execute("SELECT * FROM `students`") as StudentRecordResults;
+        const [results] = await pool.execute("SELECT * FROM `Students`") as StudentRecordResults;
         return results.map(obj => new StudentRecord(obj));
     }
 
+
+    static async getAllStudentsByCourseId(courseId: string): Promise<StudentRecord[]> {
+        const [results] = await pool.execute(
+            "SELECT `students`.`id`, `students`.`name`, `students`.`last_name`, `students`.`email` FROM `students` JOIN `courses_students` ON `students`.`id` = `courses_students`.`student_id` JOIN `courses` ON `courses_students`.`course_id` = `courses`.`id` WHERE `courses`.`id` = :courseId",
+            {
+                courseId,
+            }
+        ) as StudentRecordResults;
+        return results.map(obj => new StudentRecord(obj));
+    }
+
+
     static async getByEmail(email: string) :Promise <StudentRecord> | null {
-        const [results] = (await pool.execute("SELECT * FROM `students` WHERE `email` = :email", {
+        const [results] = (await pool.execute("SELECT * FROM `courses_students` WHERE `email` = :email", {
             email,
         })) as StudentRecordResults;
         return results.length === 0 ? null : new StudentRecord(results[0]);
     }
 
+
     static async getOne(id: string): Promise<StudentRecord | null> {
-        const [results] = (await pool.execute("SELECT * FROM `students` WHERE `id` = :id", {
+        const [results] = (await pool.execute("SELECT * FROM `Students` WHERE `id` = :id", {
             id,
         })) as StudentRecordResults;
         return results.length === 0 ? null : new StudentRecord(results[0]);
@@ -117,7 +130,7 @@ export class StudentRecord implements StudentEntity {
         if (!student) {
             throw new ValidationError('Student not found.')
         }
-        await pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
+        await pool.execute("DELETE FROM `Students` WHERE `id` = :id ", {
             id: student.id
         })
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(id);
@@ -129,7 +142,7 @@ export class StudentRecord implements StudentEntity {
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
+        await pool.execute("UPDATE `Students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,

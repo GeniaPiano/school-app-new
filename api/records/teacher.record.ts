@@ -31,7 +31,6 @@ export class TeacherRecord implements TeacherEntity {
             throw new ValidationError('Password should contain from 8 to 40 characters');
         }
 
-
         this.id = obj.id;
         this.name = obj.name;
         this.last_name = obj.last_name;
@@ -40,7 +39,7 @@ export class TeacherRecord implements TeacherEntity {
         this.role = 'teacher';
     }
 
-    async insert(hashedPassword:string):Promise<string>  {
+    async insert():Promise<string>  {
         if (!this.id) {
             this.id = uuid();
         }
@@ -50,7 +49,7 @@ export class TeacherRecord implements TeacherEntity {
             name: this.name,
             last_name: this.last_name,
             email: this.email,
-            password: hashedPassword,
+            password: this.password,
             role: this.role,
         });
         return this.id;

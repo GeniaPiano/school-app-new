@@ -8,11 +8,12 @@ export interface GetSingleStudentRes {
 
 export type DataCoursesResForSingleStudent = Omit <CourseEntity, 'teacher_id'>
 
+export type CleanedStudent = Omit <StudentEntity, 'password' >
+
 export interface StudentReq {
     name: string;
     last_name: string;
     email: string;
-
 }
 
 

@@ -4,7 +4,7 @@ import {
     createStudent,
     deleteStudent,
     getAllStudents,
-    getOneStudent, removeCourseFromStudent,
+    getOneStudent, getStudentsByCourseId, removeCourseFromStudent,
     updateStudent
 } from "../controllers/student";
 
@@ -13,6 +13,7 @@ export const studentRouter = Router();
 studentRouter
     .get('/', getAllStudents)
     .get('/:id', getOneStudent)
+    .get('/course/:courseId', getStudentsByCourseId)
     .post('/', createStudent)
     .patch('/:id', updateStudent)
     .delete('/:id', deleteStudent)

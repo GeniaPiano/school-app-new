@@ -28,13 +28,17 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
 export const createTeacher = async (req: Request, res: Response, next: NextFunction) => {
 
     const {name, last_name} = req.body as TeacherReq;
-    const TeacherData= {
+    const rawPassword = generatePassword(name, last_name);
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+
+    const teacherData= {
         ...req.body,
-        password: generatePassword(name, last_name),
+        password: hashedPassword,
         is_admin: 0,
     } as TeacherRecord
 
-    const teacher = new TeacherRecord(TeacherData);
+    const teacher = new TeacherRecord(teacherData);
     const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
         throw new ValidationError('Email already exists.')
@@ -42,7 +46,7 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
 
     // miejsce na wysłanie hasła na maila użytkownika
     const hash = await bcrypt.hash(teacher.password, 10)
-    await teacher.insert(hash);
+    await teacher.insert();
     res.json(teacher);
 
 }

@@ -1,8 +1,9 @@
-import {Box, Flex, Icon, Link, Menu, MenuButton, Text, MenuList, MenuItem} from "@chakra-ui/react";
+import {Box, Flex, Icon, Menu, MenuButton, Text, MenuItem} from "@chakra-ui/react";
 import {useState} from 'react';
+import {NavLink} from "react-router-dom";
 
 
-export const SidebarItem = ({navSize, title, icon, active}) => {
+export const SidebarItem = ({navSize, title, icon, active, path}) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -10,26 +11,28 @@ export const SidebarItem = ({navSize, title, icon, active}) => {
             mt={30}
             flexDir="column"
             w="100%"
+            p={3}
+            borderRadius={8}
+            background={isHovered ?  "#AEC8CA" : "transparent"}
             alignItems={navSize === "small" ? "center" : "flex-start"}
+            onMouseEnter={()=> setIsHovered(true)}
+            onMouseLeave={()=> setIsHovered(false)}
         >
         <Menu placement="right">
 
-                <Link
-                    backgroundColor={active && "#AEC8CA"}
-                    p={3}
-                    borderRadius={8}
+                <NavLink
+                    to={path}
+                    background={active && "#AEC8CA"}
                     position="relative"
-                    _hover={{textDecor: 'none', backgroundColor: "#AEC8CA"}}
                     w={navSize === "large" ? "100%" : "auto"}
-                    onMouseEnter={()=> setIsHovered(true)}
-                    onMouseLeave={()=> setIsHovered(false)}>
+                   >
                     <MenuButton>
                         <Flex alignItems="center" >
                             <Icon as={icon} fontSize="xl" color={active ? "#AEC8CA": "gray.500"} />
                             <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
                         </Flex>
                     </MenuButton>
-                </Link>
+                </NavLink>
 
 
             <Box
@@ -40,11 +43,15 @@ export const SidebarItem = ({navSize, title, icon, active}) => {
                 borderRadius={8}
                 position="absolute"
                 left="100%"
-                w={200}
+                minWidth={170}
                 h={200}
                 >
-                <MenuItem>
-                   Link
+                <MenuItem
+                    display="flex"
+                    align="center"
+                    justifyContent="center"
+                >
+                    {title}
                 </MenuItem>
             </Box>
         </Menu

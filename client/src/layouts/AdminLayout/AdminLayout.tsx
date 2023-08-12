@@ -8,7 +8,9 @@ interface Props {
 }
 export const AdminLayout: FC<Props> = ({children}) => {
     return (
-        <Flex >
+        <Flex
+            gap={50}
+        >
             <Sidebar/>
             <Flex>
                 {children}
