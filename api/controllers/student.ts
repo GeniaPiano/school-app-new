@@ -1,6 +1,6 @@
 
 import * as bcrypt from 'bcryptjs';
-import {NextFunction, raw, Request, Response} from 'express';
+import {NextFunction, Request, Response} from 'express';
 import {ValidationError} from "../utils/errors";
 import {
     CleanedStudent,
@@ -10,8 +10,9 @@ import {
 import {StudentRecord} from "../records/student.record";
 import {generatePassword} from "../utils/generatePassword";
 import {checkMailAvaible} from "../utils/checkMailAvailable";
-import {AlreadyExistsRelations} from "../utils/checkAlreadyExistsRelaions";
-import {CourseRecord} from "../records/course.record";
+
+import {userWithoutPassword} from "../utils/dataWithoutPassword";
+import {log} from "util";
 
 
 
@@ -34,7 +35,7 @@ export const getOneStudent = async (req: Request, res: Response) => {
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(req.params.id)
 
         res.json({
-            student,
+            student: userWithoutPassword(student),
             selectedCourses,
         } as  GetSingleStudentRes)
 }
@@ -68,11 +69,9 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
         throw new ValidationError('Mail already exists.')
     }
 
-    //@todo miejsce na wysłanie hasła na maila użytkownika
+    //miejsce na wysłanie hasła na maila użytkownika
 
     await student.insert();
-
-
     res.json({
             password: rawPassword,
             student: student,
@@ -81,65 +80,96 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
 }
 
 
-export const addCourseToStudent = async (req: Request, res: Response ) => {
+export const updateStudent = async (req: Request, res: Response ) => {
 
-        const student = await StudentRecord.getOne(req.params.id);
-        if (!student) throw new ValidationError('Cannot find student');
-        const courseId: string = req.body.courseId
-        const courseToAdd = await CourseRecord.getOne(courseId)
-        if (!courseToAdd) throw new ValidationError('Course wanted to assign to student not found.')
-        const check = await AlreadyExistsRelations(student.id, courseToAdd.id)
-        if (check) throw new ValidationError('Cannot assign this course to student. Chosen course is already assigned to this student.')
-        await student.insertCourseForStudent(courseToAdd.id);
+    console.log('ok')
 
-        res.json({
-            message: "ok"
-        })
+    // const student = await StudentRecord.getOne(req.params.id);
+    // if (student === null) {
+    //     throw new ValidationError('Student with given ID does not exist.');
+    // }
+    // console.log(student)
+    //aktualizacja name, lastName, email
+    // const { name, last_name, email} = req.body.student;
+    // const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
+    // for (const key in fieldsToUpdate) {
+    //     if (fieldsToUpdate[key as keyof StudentReq]) {
+    //         student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
+    //     }
+    // }
+    // await student.updateNameAndEmail();
 
-}
+    //aktualizacja coursesSelected
+    // const {selectedCourses} = req.body as string[];
+    // if (!selectedCourses) {
+    //     res.status(400).json({
+    //         message: 'no data to update.'
+    //     })
+    // }
+    // if (selectedCourses.length === 0) {
+    //     res.json({
+    //        student,
+    //        selectedCourses: [],
+    //     })
+    // }
+    // if (selectedCourses.length > 0 ) {
+    //     await student.removeAllSelectedCourses()
+    //     for (const course of selectedCourses) {
+    //         await student.insertCourseForStudent(course)
+    //     }
+    // }
+    //
+    // const chosenCourses = StudentRecord._getSelectedCoursesByStudent(student.id)
+    // res.json({
+    //     student,
+    //     selectedCourses: chosenCourses,
+    // })
+  }
 
-
-export const removeCourseFromStudent =  async (req: Request, res: Response, next: NextFunction) => {
-
-        const student = await StudentRecord.getOne(req.params.id);
-        if (!student) {
-            throw new ValidationError('Cannot find student.')
-        }
-        if (req.body.courseId) {
-            await student.removeFromSelected(req.body.courseId)
-        } else throw new ValidationError("No courses to delete.")
-        res.end();
-
-}
-
-export const updateStudent = async (req: Request, res: Response, ) => {
-
-        const student = await StudentRecord.getOne(req.params.id);
-        if (student === null) {
-            throw new ValidationError('Student with given ID does not exist.');
-        }
-        const { name, last_name, email} = req.body;
-        const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
-        for (const key in fieldsToUpdate) {
-            if (fieldsToUpdate[key as keyof StudentReq]) {
-                student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
-            }
-        }
-        await student.update();
-        res.json(student);
-
-}
 
 export const deleteStudent = async (req: Request, res: Response, next: NextFunction) => {
 
-        const student = await StudentRecord.getOne(req.params.id);
-        if (!student) {
-            throw new ValidationError('Cannot find student.')
-        }
-        await student.delete(req.params.id)
+    const student = await StudentRecord.getOne(req.params.id);
+    if (!student) {
+        throw new ValidationError('Cannot find student.')
+    }
+    await student.delete(req.params.id)
 
-        res.end();
+    res.end();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const addCourseToStudent = async (req: Request, res: Response ) => {
+//         const student = await StudentRecord.getOne(req.params.id);
+//         if (!student) throw new ValidationError('Cannot find student');
+//         const courseId: string = req.body.courseId
+//         const courseToAdd = await CourseRecord.getOne(courseId)
+//         if (!courseToAdd) throw new ValidationError('Course wanted to assign to student not found.')
+//         const check = await AlreadyExistsRelations(student.id, courseToAdd.id)
+//         if (check) throw new ValidationError('Cannot assign this course to student. Chosen course is already assigned to this student.')
+//         await student.insertCourseForStudent(courseToAdd.id);
+//
+//         res.json({
+//             message: "ok"
+//         })
+// }
+
+
+
+
+
 
 

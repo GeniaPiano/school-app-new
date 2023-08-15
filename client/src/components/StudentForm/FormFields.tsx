@@ -1,0 +1,23 @@
+
+import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react";
+import {formFieldsData} from "./formFieldsData";
+
+export const FormFields = ({handleInputChange, newErrors, inputValues}) => {
+
+    return (
+     formFieldsData.map(oneForm => (
+        <FormControl key={oneForm.title} mb={5} isInvalid={newErrors[oneForm.name]}>
+            <FormLabel>{oneForm.title}</FormLabel>
+            <Input
+                value={inputValues[oneForm.name]}
+                name={oneForm.name}
+                onChange={handleInputChange}
+                type={oneForm.type} focusBorderColor="brand.600"
+            />
+            { newErrors[oneForm.name] &&
+                <FormErrorMessage>{oneForm.errorMessage}</FormErrorMessage>
+            }
+        </FormControl>
+    ))
+    )
+}

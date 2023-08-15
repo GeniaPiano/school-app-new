@@ -9,12 +9,20 @@ export interface StudentEntity {
     role: 'student';
 }
 
+export type CleanedStudent = Omit <StudentEntity, 'password' >
+
 export type DataCoursesResForSingleStudent = Omit <CourseEntity, 'teacher_id'>
 
 
 export interface SingleStudentRes {
-    student: StudentEntity;
-    selectedCourses: DataCoursesResForSingleStudent[];
+    student: CleanedStudent,
+    selectedCourses: CourseEntity[];
 }
 
-export type CleanedStudent = Omit <StudentEntity, 'password' >
+
+export interface FormFieldProps {
+    studentData: {
+        student: CleanedStudent,
+        selectedCourses: CourseEntity[],
+    }
+}

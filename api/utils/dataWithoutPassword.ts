@@ -7,12 +7,12 @@ import {AdminRecord} from "../records/admin.record";
 
 
 
-// export const userWithoutPassword = (userObj) => {
-//     const {password, ...rest} = userObj
-//     return {
-//         ...rest
-//     }
-// }
+export const userWithoutPassword = (userObj: StudentEntity) => {
+    const {password, ...rest} = userObj
+    return {
+        ...rest
+    }
+}
 
 
 

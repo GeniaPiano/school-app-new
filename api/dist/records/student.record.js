@@ -54,9 +54,17 @@ class StudentRecord {
             return results.map(obj => new StudentRecord(obj));
         });
     }
+    static getAllStudentsByCourseId(courseId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [results] = yield db_1.pool.execute("SELECT `students`.`id`, `students`.`name`, `students`.`last_name`, `students`.`email` FROM `students` JOIN `courses_students` ON `students`.`id` = `courses_students`.`student_id` JOIN `courses` ON `courses_students`.`course_id` = `courses`.`id` WHERE `courses`.`id` = :courseId", {
+                courseId,
+            });
+            return results.map(obj => new StudentRecord(obj));
+        });
+    }
     static getByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = (yield db_1.pool.execute("SELECT * FROM `Students` WHERE `email` = :email", {
+            const [results] = (yield db_1.pool.execute("SELECT * FROM `courses_students` WHERE `email` = :email", {
                 email,
             }));
             return results.length === 0 ? null : new StudentRecord(results[0]);

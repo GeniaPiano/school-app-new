@@ -3,32 +3,28 @@ import {Box, Flex, Heading, List, ListItem, Spinner} from "@chakra-ui/react";
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {StudentEntity} from "../../types/student";
+import {SingleStudentRes, StudentEntity} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
-
 
 interface Props {
     courseName: string;
 }
 
 export const StudentsList = ({ courseName }: Props) => {
-
-    const [students, setStudents] = useState(null)
+    const [students, setStudents] = useState < SingleStudentRes[]> ([])
 
     const {courseId} = useParams();
-    const {getStudentsByGroup, getStudentById} = useStudents();
+    const {getStudentsByGroup} = useStudents();
 
     useEffect(() => {
         (async () => {
             const students = await getStudentsByGroup(courseId)
             setStudents(students)
-            console.log(students)
+            console.log('students',students)
         })();
     }, [courseId])
 
     if (!students) return <Spinner> Loading... </Spinner>
-
-
 
     return (
 
@@ -39,22 +35,24 @@ export const StudentsList = ({ courseName }: Props) => {
             mt={10}
             flexDirection="column"
             p={5}
+            mr={4}
          >
             <Heading
                 as="h3"
                 fontSize="x-large"
-                color="#AEC8CA"
+                color="brand.800"
                 mb={5}
 
             > {courseName} </Heading>
 
             <List
             >
-
+            <Box>
                 {students.length !== 0
-                    ? students.map((student, id) => <StudentsListItem key={id} student={student}/>)
+                    ? students.map((student, id) => <StudentsListItem key={id} studentData={student}/>)
                     : <span> No students at this course. </span>}
 
+            </Box>
             </List>
 
         </Box>

@@ -102,10 +102,9 @@ export class StudentRecord implements StudentEntity {
 
     }
 
-    async removeFromSelected(course_id:string): Promise<void> {
-        await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id AND `course_id` = :course_id",{
+    async removeAllSelectedCourses(): Promise<void> {
+        await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id",{
             student_id: this.id,
-            course_id,
         })
     }
 
@@ -130,7 +129,7 @@ export class StudentRecord implements StudentEntity {
         if (!student) {
             throw new ValidationError('Student not found.')
         }
-        await pool.execute("DELETE FROM `Students` WHERE `id` = :id ", {
+        await pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
             id: student.id
         })
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(id);
@@ -141,7 +140,7 @@ export class StudentRecord implements StudentEntity {
         }
     }
 
-    async update(): Promise<void> {
+    async updateNameAndEmail(): Promise<void> {
         await pool.execute("UPDATE `Students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
             id: this.id,
             name: this.name,

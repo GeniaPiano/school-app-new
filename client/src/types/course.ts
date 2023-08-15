@@ -1,5 +1,5 @@
 export interface CourseEntity {
-    id?: string;
+    id: string;
     name: string;
     teacher_id?: string | null;
 }

@@ -34,16 +34,16 @@ exports.authRouter.post('/login', (req, res) => __awaiter(void 0, void 0, void 0
     }
     const passwordMatch = yield bcrypt.compare(password, user.password);
     console.log('Wynik porównania hasła:', passwordMatch);
-    const userWithoutPassword = (userObj) => {
-        const { password } = userObj, rest = __rest(userObj, ["password"]);
-        return Object.assign({}, rest);
-    };
     if (!passwordMatch) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
+    const cleared = (userObj) => {
+        const { password } = userObj, rest = __rest(userObj, ["password"]);
+        return Object.assign({}, rest);
+    };
     const token = jwt.sign({ userId: user.id, role: user.role }, 'your-secret-key', { expiresIn: '1h' });
     res.json({
-        user: userWithoutPassword(user),
+        user: cleared(user),
         token,
     });
 }));

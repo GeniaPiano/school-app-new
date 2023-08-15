@@ -1,54 +1,52 @@
-import {Box, Divider, Flex, Heading} from "@chakra-ui/react";
+import {Box, Divider, Flex, Heading, SimpleGrid} from "@chakra-ui/react";
 import {useEffect, useRef, useState} from "react";
 import axios from 'axios';
-import {useParams, Link, Navigate} from "react-router-dom";
+import {useParams, NavLink, Navigate} from "react-router-dom";
 import {COURSE_URL} from "../../utils/url";
 import {StudentsList} from "../../components/Students/StudentsList";
-
-interface CourseData {
-    id: string,
-    name: string,
-    teacher_id: string | null
-}
+import {useCourses} from "../../hooks/useCourses";
+import {CourseEntity} from "../../types/course";
 
 
-interface CourseResponse {
-    coursesList: CourseData[];
-}
+
 
 export const Dashboard = () => {
 
-    const {courseId} = useParams();
+    const {courseId}: string = useParams();
 
-    const [courses, setCourses] = useState <CourseData[]| null> (null);
-    const [selectedCourse, setSelectedCourse] = useState < string | null>(null)
+
+    const [courses, setCourses] = useState <CourseEntity[]| null> (null);
+    const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
+    const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
+    const {getAllCourses} = useCourses()
+
 
     useEffect(() => {
-        axios.get<CourseResponse>(`${COURSE_URL}`)
-            .then(({data}) => {
-                setCourses(data.coursesList);
+        (async () => {
+          try {
+              const coursesList = await getAllCourses();
+              setCourses(coursesList)
+              if (!courseId &&  coursesList.length > 0) {
+                                  setSelectedCourse(coursesList[0].name)
 
-                if (!courseId &&  data.coursesList.length > 0) {
-                    setSelectedCourse(data.coursesList[0].name)
-
-
-                } else {
-                    const selectedCourse = data.coursesList.filter(course => course.id === courseId);
-                    if (selectedCourse) {
-                        setSelectedCourse(selectedCourse[0].name);
-                    }
-
-                }
-                   }
-                )
-            .catch((err) => console.log(err))
+                              } else {
+                                  const selectedCourseObj = coursesList.find(course => course.id === courseId);
+                                  if (selectedCourseObj) {
+                                      setSelectedCourse(selectedCourseObj.name);
+                                      setActiveCourseId(selectedCourseObj.id)
+                                  }}
+          } catch (e) {
+              console.log(e)
+          }
+        })()
     }, [courseId])
 
 
 
-    // if (!id && courses && courses.length > 0) return (
-    //     <Navigate to={`/course/${courses[0].id}`}/>
-    // )
+    if (!courseId && courses && courses.length > 0) return (
+        <Navigate to={`/course/${courses[0].id}`}/>
+    )
+
 
     return (
         <Flex
@@ -59,19 +57,36 @@ export const Dashboard = () => {
             >
 
             <Box as="nav"
-
                  p="30PX"
                  >
                 <Heading
                     my={15}
                     fontSize="x-large"
                     as="h2">courses: </Heading>
-
-                {
+            <SimpleGrid spacing={4} columns={{ base: '2', md: '3', lg: '6', xl: '8'}}>
+               <> {
                     courses && courses.map((oneCourse) => {
-                        return <Link key={oneCourse.id} to={`/course/${oneCourse.id}`}> {oneCourse.name} </Link>
-                })
-                }
+                        return <Flex
+                            key={oneCourse.id}
+                            alignItems="center"
+                            textAlign="center"
+                            justifyContent="center"
+                            p={{base: "5px 10px", md: "8px", lg: "10px"}}
+                            _hover={{color:"white"}}
+                            borderRadius="8px"
+                            fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
+                            bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
+                            color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
+
+                        >
+                            <NavLink
+                            to={`/course/${oneCourse.id}`}
+                            >
+                                {oneCourse.name} </NavLink>
+                        </Flex>
+                    })
+                } </>
+            </SimpleGrid>
             </Box>
             <Divider
                 border="3px gray.500 solid"

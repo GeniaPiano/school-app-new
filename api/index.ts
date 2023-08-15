@@ -1,4 +1,5 @@
 import * as express from "express";
+
 import * as cors from 'cors';
 import 'express-async-errors';
 // import rateLimit from 'express-rate-limit'
@@ -31,6 +32,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // app.use(limiter)
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use('/school-app/course', courseRouter);
 app.use('/school-app/teacher', teacherRouter);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useCallback} from "react";
 import {STUDENT_URL} from "../utils/url";
+import {SingleStudentRes} from "../types/student";
 
 
  //const studentApi = axios.create({})
@@ -18,8 +19,8 @@ export const useStudents = () => {
 
     const getStudentsByGroup = useCallback( async (courseId) => {
         try {
-            const results = await axios.get(`${STUDENT_URL}/course/${courseId}`);
-            return results.data.students
+            const results= await axios.get(`${STUDENT_URL}/course/${courseId}`);
+            return results.data.students as SingleStudentRes[]
         } catch (e) {
             console.log(e)
         }
@@ -28,7 +29,7 @@ export const useStudents = () => {
     const getStudentById = useCallback( async (id) => {
         try {
             const results = await axios.get(`${STUDENT_URL}/${id}`);
-            console.log(results)
+            console.log('get student by id',results)
         } catch (e) {
             console.log(e)
         }

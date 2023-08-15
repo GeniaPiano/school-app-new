@@ -2,7 +2,7 @@ import {StudentEntity} from "./student.entity";
 import {CourseEntity} from "../course";
 
 export interface GetSingleStudentRes {
-    student: StudentEntity;
+    student: CleanedStudent;
     selectedCourses: DataCoursesResForSingleStudent[];
 }
 

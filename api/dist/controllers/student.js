@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudent = exports.updateStudent = exports.removeCourseFromStudent = exports.addCourseToStudent = exports.createStudent = exports.getOneStudent = exports.getAllStudents = void 0;
+exports.deleteStudent = exports.updateStudent = exports.removeCourseFromStudent = exports.addCourseToStudent = exports.createStudent = exports.getStudentsByCourseId = exports.getOneStudent = exports.getAllStudents = void 0;
 const bcrypt = require("bcryptjs");
 const errors_1 = require("../utils/errors");
 const student_record_1 = require("../records/student.record");
@@ -40,6 +40,18 @@ const getOneStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.getOneStudent = getOneStudent;
+const getStudentsByCourseId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const students = yield student_record_1.StudentRecord.getAllStudentsByCourseId(req.params.courseId);
+    const studentsWithSelectedCourses = yield Promise.all(students.map((student) => __awaiter(void 0, void 0, void 0, function* () {
+        const selectedCourses = yield student_record_1.StudentRecord._getSelectedCoursesByStudent(student.id);
+        return {
+            student,
+            selectedCourses,
+        };
+    })));
+    res.json({ students: studentsWithSelectedCourses });
+});
+exports.getStudentsByCourseId = getStudentsByCourseId;
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, last_name } = req.body;
     const rawPassword = (0, generatePassword_1.generatePassword)(name, last_name);

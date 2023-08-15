@@ -7,6 +7,7 @@ exports.studentRouter = (0, express_1.Router)();
 exports.studentRouter
     .get('/', student_1.getAllStudents)
     .get('/:id', student_1.getOneStudent)
+    .get('/course/:courseId', student_1.getStudentsByCourseId)
     .post('/', student_1.createStudent)
     .patch('/:id', student_1.updateStudent)
     .delete('/:id', student_1.deleteStudent)
