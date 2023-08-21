@@ -2,11 +2,11 @@
 import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react";
 import {formFieldsData} from "./formFieldsData";
 
-export const FormFields = ({handleInputChange, newErrors, inputValues}) => {
+export const FormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
 
     return (
      formFieldsData.map(oneForm => (
-        <FormControl key={oneForm.title} mb={5} isInvalid={newErrors[oneForm.name]}>
+        <FormControl key={oneForm.title} mb={5} isInvalid={!loading && newErrors[oneForm.name]}>
             <FormLabel>{oneForm.title}</FormLabel>
             <Input
                 value={inputValues[oneForm.name]}

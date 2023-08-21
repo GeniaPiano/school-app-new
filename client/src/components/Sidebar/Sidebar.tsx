@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Avatar, Divider, Flex, Heading, HStack, IconButton, Spacer, Text} from "@chakra-ui/react";
+import {Avatar, Divider, Flex, Heading,  IconButton,  Text} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {FiCornerLeftDown, FiHome, FiMessageSquare} from "react-icons/fi";
@@ -17,7 +17,8 @@ export const Sidebar = () => {
             h="95vh"
             mt="2.5vh"
             w={navSize === "small" ? "75px" : "200px"}
-            boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.1)"
+            boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.1
+            )"
             borderRadius={navSize === "small" ? '15px' : '30px'}
             flexDir="column"
             justifyContent="space-between"

@@ -14,7 +14,7 @@ studentRouter
     .get('/:id', getOneStudent)
     .get('/course/:courseId', getStudentsByCourseId)
     .post('/', createStudent)
-    .patch('/:id/update', (req, res) => console.log('ok'))
+    .patch('/:id/update', updateStudent)
     .delete('/:id', deleteStudent)
     // .patch('/:id/assign-course', addCourseToStudent) //PRZYPISANIE KURSU DO STUDENTA
     // .delete('/:id/remove-course', removeCourseFromStudent)  //USUWANIE PRZYPISANEGO KURSU

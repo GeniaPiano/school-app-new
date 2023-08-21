@@ -1,55 +1,65 @@
-import axios from "axios";
+
 import {Flex, ListItem, Button, Text, useDisclosure, SimpleGrid, Heading, Box, GridItem} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
-import {CleanedStudent, DataCoursesResForSingleStudent} from "../../types/student";
+import {CleanedStudent} from "../../types/student";
 import {FormEditStudent} from "../StudentForm/FormEditStudent";
 import {initialState} from "../StudentForm/initialState";
-import {STUDENT_URL} from "../../utils/url";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
+import {useStudents} from "../../hooks/useStudents";
 
 
 
 interface Props {
     studentData: {
         student: CleanedStudent,
-        selectedCourses: DataCoursesResForSingleStudent[],
+        selectedCourses: CourseEntity[],
     }
 }
 
 export const StudentsListItem = (props: Props): ReactNode  => {
+    const {updateStudentCourses} = useStudents()
     const {getAllCourses} = useCourses();
-    const {student, selectedCourses} = props.studentData
+    const {student:studentData, selectedCourses:coursesData} = props.studentData;
+    const [student, setStudent] = useState<CleanedStudent>(studentData)
+    const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>(coursesData)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isEditing, setIsEditing] = useState(false);
-    const [availableCourses, setAvailableCourses] = useState < CourseEntity[] | null> (null);
+    const [availableCourses, setAvailableCourses] = useState < CourseEntity[]> (null);
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
+    const handleCloseModal = () => {
+        if (isConfirmationOpen) {
+            //jeśli user potwierdził
+            setIsConfirmationOpen(false)
+            onClose();
+        } else {
+            setIsConfirmationOpen(false)
+        }
+    }
+
+    const handleConfirmClose = () => {
+        setIsConfirmationOpen(false);
+        onClose();
+    }
+
 
     const handleRemoveCourse = (courseId) => {
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
     };
 
-
     const [inputValues, setInputValues] = useState (initialState(student));
+
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        const {name, value} = e.target;
-        setInputValues((prevVal: CleanedStudent) => ({
+        setInputValues((prevVal) => ({
             ...prevVal,
-            [name]: value
+            [e.target.name]: e.target.value
         }));
     }
-
-    useEffect(() => {
-        (async () => {
-            const courses = await getAllCourses();
-            if (courses) {
-                const filteredCourses = courses.filter(course => !coursesReadyToUpdate.some(selectedCourse => selectedCourse.id === course.id));
-                setAvailableCourses(filteredCourses);
-            }
-        })();
-    }, [coursesReadyToUpdate]);
 
 
     const handleSelectChange = (e) => {
@@ -64,29 +74,34 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const handleSubmit = async(e) => {
         setIsEditing(prev => !prev)
         if (isEditing) {
-            console.log('submit')
-             e.preventDefault();
-            console.log('inputValues:', inputValues)
-            console.log('selectedCourses',coursesReadyToUpdate.map(course => course.id) )
-                try {
-                    const res = await axios.patch(`${STUDENT_URL}/${student.id}/update`, {
-                        student: inputValues,
-                        selectedCourses:coursesReadyToUpdate.map(course => course.id),
-                    })
-
-                    console.log('Res from server', res.data);
-
-                } catch (err) {
-                    console.log(err.response.data)}
+            e.preventDefault();
+            try {
+                const coursesToSend = coursesReadyToUpdate.map(course => course.id)
+                const res = await updateStudentCourses(student.id, inputValues, coursesToSend)
+                setStudent(res.data.student)
+                setSelectedCourses(res.data.selectedCourses)
+            } catch (err) {
+                console.log(err.response.data)}
         }
     }
 
-   const cancelEditing = () => {
+
+    useEffect(() => {
+        (async () => {
+            const courses = await getAllCourses();
+            if (courses) {
+                const filteredCourses = courses.filter(course => !coursesReadyToUpdate.some(selectedCourse => selectedCourse.id === course.id));
+                setAvailableCourses(filteredCourses);
+            }
+        })();
+    }, [coursesReadyToUpdate, updateStudentCourses, selectedCourses]);
+
+    const cancelEditing = () => {
         setIsEditing(false);
-       setCoursesReadyToUpdate(selectedCourses);
+        setCoursesReadyToUpdate(selectedCourses);
 
 
-   }
+    }
 
 
     return (

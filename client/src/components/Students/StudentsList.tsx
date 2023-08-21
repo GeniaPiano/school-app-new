@@ -1,10 +1,13 @@
 
-import {Box, Flex, Heading, List, ListItem, Spinner} from "@chakra-ui/react";
+import {Box, Heading,List, Spinner, useDisclosure} from "@chakra-ui/react";
+
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {SingleStudentRes, StudentEntity} from "../../types/student";
+import {SingleStudentRes} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
+
+
 
 interface Props {
     courseName: string;
@@ -12,6 +15,7 @@ interface Props {
 
 export const StudentsList = ({ courseName }: Props) => {
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
+    const [loading, setLoading] = useState <boolean>(true)
 
     const {courseId} = useParams();
     const {getStudentsByGroup} = useStudents();
@@ -19,12 +23,18 @@ export const StudentsList = ({ courseName }: Props) => {
     useEffect(() => {
         (async () => {
             const students = await getStudentsByGroup(courseId)
-            setStudents(students)
+            setStudents(students);
+            setLoading(false)
             console.log('students',students)
         })();
     }, [courseId])
 
     if (!students) return <Spinner> Loading... </Spinner>
+
+
+
+
+
 
     return (
 
@@ -37,24 +47,27 @@ export const StudentsList = ({ courseName }: Props) => {
             p={5}
             mr={4}
          >
+
             <Heading
                 as="h3"
                 fontSize="x-large"
                 color="brand.800"
-                mb={5}
-
             > {courseName} </Heading>
 
-            <List
+                <List
             >
-            <Box>
+                <>  {loading? <Spinner/> : (
+                   <Box>
                 {students.length !== 0
-                    ? students.map((student, id) => <StudentsListItem key={id} studentData={student}/>)
+                    ? students.map((student) => <StudentsListItem
+                    key={student.student.id}
+                    studentData={student}
+                    studentId={student.student.id}
+                    />)
                     : <span> No students at this course. </span>}
-
-            </Box>
+                    </Box>
+                    )} </>
             </List>
-
         </Box>
 
 

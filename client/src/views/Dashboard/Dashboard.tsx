@@ -1,11 +1,23 @@
-import {Box, Divider, Flex, Heading, SimpleGrid} from "@chakra-ui/react";
-import {useEffect, useRef, useState} from "react";
-import axios from 'axios';
+import {
+    Box,
+    Divider,
+    Flex,
+    Heading,
+    HStack,
+    Icon,
+    Modal, ModalBody,
+    ModalContent, ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    useDisclosure,
+    SimpleGrid
+} from "@chakra-ui/react";
+import {useEffect,  useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
-import {COURSE_URL} from "../../utils/url";
 import {StudentsList} from "../../components/Students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
+import {AddIcon} from "@chakra-ui/icons";
 
 
 
@@ -13,6 +25,7 @@ import {CourseEntity} from "../../types/course";
 export const Dashboard = () => {
 
     const {courseId}: string = useParams();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
 
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
@@ -59,10 +72,24 @@ export const Dashboard = () => {
             <Box as="nav"
                  p="30PX"
                  >
-                <Heading
-                    my={15}
-                    fontSize="x-large"
-                    as="h2">courses: </Heading>
+                 <HStack>
+                     <Heading
+                         my={15}
+                         fontSize="x-large"
+                         as="h2">courses: </Heading>
+                     <Icon as={AddIcon}
+                           cursor="pointer"
+                           onClick={onOpen}
+                     />
+                 </HStack>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalOverlay />
+                    <ModalContent  color="gray.500">
+                        <ModalHeader>Add new student to </ModalHeader>
+                        <ModalBody> form </ModalBody>
+                        <ModalFooter>footer </ModalFooter>
+                    </ModalContent>
+                </Modal>
             <SimpleGrid spacing={4} columns={{ base: '2', md: '3', lg: '6', xl: '8'}}>
                <> {
                     courses && courses.map((oneCourse) => {

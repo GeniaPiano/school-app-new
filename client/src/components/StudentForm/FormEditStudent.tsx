@@ -3,11 +3,10 @@ import {
     FormControl,
     Text, FormLabel, Flex, Select, SimpleGrid,
 } from '@chakra-ui/react'
-import {CleanedStudent, FormFieldProps} from "../../types/student";
-import {ChangeEvent, FormEvent, ReactNode, useEffect, useState} from "react";
-import {useCourses} from "../../hooks/useCourses";
+import {CleanedStudent} from "../../types/student";
+import {ChangeEvent, FormEvent, ReactNode} from "react";
 import {CourseEntity} from "../../types/course";
-import {initialState, InitialStudentState} from "./initialState";
+import {InitialStudentState} from "./initialState";
 import {FormFields} from "./FormFields";
 import {CloseIcon} from "@chakra-ui/icons";
 
@@ -37,17 +36,17 @@ export const FormEditStudent = (props: Props): ReactNode => {
     };
 
     const chosenCourses = coursesReadyToUpdate.map(oneCourse => (
-        <Box key={oneCourse.id} position="relative" bg="brand.400" p={3} borderRadius="10px" alignItems="center">
+        <Box key={oneCourse.id} position="relative" bg="brand.800" color="white" p={3} borderRadius="10px" alignItems="center">
             <Text mr="15px">{oneCourse.name}</Text>
-           <Icon as={CloseIcon}
-                 cursor="pointer"
-                 top="3" right="3"
-                 w={4} h={4} p="2px"
-                 position="absolute"
-                 _hover={{border: "1px solid"}}
-                 borderRadius="8px"
-                 onClick={() => handleRemoveCourse(oneCourse.id)}
-           />
+            <Icon as={CloseIcon}
+                  cursor="pointer"
+                  top="3" right="3"
+                  w={4} h={4} p="2px"
+                  position="absolute"
+                  _hover={{ color: "red.400" }}
+                  borderRadius="8px"
+                  onClick={() => handleRemoveCourse(oneCourse.id)}
+            />
         </Box>
     ));
 
@@ -65,12 +64,12 @@ export const FormEditStudent = (props: Props): ReactNode => {
                     <FormLabel>Courses</FormLabel>
                     <Select placeholder='Select courses'
                             onChange={handleSelectChange}>
-                       <>{coursesOption}</>
+                        <>{coursesOption}</>
                     </Select>
                 </FormControl>
 
                 <SimpleGrid columns={3} spacing={4} my={5}>
-                  <> {chosenCourses} </>
+                    <> {chosenCourses} </>
                 </SimpleGrid>
 
             </form>
@@ -78,6 +77,5 @@ export const FormEditStudent = (props: Props): ReactNode => {
         </Box>
     )
 }
-
 
 

@@ -102,7 +102,7 @@ export class StudentRecord implements StudentEntity {
 
     }
 
-    async removeAllSelectedCourses(): Promise<void> {
+    async removeAllCourses(): Promise<void> {
         await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id",{
             student_id: this.id,
         })

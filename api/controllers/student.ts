@@ -1,4 +1,3 @@
-
 import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from 'express';
 import {ValidationError} from "../utils/errors";
@@ -10,18 +9,18 @@ import {
 import {StudentRecord} from "../records/student.record";
 import {generatePassword} from "../utils/generatePassword";
 import {checkMailAvaible} from "../utils/checkMailAvailable";
-
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
-import {log} from "util";
-
-
 
 
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const students: StudentRecord[] = await StudentRecord.listAll();
+            const cleanedStudents = students.map(student => {
+                const { password, ...rest} = student
+                return rest
+            })
             res.json( {
-            students,
+            students: cleanedStudents
         });
     } catch(err) {
         next(err)
@@ -70,60 +69,53 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
     }
 
     //miejsce na wysłanie hasła na maila użytkownika
-
     await student.insert();
     res.json({
             password: rawPassword,
             student: student,
-
         })
 }
 
 
 export const updateStudent = async (req: Request, res: Response ) => {
 
-    console.log('ok')
+    const student = await StudentRecord.getOne(req.params.id);
+       if (student === null) {
+        throw new ValidationError('Student with given ID does not exist.');
+    }
 
-    // const student = await StudentRecord.getOne(req.params.id);
-    // if (student === null) {
-    //     throw new ValidationError('Student with given ID does not exist.');
-    // }
-    // console.log(student)
+
     //aktualizacja name, lastName, email
-    // const { name, last_name, email} = req.body.student;
-    // const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
-    // for (const key in fieldsToUpdate) {
-    //     if (fieldsToUpdate[key as keyof StudentReq]) {
-    //         student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
-    //     }
-    // }
-    // await student.updateNameAndEmail();
+    const { name, last_name, email} = req.body.student;
+    const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
+    for (const key in fieldsToUpdate) {
+        if (fieldsToUpdate[key as keyof StudentReq]) {
+            student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
+        }
+    }
+    await student.updateNameAndEmail();
 
     //aktualizacja coursesSelected
-    // const {selectedCourses} = req.body as string[];
-    // if (!selectedCourses) {
-    //     res.status(400).json({
-    //         message: 'no data to update.'
-    //     })
-    // }
-    // if (selectedCourses.length === 0) {
-    //     res.json({
-    //        student,
-    //        selectedCourses: [],
-    //     })
-    // }
-    // if (selectedCourses.length > 0 ) {
-    //     await student.removeAllSelectedCourses()
-    //     for (const course of selectedCourses) {
-    //         await student.insertCourseForStudent(course)
-    //     }
-    // }
-    //
-    // const chosenCourses = StudentRecord._getSelectedCoursesByStudent(student.id)
-    // res.json({
-    //     student,
-    //     selectedCourses: chosenCourses,
-    // })
+    const {selectedCourses} = req.body;
+   if (selectedCourses.length === 0) {
+        res.json({
+           student,
+           selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id)
+        })
+    }
+
+    else if (selectedCourses.length > 0 ) {
+        await student.removeAllCourses();
+        for (const course of selectedCourses) {
+            await student.insertCourseForStudent(course)
+        }
+    }
+
+    const chosenCourses = await StudentRecord._getSelectedCoursesByStudent(student.id)
+    res.json({
+        student: userWithoutPassword(student),
+        selectedCourses: chosenCourses,
+    })
   }
 
 

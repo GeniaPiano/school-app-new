@@ -13,13 +13,12 @@ export const SidebarItem = ({navSize, title, icon, active, path}) => {
             w="100%"
             p={3}
             borderRadius={8}
-            background={isHovered ?  "#AEC8CA" : "transparent"}
+            background={isHovered ?  "brand.600" : "transparent"}
             alignItems={navSize === "small" ? "center" : "flex-start"}
             onMouseEnter={()=> setIsHovered(true)}
             onMouseLeave={()=> setIsHovered(false)}
         >
         <Menu placement="right">
-
                 <NavLink
                     to={path}
                     background={active && "#AEC8CA"}
@@ -34,26 +33,32 @@ export const SidebarItem = ({navSize, title, icon, active, path}) => {
                     </MenuButton>
                 </NavLink>
 
+            <>{navSize === 'small' && (
+                <Box
+                    onMouseEnter={()=> setIsHovered(true)}
+                    onMouseLeave={()=> setIsHovered(false)}
+                    display={isHovered ? "flex" : "none"}
+                    bg="brand.500"
+                    mt="0"
+                    borderRadius={8}
+                    position="absolute"
+                    left="100%"
+                    minWidth={170}
+                    h={200}
+                >
+                    <MenuItem
+                        display="flex"
+                        align="center"
+                        justifyContent="center"
+                    >
+                        {title}
+                    </MenuItem>
+                </Box>
+            )} </>
 
-            <Box
-                onMouseEnter={()=> setIsHovered(true)}
-                onMouseLeave={()=> setIsHovered(false)}
-                display={isHovered ? "flex" : "none"}
-                bg="#AEC8CA"
-                borderRadius={8}
-                position="absolute"
-                left="100%"
-                minWidth={170}
-                h={200}
-                >
-                <MenuItem
-                    display="flex"
-                    align="center"
-                    justifyContent="center"
-                >
-                    {title}
-                </MenuItem>
-            </Box>
+
+
+
         </Menu
         >
 
