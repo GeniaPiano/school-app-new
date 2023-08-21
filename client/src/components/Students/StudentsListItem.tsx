@@ -29,29 +29,45 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [isEditing, setIsEditing] = useState(false);
     const [availableCourses, setAvailableCourses] = useState < CourseEntity[]> (null);
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
+    const [inputValues, setInputValues] = useState (initialState(student));
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
-    const handleCloseModal = () => {
-        if (isConfirmationOpen) {
-            //jeśli user potwierdził
-            setIsConfirmationOpen(false)
-            onClose();
-        } else {
-            setIsConfirmationOpen(false)
-        }
-    }
+   const handleCloseModal=()=> {
+       if (isEditing) {
+           setIsConfirmationOpen(true);
+       } else {
+           onClose();
+       }
+   }
 
-    const handleConfirmClose = () => {
+    const handleCloseAfterConfirm = () => {
         setIsConfirmationOpen(false);
-        onClose();
-    }
+        if (isEditing) {
+            setIsEditing(false);
+        } else {
+            onClose();
+        }
+    };
+
+   const handleCloseConfirmModal = () => {
+        setIsConfirmationOpen(false)
+        setIsEditing(false)
+        setInputValues((prev) => ({
+            ...prev,
+            name: student.name,
+            last_name: student.last_name,
+            email: student.email,
+            })
+        );
+        setCoursesReadyToUpdate(selectedCourses);
+   }
 
 
     const handleRemoveCourse = (courseId) => {
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
     };
 
-    const [inputValues, setInputValues] = useState (initialState(student));
+
 
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -113,11 +129,12 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                   onClick={onOpen}>
                 <Text>{student.name} {student.last_name}</Text>
             </Flex>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={handleCloseModal}  >
                 <ModalOverlay />
                 <ModalContent color="gray.500">
                     <Box> {isEditing
                         ? <> <ModalHeader>Edit data</ModalHeader>
+                            <ModalCloseButton/>
                             <ModalBody>
                                 <FormEditStudent
                                     studentData={props.studentData}
@@ -166,9 +183,6 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                     </Box>
 
                     <ModalFooter>
-                        <Button colorScheme='gray' color="gray.500" mr={3} onClick={onClose}>
-                            Close
-                        </Button>
                         <Button type={isEditing ? "submit" : "button"}
                                 color="gray.500"
                                 colorScheme='gray'
@@ -180,6 +194,23 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                      onClick={cancelEditing}
                             >Cancel</Button>
                         )} </>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            <Modal  isOpen={isConfirmationOpen} onClose={handleCloseAfterConfirm}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Confirmation</ModalHeader>
+                        <ModalBody>
+                        Are you sure you want to close without saving changes?
+                    </ModalBody>
+                    <ModalFooter >
+                        <Button mr={2} colorScheme="gray"  color="gray.600" onClick={handleCloseConfirmModal}>
+                            Yes, Close
+                        </Button>
+                        <Button colorScheme="gray"  color="gray.600" onClick={()=> setIsConfirmationOpen(false)}>
+                            Go back to edit
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

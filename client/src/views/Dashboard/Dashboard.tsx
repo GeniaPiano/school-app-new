@@ -20,8 +20,6 @@ import {CourseEntity} from "../../types/course";
 import {AddIcon} from "@chakra-ui/icons";
 
 
-
-
 export const Dashboard = () => {
 
     const {courseId}: string = useParams();
