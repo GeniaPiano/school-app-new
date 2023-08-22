@@ -1,58 +1,61 @@
 
-import {Box, Heading,List, Spinner, useDisclosure} from "@chakra-ui/react";
+import {Box, Heading, HStack, Icon, List, Spinner, useDisclosure} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
+import {ViewWrapper} from "../common/ViewWrapper";
+import {FiEdit, FiInfo} from "react-icons/fi";
+import {CourseInfo} from "../Course/CourseInfo";
 
 
 
 interface Props {
-    courseName: string;
+    courseName?: string;
 }
 
-export const StudentsList = ({ courseName }: Props) => {
+export const StudentsList = (props: Props) => {
+
+
+    const {courseName} = props
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
-
+    const {isOpen, onOpen, onClose} = useDisclosure()
     const {courseId} = useParams();
-    const {getStudentsByGroup} = useStudents();
+    const {getStudentsByGroup, getAllStudents} = useStudents();
 
     useEffect(() => {
         (async () => {
-            const students = await getStudentsByGroup(courseId)
-            setStudents(students);
-            setLoading(false)
-            console.log('students',students)
-        })();
+            if (courseName === undefined && courseId === undefined) {
+                const students = await getAllStudents()
+                    setStudents(students);
+                    setLoading(false)
+            } else {
+                const students = await getStudentsByGroup(courseId)
+                setStudents(students);
+                setLoading(false)
+            }
+           })();
     }, [courseId])
 
     if (!students) return <Spinner> Loading... </Spinner>
 
-
-
-
-
-
     return (
+        <ViewWrapper>
+           <>  {courseName && (
+               <> <HStack  mb={3}>
+                    <Heading as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
+                    <HStack >
+                        <Icon as={FiInfo} cursor="pointer" boxSize={6} w={7} onClick={onOpen}/>
+                        <Icon as={FiEdit} cursor="pointer" boxSize={6} w={7}/>
+                    </HStack>
+               </HStack>
+               <CourseInfo isOpen={isOpen} onClose={onClose} courseId={courseId} />
+             </>
 
-        <Box
-            color="gray.500"
-            boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
-            borderRadius='15px'
-            mt={10}
-            flexDirection="column"
-            p={5}
-            mr={4}
-         >
-
-            <Heading
-                as="h3"
-                fontSize="x-large"
-                color="brand.800"
-            > {courseName} </Heading>
+            )}  </>
 
                 <List
             >
@@ -64,11 +67,11 @@ export const StudentsList = ({ courseName }: Props) => {
                     studentData={student}
                     studentId={student.student.id}
                     />)
-                    : <span> No students at this course. </span>}
+                    : <span> No students. </span>}
                     </Box>
                     )} </>
             </List>
-        </Box>
+        </ViewWrapper>
 
 
 

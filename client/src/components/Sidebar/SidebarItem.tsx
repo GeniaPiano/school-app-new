@@ -2,10 +2,21 @@ import {Box, Flex, Icon, Menu, MenuButton, Text, MenuItem} from "@chakra-ui/reac
 import {useState} from 'react';
 import {NavLink} from "react-router-dom";
 
+interface Props {
+    navSize: string;
+    title: string;
+    icon: any, //@todo zmienić typ!!;
+    active: boolean;
+    path: string;
+    isHoverLink:boolean;
+    changeHoveLink: ()=> void;
+}
 
-export const SidebarItem = ({navSize, title, icon, active, path}) => {
+
+export const SidebarItem = (props: Props) => {
+
+    const {navSize, title, icon, active, path, changeHoverLink} = props
     const [isHovered, setIsHovered] = useState(false);
-
     return (
         <Flex
             mt={30}
@@ -15,7 +26,7 @@ export const SidebarItem = ({navSize, title, icon, active, path}) => {
             borderRadius={8}
             background={isHovered ?  "brand.600" : "transparent"}
             alignItems={navSize === "small" ? "center" : "flex-start"}
-            onMouseEnter={()=> setIsHovered(true)}
+            onMouseEnter={()=> {setIsHovered(true)}}
             onMouseLeave={()=> setIsHovered(false)}
         >
         <Menu placement="right">
@@ -39,11 +50,13 @@ export const SidebarItem = ({navSize, title, icon, active, path}) => {
                     onMouseLeave={()=> setIsHovered(false)}
                     display={isHovered ? "flex" : "none"}
                     bg="brand.500"
+                    fontSize="28px"
+                    fontWeight="800"
                     mt="0"
                     borderRadius={8}
                     position="absolute"
                     left="100%"
-                    minWidth={170}
+                    minWidth={250}
                     h={200}
                 >
                     <MenuItem

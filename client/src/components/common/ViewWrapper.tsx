@@ -10,9 +10,10 @@ export const ViewWrapper:FC<Props> = ({children}) => {
        <Flex
            color="gray.500"
            boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
-           borderRadius='30px'
-           p="30PX"
+           borderRadius='15px'
+           p={5}
            mt={10}
+           flexDirection="column"
 
        >
            {children}

@@ -1,7 +1,7 @@
 import {
     Box, Icon,
     FormControl,
-    Text, FormLabel, Flex, Select, SimpleGrid,
+    Text, FormLabel, Select, SimpleGrid,
 } from '@chakra-ui/react'
 import {CleanedStudent} from "../../types/student";
 import {ChangeEvent, FormEvent, ReactNode} from "react";
@@ -63,6 +63,9 @@ export const FormEditStudent = (props: Props): ReactNode => {
                 <FormControl mb={10}>
                     <FormLabel>Courses</FormLabel>
                     <Select placeholder='Select courses'
+                            variant='filled'
+                            outline='none'
+                            focusBorderColor="brand.600"
                             onChange={handleSelectChange}>
                         <>{coursesOption}</>
                     </Select>

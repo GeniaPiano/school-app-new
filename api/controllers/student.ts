@@ -15,13 +15,16 @@ import {userWithoutPassword} from "../utils/dataWithoutPassword";
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const students: StudentRecord[] = await StudentRecord.listAll();
-            const cleanedStudents = students.map(student => {
-                const { password, ...rest} = student
-                return rest
-            })
-            res.json( {
-            students: cleanedStudents
-        });
+        const studentsWithSelectedCourses = await Promise.all(students.map(async (student) => {
+            const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(student.id);
+            return {
+                student,
+                selectedCourses,
+            };
+        }));
+
+        res.json({ students: studentsWithSelectedCourses });
+
     } catch(err) {
         next(err)
     }

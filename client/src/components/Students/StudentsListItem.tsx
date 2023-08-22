@@ -1,5 +1,5 @@
 
-import {Flex, ListItem, Button, Text, useDisclosure, SimpleGrid, Heading, Box, GridItem} from "@chakra-ui/react";
+import {Flex, ListItem, Button, Text, useDisclosure, Box} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
@@ -9,6 +9,10 @@ import {initialState} from "../StudentForm/initialState";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";
+import {InfoStudentModal} from "./InfoStudentModal";
+import {ModalFooterButtons} from "./ModalFooterButtons";
+import {UserItem} from "../common/UserItem";
+import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 
 
@@ -37,7 +41,10 @@ export const StudentsListItem = (props: Props): ReactNode  => {
            setIsConfirmationOpen(true);
        } else {
            onClose();
-       }
+       }}
+
+   const handleGoBackToEdit = () => {
+       setIsConfirmationOpen(false)
    }
 
     const handleCloseAfterConfirm = () => {
@@ -46,8 +53,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
             setIsEditing(false);
         } else {
             onClose();
-        }
-    };
+        }};
 
    const handleCloseConfirmModal = () => {
         setIsConfirmationOpen(false)
@@ -62,13 +68,9 @@ export const StudentsListItem = (props: Props): ReactNode  => {
         setCoursesReadyToUpdate(selectedCourses);
    }
 
-
     const handleRemoveCourse = (courseId) => {
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
     };
-
-
-
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setInputValues((prevVal) => ({
@@ -115,20 +117,13 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const cancelEditing = () => {
         setIsEditing(false);
         setCoursesReadyToUpdate(selectedCourses);
-
-
     }
-
 
     return (
         <ListItem>
-            <Flex justifyContent="space-between"
-                  _hover={{color: "brand.700"}}
-                  cursor="pointer"
-                  my={2}
-                  onClick={onOpen}>
-                <Text>{student.name} {student.last_name}</Text>
-            </Flex>
+            <UserItem onOpen={onOpen}>
+               <Text>{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
+            </UserItem>
             <Modal isOpen={isOpen} onClose={handleCloseModal}  >
                 <ModalOverlay />
                 <ModalContent color="gray.500">
@@ -146,40 +141,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                     handleSelectChange={handleSelectChange}
                                     availableCourses={availableCourses}/>
                             </ModalBody> </>
-
-                        : <>  <ModalHeader>{student.name} {student.last_name}</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <Flex flexDir="column"
-                                      my={4}>
-                                    <Heading as="h3" size="sm" fontWeight="500" mb={5}>courses:</Heading>
-                                    <SimpleGrid  columns={3}
-                                                 spacing={4}
-                                                 color="gray.500" >
-                                        <>{selectedCourses.map(course =>
-                                            <GridItem
-                                                key={course.id}
-                                                bg="brand.800"
-                                                border="solid 1px"
-                                                borderRadius="8px"
-                                                color="white"
-                                            >
-                                                <Flex
-                                                    p={2}
-                                                    justifyContent="center"
-                                                    alignItems="center"
-                                                    borderRadius="8px"
-                                                    textAlign="center"
-                                                >
-                                                    {course.name}</Flex>
-                                            </GridItem> )} </>
-                                    </SimpleGrid>
-                                </Flex>
-                                <Box mt="40px">
-                                    <Heading as="h3" size="sm" fontWeight="500" >email:</Heading>
-                                    <p>{student.email}</p>
-                                </Box>
-                            </ModalBody> </> }
+                        : <InfoStudentModal student={student} selectedCourses={selectedCourses}/> }
                     </Box>
 
                     <ModalFooter>
@@ -197,23 +159,12 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            <Modal  isOpen={isConfirmationOpen} onClose={handleCloseAfterConfirm}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Confirmation</ModalHeader>
-                        <ModalBody>
-                        Are you sure you want to close without saving changes?
-                    </ModalBody>
-                    <ModalFooter >
-                        <Button mr={2} colorScheme="gray"  color="gray.600" onClick={handleCloseConfirmModal}>
-                            Yes, Close
-                        </Button>
-                        <Button colorScheme="gray"  color="gray.600" onClick={()=> setIsConfirmationOpen(false)}>
-                            Go back to edit
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+              <ModalFooterButtons
+                isConfirmationOpen={isConfirmationOpen}
+                handleCloseConfirmModal={handleCloseConfirmModal}
+                handleGoBackToEdit={handleGoBackToEdit}
+                handleCloseAfterConfirm={handleCloseAfterConfirm}
+            />
         </ListItem>
     )
 }

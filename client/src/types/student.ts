@@ -11,8 +11,6 @@ export interface StudentEntity {
 
 export type CleanedStudent = Omit <StudentEntity, 'password' >
 
-export type DataCoursesResForSingleStudent = Omit <CourseEntity, 'teacher_id'>
-
 
 export interface SingleStudentRes {
     student: CleanedStudent,

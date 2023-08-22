@@ -1,4 +1,4 @@
-export const LoginPage = () => {
+export const LoginPageLayout = () => {
     return (
         <>
             Login

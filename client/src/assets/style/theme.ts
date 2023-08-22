@@ -10,3 +10,16 @@ export const colors = {
 
     main: "#6ca1a4",
 }
+
+
+export const components = {
+    Select: {
+        baseStyle: {
+            customOption: {
+                _before: {
+                    bg: colors.brand["400"],
+                },
+            },
+        },
+    },
+}

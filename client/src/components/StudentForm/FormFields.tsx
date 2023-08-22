@@ -1,6 +1,7 @@
 
 import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react";
 import {formFieldsData} from "./formFieldsData";
+import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 export const FormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
 
@@ -9,7 +10,7 @@ export const FormFields = ({handleInputChange, newErrors, inputValues, loading})
         <FormControl key={oneForm.title} mb={5} isInvalid={!loading && newErrors[oneForm.name]}>
             <FormLabel>{oneForm.title}</FormLabel>
             <Input
-                value={inputValues[oneForm.name]}
+                value={firstLetterToUpper(inputValues[oneForm.name])}
                 name={oneForm.name}
                 onChange={handleInputChange}
                 type={oneForm.type} focusBorderColor="brand.600"

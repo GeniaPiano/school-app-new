@@ -1,18 +1,31 @@
 import {CalendarIcon} from "@chakra-ui/icons";
-import {LiaBlogger} from "react-icons/lia";
+import {FiCornerLeftDown, FiGlobe, FiHome, FiMessageSquare, FiUsers} from "react-icons/fi";
 
-const sidebarLinksData = [
+export const sidebarLinksData = [
     {
-        icon: CalendarIcon,
-        title: 'Dashboard'
+        icon: FiHome,
+        title: 'Courses',
+        path: '/courses',
     },
     {
-        icon: LiaBlogger,
-        title: 'News,'
+        icon: FiUsers,
+        title: 'Students',
+        path: '/students',
     },
     {
         icon: CalendarIcon,
-        title: 'Logout'
+        title: 'Teachers',
+        path: '/teachers',
+    },
+    {
+        icon: FiGlobe,
+        title: 'News',
+        path: '/news',
+    },
+    {
+        icon: FiCornerLeftDown,
+        title: 'Logout',
+        path: '/logout'
     },
 
 ]

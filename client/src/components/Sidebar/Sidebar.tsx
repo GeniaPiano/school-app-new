@@ -2,7 +2,7 @@ import {useState} from "react";
 import {Avatar, Divider, Flex, Heading,  IconButton,  Text} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
-import {FiCornerLeftDown, FiHome, FiMessageSquare} from "react-icons/fi";
+import {sidebarLinksData} from "./sidebarLinksData";
 
 export const Sidebar = () => {
 
@@ -46,20 +46,12 @@ export const Sidebar = () => {
                             onClick={() =>     changeNavSize(navSize === "small" ? "large" : "small" )}
                         />
                    </Flex>
-
-
-                {/*navlink*/}
-
-                <SidebarItem navSize={navSize} icon={FiHome} path='/' title="Dashboard" />
-                <SidebarItem navSize={navSize} icon={FiMessageSquare} path='/news' title="News"/>
-                <SidebarItem navSize={navSize} icon={FiCornerLeftDown} path='/' title="Logout"/>
-
-
-            </Flex>
-
-
-
-
+                        <>{
+                            sidebarLinksData.map(oneLink => (
+                                <SidebarItem key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
+                            ))
+                        }</>
+                    </Flex>
             <Flex
                 p="5%"
                 flexDir="column"
@@ -72,7 +64,7 @@ export const Sidebar = () => {
                    <Avatar size="sm" name="admin" bg="gray.400"/>
                    <Flex flexDir="column"
                          display={navSize === "small" ? "none" : "flex"}>
-                       <Heading as="h3" size="xs" fontWeight="600">admin@adin.com</Heading>
+                       <Heading as="h3" fontSize="12px" fontWeight="500">admin@adin.com</Heading>
                        <Text fontSize="xs">admin</Text>
                    </Flex>
                </Flex>

@@ -1,9 +1,10 @@
 import axios from 'axios';
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 import {STUDENT_URL} from "../utils/url";
 import {SingleStudentRes, StudentDataNameAndEmail} from "../types/student";
 import {CourseEntity} from "../types/course";
 import {InitialStudentState} from "../components/StudentForm/initialState";
+import {createLogger} from "vite";
 
 //const studentApi = axios.create({})
 // studentApi.interceptors.request.use( (config) => {
@@ -18,12 +19,19 @@ import {InitialStudentState} from "../components/StudentForm/initialState";
 
 export const useStudents = () => {
 
-
-
     const getStudentsByGroup = useCallback( async (courseId) => {
         try {
             const results= await axios.get(`${STUDENT_URL}/course/${courseId}`);
             return results.data.students as SingleStudentRes[]
+        } catch (e) {
+            console.log(e)
+        }
+    }, [])
+
+    const getAllStudents = useCallback(async() =>{
+        try {
+            const results = await axios.get(`${STUDENT_URL}`);
+            return results.data.students
         } catch (e) {
             console.log(e)
         }
@@ -52,7 +60,6 @@ export const useStudents = () => {
             });
              return { success: true, data: res.data }
 
-
         } catch (error) {
             console.error("Error updating student courses:", error);
             throw error;
@@ -63,7 +70,8 @@ export const useStudents = () => {
     return {
         getStudentsByGroup,
         getStudentById,
-        updateStudentCourses
+        updateStudentCourses,
+        getAllStudents
     }
 
 }

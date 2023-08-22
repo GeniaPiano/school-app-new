@@ -2,30 +2,24 @@ import {
     Box,
     Divider,
     Flex,
-    Heading,
-    HStack,
-    Icon,
     Modal, ModalBody,
     ModalContent, ModalFooter,
     ModalHeader,
     ModalOverlay,
     useDisclosure,
-    SimpleGrid
+    SimpleGrid, ModalCloseButton
 } from "@chakra-ui/react";
 import {useEffect,  useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
 import {StudentsList} from "../../components/Students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
-import {AddIcon} from "@chakra-ui/icons";
+import {Header} from "../../layouts/Header";
 
 
-export const Dashboard = () => {
-
+export const CoursesView = () => {
     const {courseId}: string = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
-
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
     const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
@@ -39,7 +33,6 @@ export const Dashboard = () => {
               setCourses(coursesList)
               if (!courseId &&  coursesList.length > 0) {
                                   setSelectedCourse(coursesList[0].name)
-
                               } else {
                                   const selectedCourseObj = coursesList.find(course => course.id === courseId);
                                   if (selectedCourseObj) {
@@ -55,35 +48,18 @@ export const Dashboard = () => {
 
 
     if (!courseId && courses && courses.length > 0) return (
-        <Navigate to={`/course/${courses[0].id}`}/>
+        <Navigate to={`/courses/${courses[0].id}`}/>
     )
 
-
     return (
-        <Flex
-            color="gray.500"
-            h="95vh"
-            mt="2.5vh"
-            flexDir="column"
-            >
-
-            <Box as="nav"
-                 p="30PX"
-                 >
-                 <HStack>
-                     <Heading
-                         my={15}
-                         fontSize="x-large"
-                         as="h2">courses: </Heading>
-                     <Icon as={AddIcon}
-                           cursor="pointer"
-                           onClick={onOpen}
-                     />
-                 </HStack>
+        <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
+            <Box as="nav" p="30PX">
+                <Header title="courses" onOpen={onOpen} />
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent  color="gray.500">
-                        <ModalHeader>Add new student to </ModalHeader>
+                        <ModalHeader>Add new course </ModalHeader>
+                        <ModalCloseButton/>
                         <ModalBody> form </ModalBody>
                         <ModalFooter>footer </ModalFooter>
                     </ModalContent>
@@ -105,9 +81,11 @@ export const Dashboard = () => {
 
                         >
                             <NavLink
-                            to={`/course/${oneCourse.id}`}
+                            to={`/courses/${oneCourse.id}`}
                             >
                                 {oneCourse.name} </NavLink>
+
+
                         </Flex>
                     })
                 } </>
