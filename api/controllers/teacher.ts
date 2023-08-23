@@ -6,6 +6,8 @@ import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherUpdateReq} from "
 import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
+import {userWithoutPassword} from "../utils/dataWithoutPassword";
+
 
 
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,9 +20,10 @@ export const getAllTeachers = async (req: Request, res: Response, next: NextFunc
 export const getOneTeacher = async (req: Request, res: Response, next: NextFunction) => {
     const teacher = await TeacherRecord.getOne(req.params.id) as TeacherEntity;
     if (!teacher) throw new ValidationError('Teacher not found.');
+    const teacherCleaned = userWithoutPassword(teacher)
     const selectedCourses = await TeacherRecord._getCoursesOfThisTeacher(req.params.id)
     res.json({
-        teacher,
+        teacherCleaned,
         selectedCourses,
     } as GetSingleTeacherRes)
 }

@@ -1,8 +1,10 @@
 import {TeacherEntity} from "./teacher.entity";
 import {CourseEntity} from "../course";
 
+type TeacherCleaned = Omit <TeacherEntity, 'password'>
+
 export interface GetSingleTeacherRes {
-    teacher: TeacherEntity;
+    teacherCleaned: TeacherCleaned;
     selectedCourses: DataCoursesResForSingleTeacher[];
 }
 

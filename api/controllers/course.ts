@@ -1,7 +1,9 @@
 import {CourseRecord} from "../records/course.record";
 import {NextFunction, Request, Response} from "express";
 import {ValidationError} from "../utils/errors";
-import {CreateCourseReq} from "../types";
+import {CreateCourseReq, TeacherEntity} from "../types";
+import {TeacherRecord} from "../records/teacher.record";
+import {userWithoutPassword} from "../utils/dataWithoutPassword";
 
 export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
  try {
@@ -20,14 +22,15 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
     const course = await CourseRecord.getOne(courseId);
     if (!course) throw new ValidationError('Course not found.')
     const countStudents = await course.countStudents();
-    const teacherName = !course.teacher_id
+    const teacher = !course.teacher_id
         ? null
-        : await course.getTeacherName(course.teacher_id);
+        : await TeacherRecord.getOne(course.teacher_id) as TeacherEntity;
+    const teacherCleaned = userWithoutPassword(teacher)
 
     res.json({
         course,
         countStudents,
-        teacherName,
+        teacher: teacherCleaned,
     })
 }
 
