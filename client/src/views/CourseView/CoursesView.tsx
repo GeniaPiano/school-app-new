@@ -74,6 +74,7 @@ export const CoursesView = () => {
                             alignItems="center"
                             textAlign="center"
                             justifyContent="center"
+                            width={navSize === "large"?  {base: "65%", md: "100%"} : {base: "90%", md: "100%"}}
                              p={{base: "5px 8px", md: "8px", lg: "10px"}}
                             _hover={{color:"white"}}
                             borderRadius="8px"

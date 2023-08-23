@@ -14,6 +14,7 @@ export const ViewWrapper:FC<Props> = ({children}) => {
            p={5}
            mt={10}
            flexDirection="column"
+           width="100%"
 
        >
            {children}

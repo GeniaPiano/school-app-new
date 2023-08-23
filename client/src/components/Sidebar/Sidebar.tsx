@@ -1,22 +1,23 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Avatar, Divider, Flex, Heading,  IconButton,  Text} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {sidebarLinksData} from "./sidebarLinksData";
+import {NavSizeContext} from "../../provider/NavSizeProvider";
 
 export const Sidebar = () => {
 
-    const [navSize, changeNavSize] = useState("large")
+     const {navSize, changeNavSize} = useContext(NavSizeContext)
+    console.log(navSize)
 
-
-    return (
+        return (
         <Flex
             color="gray.500"
             pos="sticky"
             left={5}
             h="95vh"
             mt="2.5vh"
-            w={navSize === "small" ? "75px" : "200px"}
+            w={navSize === "small" ? "75px" :  {base: "170px", md: "200px"}}
             boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.1
             )"
             borderRadius={navSize === "small" ? '15px' : '30px'}
