@@ -9,15 +9,17 @@ import {
     useDisclosure,
     SimpleGrid, ModalCloseButton
 } from "@chakra-ui/react";
-import {useEffect,  useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
 import {StudentsList} from "../../components/Students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
 import {Header} from "../../layouts/Header";
+import {NavSizeContext} from "../../provider/NavSizeProvider";
 
 
 export const CoursesView = () => {
+    const {navSize} = useContext(NavSizeContext)
     const {courseId}: string = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
@@ -64,7 +66,7 @@ export const CoursesView = () => {
                         <ModalFooter>footer </ModalFooter>
                     </ModalContent>
                 </Modal>
-            <SimpleGrid spacing={4} columns={{ base: '2', md: '3', lg: '6', xl: '8'}}>
+            <SimpleGrid spacing={4} columns={[1, 2, 3, 6, 7, 8]}>
                <> {
                     courses && courses.map((oneCourse) => {
                         return <Flex
@@ -72,7 +74,7 @@ export const CoursesView = () => {
                             alignItems="center"
                             textAlign="center"
                             justifyContent="center"
-                            p={{base: "5px 10px", md: "8px", lg: "10px"}}
+                             p={{base: "5px 8px", md: "8px", lg: "10px"}}
                             _hover={{color:"white"}}
                             borderRadius="8px"
                             fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
@@ -84,8 +86,6 @@ export const CoursesView = () => {
                             to={`/courses/${oneCourse.id}`}
                             >
                                 {oneCourse.name} </NavLink>
-
-
                         </Flex>
                     })
                 } </>

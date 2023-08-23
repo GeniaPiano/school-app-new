@@ -1,17 +1,15 @@
 import {SingleStudentRes} from "../../types/student";
-import {List} from "@chakra-ui/react";
-import {ViewWrapper} from "../common/ViewWrapper";
-import {StudentsListAllItem} from "./StudentsListAllItem";
+// import {List} from "@chakra-ui/react";
+// import {ViewWrapper} from "../common/ViewWrapper";
+// import {StudentsListAllItem} from "./StudentsListAllItem";
 import {StudentsList} from "../Students/StudentsList";
 
 
 
-export const ListAllStudents = (props: SingleStudentRes[])=>{
-    const {students} = props
-    return (
+export const ListAllStudents = (props: SingleStudentRes[])=> {
+       return    <StudentsList/> }
 
-
-        <StudentsList/>
+       // (
         // <List>
         //    <ViewWrapper> {
         //         students !== 0 && (
@@ -21,7 +19,4 @@ export const ListAllStudents = (props: SingleStudentRes[])=>{
         //         )
         //     } </ViewWrapper>
         // </List>
-
-
-    )
-}
+    // )

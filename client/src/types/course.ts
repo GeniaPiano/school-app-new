@@ -10,5 +10,5 @@ export interface CourseEntity {
 export interface GetSingleCourseRes {
     course: CourseEntity;
     countStudents: number;
-    teacherData: null | TeacherEntity;
+    teacher: null | TeacherEntity;
 }
