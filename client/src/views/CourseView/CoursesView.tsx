@@ -13,6 +13,8 @@ import {CourseEntity} from "../../types/course";
 import {Header} from "../../layouts/Header";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
 import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
+import {useCounter} from "../../provider/CounterPovider";
+import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 
 
@@ -24,7 +26,8 @@ export const CoursesView = () => {
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
     const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
-    const {getAllCourses} = useCourses()
+    const {getAllCourses} = useCourses();
+    const {counter} = useCounter();
 
 
     useEffect(() => {
@@ -44,7 +47,7 @@ export const CoursesView = () => {
               console.log(e)
           }
         })()
-    }, [courseId])
+    }, [courseId, counter])
 
 
 
@@ -82,7 +85,7 @@ export const CoursesView = () => {
                             <NavLink
                             to={`/courses/${oneCourse.id}`}
                             >
-                                {oneCourse.name} </NavLink>
+                                {firstLetterToUpper(oneCourse.name)} </NavLink>
                         </Flex>
                     })
                 } </>

@@ -3,6 +3,8 @@ import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react"
 import {formFieldsData} from "./formFieldsData";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
+
+
 export const FormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
 
     return (

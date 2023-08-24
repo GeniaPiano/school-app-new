@@ -30,6 +30,7 @@ export const useCourses = () => {
     }
 
     const addCourse = async(name: string, teacher_id: string) => {
+
         try {
             const res = await axios.post(COURSE_URL, {
                 name,
@@ -39,7 +40,7 @@ export const useCourses = () => {
                     'Content-Type': 'application/json',
                 }
             });
-            return { success: true, data: res.data as CourseEntity }
+            return { success: true, data: res.data as CourseEntity } as AddCourseRes
 
         } catch (error) {
             console.error("Error posting new courses:", error);
