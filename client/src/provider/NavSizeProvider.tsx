@@ -8,8 +8,7 @@ interface NavSizeContentType {
 }
 const defaultValue: NavSizeContentType = {
     navSize: "small",
-    changeNavSize: () => {
-        console.log("default change size")},
+    changeNavSize: () => {},
 }
 
 export const NavSizeContext = createContext(defaultValue);
@@ -18,7 +17,6 @@ export const NavSizeProvider = ({children}) => {
     const [navSize, setNavSize] = useState<"large" | "small">("small")
     const changeNavSize = (size: NavSize) => {
         setNavSize(size)
-        console.log("change nav size")
     }
 
     return (

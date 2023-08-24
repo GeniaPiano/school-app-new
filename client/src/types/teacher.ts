@@ -1,5 +1,5 @@
 export interface TeacherEntity {
-    id?: string;
+    id: string;
     name: string;
     last_name: string;
     email: string;

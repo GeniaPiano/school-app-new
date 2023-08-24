@@ -31,7 +31,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>(coursesData)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isEditing, setIsEditing] = useState(false);
-    const [availableCourses, setAvailableCourses] = useState < CourseEntity[]> (null);
+    const [availableCourses, setAvailableCourses] = useState < CourseEntity[] | null> (null);
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
     const [inputValues, setInputValues] = useState (initialState(student));
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -90,9 +90,18 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     }
 
     const handleSubmit = async(e) => {
+        if (inputValues.name.length < 3 || inputValues.last_name.length < 3) {
+            console.log("Name and last name must be at least 3 characters long");
+            return;
+        }
+        if (inputValues.email.length < 4) {
+            console.log("Email must be at least 4 characters long");
+            return;
+        }
         setIsEditing(prev => !prev)
         if (isEditing) {
             e.preventDefault();
+
             try {
                 const coursesToSend = coursesReadyToUpdate.map(course => course.id)
                 const res = await updateStudentCourses(student.id, inputValues, coursesToSend)

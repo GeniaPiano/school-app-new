@@ -12,6 +12,7 @@ import {userWithoutPassword} from "../utils/dataWithoutPassword";
 
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
     const teachers: TeacherEntity[] = await TeacherRecord.listAll();
+
     res.json( {
         teachers,
     });
@@ -23,7 +24,7 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
     const teacherCleaned = userWithoutPassword(teacher)
     const selectedCourses = await TeacherRecord._getCoursesOfThisTeacher(req.params.id)
     res.json({
-        teacherCleaned,
+        teacher: teacherCleaned,
         selectedCourses,
     } as GetSingleTeacherRes)
 }

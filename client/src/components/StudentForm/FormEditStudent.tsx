@@ -30,9 +30,9 @@ export const FormEditStudent = (props: Props): ReactNode => {
     const {handleInputChange, inputValues, handleSubmit, handleRemoveCourse, coursesReadyToUpdate, handleSelectChange, availableCourses } = props
 
     const newErrors  = {
-        name: inputValues.name === '',
-        last_name: inputValues.last_name === '',
-        email: inputValues.email === '',
+        name: inputValues.name.length < 3 || inputValues.name === '',
+        last_name: inputValues.last_name.length < 3 || inputValues.last_name === '',
+        email: inputValues.email.length < 4 || inputValues.email === '',
     };
 
     const chosenCourses = coursesReadyToUpdate.map(oneCourse => (

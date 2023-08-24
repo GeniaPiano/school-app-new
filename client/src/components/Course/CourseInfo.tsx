@@ -28,9 +28,8 @@ export const CourseInfo = ({isOpen, onClose, courseId}: Props) => {
         (async()=> {
            const results = await getCourseById(courseId);
             setCourseData(results)
-
         })();
-    }, [])
+    }, [courseId])
 
       return (
         <Modal isOpen={isOpen} onClose={onClose}>
