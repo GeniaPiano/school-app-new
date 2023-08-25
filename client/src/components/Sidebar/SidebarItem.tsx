@@ -15,7 +15,7 @@ interface Props {
 
 export const SidebarItem = (props: Props) => {
 
-    const {navSize, title, icon, active, path, changeHoverLink} = props
+    const {navSize, title, icon, active, path} = props
     const [isHovered, setIsHovered] = useState(false);
     return (
         <Flex
@@ -49,14 +49,14 @@ export const SidebarItem = (props: Props) => {
                     onMouseEnter={()=> setIsHovered(true)}
                     onMouseLeave={()=> setIsHovered(false)}
                     display={isHovered ? "flex" : "none"}
-                    bg="brand.500"
+                    bg="brand.600"
                     fontSize="28px"
                     fontWeight="800"
                     mt="0"
                     borderRadius={8}
                     position="absolute"
                     left="100%"
-                    minWidth={250}
+                    minWidth="70vw"
                     h={200}
                 >
                     <MenuItem

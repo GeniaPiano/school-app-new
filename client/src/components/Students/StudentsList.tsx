@@ -18,7 +18,6 @@ interface Props {
 
 export const StudentsList = (props: Props) => {
 
-
     const {courseName} = props
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)

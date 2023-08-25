@@ -6,33 +6,16 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay, Spinner, useDisclosure,
+    ModalOverlay, useDisclosure,
 } from "@chakra-ui/react";
 import {Header} from "../../layouts/Header";
 import {SearchBar} from "../../components/SearchBar/SearchBar";
-import {useEffect, useState} from "react";
-import {useStudents} from "../../hooks/useStudents";
-import {SingleStudentRes} from "../../types/student";
 import {StudentsList} from "../../components/Students/StudentsList";
 
 
 export const StudentsView = () =>  {
 
-    const {getAllStudents} = useStudents();
-    const [students, setStudents] = useState<SingleStudentRes[] | null>(null);
 
-    useEffect(()=> {
-        (async()=> {
-            try {
-                const students = await getAllStudents();
-                setStudents(students);
-                console.log("students", students)
-
-            } catch (e) {
-                console.log(e)
-            }
-        })();
-    }, [])
 
     const {onOpen, onClose, isOpen} = useDisclosure();
         return (

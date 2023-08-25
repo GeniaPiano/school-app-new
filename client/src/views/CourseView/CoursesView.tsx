@@ -2,12 +2,8 @@ import {
     Box,
     Divider,
     Flex,
-    Modal, ModalBody,
-    ModalContent, ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     useDisclosure,
-    SimpleGrid, ModalCloseButton
+    SimpleGrid, HStack, Button,
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
@@ -16,6 +12,11 @@ import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
 import {Header} from "../../layouts/Header";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
+import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
+import {useCounter} from "../../provider/CounterPovider";
+import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
+
+
 
 
 export const CoursesView = () => {
@@ -25,7 +26,8 @@ export const CoursesView = () => {
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
     const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
-    const {getAllCourses} = useCourses()
+    const {getAllCourses} = useCourses();
+    const {counter} = useCounter();
 
 
     useEffect(() => {
@@ -45,7 +47,7 @@ export const CoursesView = () => {
               console.log(e)
           }
         })()
-    }, [courseId])
+    }, [courseId, counter])
 
 
 
@@ -56,16 +58,13 @@ export const CoursesView = () => {
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box as="nav" p="30PX">
-                <Header title="courses" onOpen={onOpen} />
-                <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent  color="gray.500">
-                        <ModalHeader>Add new course </ModalHeader>
-                        <ModalCloseButton/>
-                        <ModalBody> form </ModalBody>
-                        <ModalFooter>footer </ModalFooter>
-                    </ModalContent>
-                </Modal>
+                <HStack w="95%">
+                    <Header title="courses"/>
+                    <Button onClick={onOpen} variant="ghost" color="gray.500" _hover={{bg: "brand.500"}} whiteSpace="wrap"> + add course </Button>
+                </HStack>
+
+                <CourseAddForm isOpen={isOpen} onClose={onClose}/>
+
             <SimpleGrid spacing={4} columns={[1, 2, 3, 6, 7, 8]}>
                <> {
                     courses && courses.map((oneCourse) => {
@@ -86,7 +85,7 @@ export const CoursesView = () => {
                             <NavLink
                             to={`/courses/${oneCourse.id}`}
                             >
-                                {oneCourse.name} </NavLink>
+                                {firstLetterToUpper(oneCourse.name)} </NavLink>
                         </Flex>
                     })
                 } </>

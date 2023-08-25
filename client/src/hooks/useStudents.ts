@@ -21,8 +21,9 @@ export const useStudents = () => {
 
     const getStudentsByGroup = useCallback( async (courseId) => {
         try {
-            const results= await axios.get(`${STUDENT_URL}/course/${courseId}`);
+            const results = await axios.get(`${STUDENT_URL}/course/${courseId}`);
             return results.data.students as SingleStudentRes[]
+
         } catch (e) {
             console.log(e)
         }
@@ -32,6 +33,7 @@ export const useStudents = () => {
         try {
             const results = await axios.get(`${STUDENT_URL}`);
             return results.data.students
+            
         } catch (e) {
             console.log(e)
         }
@@ -41,6 +43,7 @@ export const useStudents = () => {
         try {
             const results = await axios.get(`${STUDENT_URL}/${id}`);
             return results.data as SingleStudentRes
+
         } catch (e) {
             console.log(e)
         }

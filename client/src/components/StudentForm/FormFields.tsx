@@ -3,6 +3,8 @@ import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react"
 import {formFieldsData} from "./formFieldsData";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
+
+
 export const FormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
 
     return (
@@ -14,10 +16,16 @@ export const FormFields = ({handleInputChange, newErrors, inputValues, loading})
                 name={oneForm.name}
                 onChange={handleInputChange}
                 type={oneForm.type} focusBorderColor="brand.600"
+                isInvalid={
+                    (!loading && (newErrors[oneForm.name] || inputValues[oneForm.name].length < oneForm.minCharacters))
+                }
             />
-            { newErrors[oneForm.name] &&
-                <FormErrorMessage>{oneForm.errorMessage}</FormErrorMessage>
-            }
+            <>
+                {oneForm.minCharacters && inputValues[oneForm.name].length < oneForm.minCharacters && (
+                    <FormErrorMessage>
+                        {oneForm.title} must have at least {oneForm.minCharacters} characters.
+                    </FormErrorMessage>
+                )} </>
         </FormControl>
     ))
     )

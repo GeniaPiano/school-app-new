@@ -15,10 +15,10 @@ import {userWithoutPassword} from "../utils/dataWithoutPassword";
 export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const students: StudentRecord[] = await StudentRecord.listAll();
-        const studentsWithSelectedCourses = await Promise.all(students.map(async (student) => {
-            const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(student.id);
+        const studentsWithSelectedCourses = await Promise.all(students.map(async (oneStudent) => {
+            const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(oneStudent.id);
             return {
-                student,
+                student: userWithoutPassword(oneStudent),
                 selectedCourses,
             };
         }));
@@ -75,7 +75,7 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
     await student.insert();
     res.json({
             password: rawPassword,
-            student: student,
+            student: userWithoutPassword(student),
         })
 }
 
@@ -86,8 +86,6 @@ export const updateStudent = async (req: Request, res: Response ) => {
        if (student === null) {
         throw new ValidationError('Student with given ID does not exist.');
     }
-
-
     //aktualizacja name, lastName, email
     const { name, last_name, email} = req.body.student;
     const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
@@ -102,8 +100,8 @@ export const updateStudent = async (req: Request, res: Response ) => {
     const {selectedCourses} = req.body;
    if (selectedCourses.length === 0) {
         res.json({
-           student,
-           selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id)
+           student: userWithoutPassword(student),
+           selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id),
         })
     }
 
