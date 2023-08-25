@@ -1,9 +1,10 @@
-import {useContext} from "react";
-import {Avatar, Divider, Flex, Heading,  IconButton,  Text} from "@chakra-ui/react";
+import {ReactNode, useContext} from "react";
+import {Avatar, Divider, Flex, Heading, IconButton, Text, Tooltip} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {sidebarLinksData} from "./sidebarLinksData";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
+
 
 export const Sidebar = () => {
 
@@ -49,7 +50,9 @@ export const Sidebar = () => {
                    </Flex>
                         <>{
                             sidebarLinksData.map(oneLink => (
-                                <SidebarItem key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
+                                <Tooltip key={oneLink.title}  label={oneLink.title} fontSize='md'>
+                                  <SidebarItem navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
+                                </Tooltip>
                             ))
                         }</>
                     </Flex>

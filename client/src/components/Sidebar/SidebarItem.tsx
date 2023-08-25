@@ -1,4 +1,4 @@
-import {Box, Flex, Icon, Menu, MenuButton, Text, MenuItem} from "@chakra-ui/react";
+import {Box, Flex, Icon, Menu, MenuButton, MenuItem, Text} from "@chakra-ui/react";
 import {useState} from 'react';
 import {NavLink} from "react-router-dom";
 
@@ -49,15 +49,18 @@ export const SidebarItem = (props: Props) => {
                     onMouseEnter={()=> setIsHovered(true)}
                     onMouseLeave={()=> setIsHovered(false)}
                     display={isHovered ? "flex" : "none"}
-                    bg="brand.600"
-                    fontSize="28px"
+
+                    bg="white"
+                    border="solid 2px"
+                    color="brand.800"
+                    fontSize="sm"
                     fontWeight="800"
-                    mt="0"
                     borderRadius={8}
                     position="absolute"
-                    left="100%"
-                    minWidth="70vw"
-                    h={200}
+                    left="0"
+                    mt="40px"
+                    minWidth="100px"
+                    h="30px"
                 >
                     <MenuItem
                         display="flex"

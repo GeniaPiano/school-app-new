@@ -1,5 +1,5 @@
 
-import {Box, Heading, HStack, Icon, List, Spinner, useDisclosure} from "@chakra-ui/react";
+import {Box, Heading, HStack, Icon, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -45,11 +45,8 @@ export const StudentsList = (props: Props) => {
         <ViewWrapper>
            <>  {courseName && (
                <> <HStack  mb={3}>
-                    <Heading as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
-                    <HStack >
-                        <Icon as={FiInfo} cursor="pointer" boxSize={6} w={7} onClick={onOpen}/>
-                        <Icon as={FiEdit} cursor="pointer" boxSize={6} w={7}/>
-                    </HStack>
+                    <Heading  as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
+                    <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={onOpen} />
                </HStack>
                <CourseInfo isOpen={isOpen} onClose={onClose} courseId={courseId} />
              </>
