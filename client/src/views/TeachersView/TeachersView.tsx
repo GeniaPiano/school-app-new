@@ -5,7 +5,7 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import {Header} from "../../components/Header/Header";
-import {TeacherForm} from "../../components/TeacherForm/TeacherForm";
+import {TeacherForm} from "../../components/teacherForm/TeacherForm";
 import {TeacherList} from "../../  config/teachers/TeacherList";
 
 
