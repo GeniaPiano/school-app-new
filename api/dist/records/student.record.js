@@ -37,7 +37,7 @@ class StudentRecord {
             if (!this.id) {
                 this.id = (0, uuid_1.v4)();
             }
-            yield db_1.pool.execute("INSERT INTO `Students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
+            yield db_1.pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
                 id: this.id,
                 name: this.name,
                 last_name: this.last_name,
@@ -50,7 +50,7 @@ class StudentRecord {
     }
     static listAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = yield db_1.pool.execute("SELECT * FROM `Students`");
+            const [results] = yield db_1.pool.execute("SELECT * FROM `students`");
             return results.map(obj => new StudentRecord(obj));
         });
     }
@@ -72,7 +72,7 @@ class StudentRecord {
     }
     static getOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = (yield db_1.pool.execute("SELECT * FROM `Students` WHERE `id` = :id", {
+            const [results] = (yield db_1.pool.execute("SELECT * FROM `students` WHERE `id` = :id", {
                 id,
             }));
             return results.length === 0 ? null : new StudentRecord(results[0]);
@@ -119,7 +119,7 @@ class StudentRecord {
             if (!student) {
                 throw new errors_1.ValidationError('Student not found.');
             }
-            yield db_1.pool.execute("DELETE FROM `Students` WHERE `id` = :id ", {
+            yield db_1.pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
                 id: student.id
             });
             const selectedCourses = yield StudentRecord._getSelectedCoursesByStudent(id);
@@ -132,7 +132,7 @@ class StudentRecord {
     }
     update() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.pool.execute("UPDATE `Students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
+            yield db_1.pool.execute("UPDATE `students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
                 id: this.id,
                 name: this.name,
                 last_name: this.last_name,

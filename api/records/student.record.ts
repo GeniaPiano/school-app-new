@@ -49,7 +49,7 @@ export class StudentRecord implements StudentEntity {
             this.id = uuid();
         }
 
-        await pool.execute("INSERT INTO `Students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
+        await pool.execute("INSERT INTO `students`(`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES(:id, :name, :last_name, :email, :password, :role)", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
@@ -62,7 +62,7 @@ export class StudentRecord implements StudentEntity {
     }
 
     static async listAll(): Promise <StudentRecord[]> {
-        const [results] = await pool.execute("SELECT * FROM `Students`") as StudentRecordResults;
+        const [results] = await pool.execute("SELECT * FROM `students`") as StudentRecordResults;
         return results.map(obj => new StudentRecord(obj));
     }
 
@@ -87,7 +87,7 @@ export class StudentRecord implements StudentEntity {
 
 
     static async getOne(id: string): Promise<StudentRecord | null> {
-        const [results] = (await pool.execute("SELECT * FROM `Students` WHERE `id` = :id", {
+        const [results] = (await pool.execute("SELECT * FROM `students` WHERE `id` = :id", {
             id,
         })) as StudentRecordResults;
         return results.length === 0 ? null : new StudentRecord(results[0]);
@@ -141,7 +141,7 @@ export class StudentRecord implements StudentEntity {
     }
 
     async updateNameAndEmail(): Promise<void> {
-        await pool.execute("UPDATE `Students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
+        await pool.execute("UPDATE `students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
             id: this.id,
             name: this.name,
             last_name: this.last_name,
