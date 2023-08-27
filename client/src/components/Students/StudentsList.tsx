@@ -39,7 +39,7 @@ export const StudentsList = (props: Props) => {
            })();
     }, [courseId])
 
-    if (!students) return <Spinner> Loading... </Spinner>
+
 
     return (
         <ViewWrapper>

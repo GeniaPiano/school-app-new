@@ -2,13 +2,12 @@ import {
     Box, Divider,
     Flex,
     Modal,
-    ModalBody, ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay, useDisclosure,
+    useDisclosure,
 } from "@chakra-ui/react";
-import {Header} from "../../layouts/Header";
+import {Header} from "../../components/Header/Header";
+import {TeacherForm} from "../../components/TeacherForm/TeacherForm";
+import {TeacherList} from "../../  config/teachers/TeacherList";
+
 
 
 export const TeachersView = () =>  {
@@ -17,18 +16,13 @@ export const TeachersView = () =>  {
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box as="nav" p="30PX">
-                <Header title="teachers" onOpen={onOpen} />
+                <Header title="teachers" buttonText="+ add new teacher" onOpen={onOpen} />
                 <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent  color="gray.500">
-                        <ModalHeader>Add new teacher</ModalHeader>
-                        <ModalCloseButton/>
-                        <ModalBody> form </ModalBody>
-                        <ModalFooter>footer </ModalFooter>
-                    </ModalContent>
+                    <TeacherForm/>
                 </Modal>
             </Box>
             <Divider  border="3px gray.500 solid" mx={0}/>
+            <TeacherList/>
         </Flex>
     )
 
