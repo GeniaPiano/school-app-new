@@ -13,7 +13,7 @@ export const CourseFormFields = () => {
     const [courseName, setCourseName] = useState<string>('')
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
     const {addCourse} = useCourses();
-    const {incrementCounter} = useCounter();
+    const {incrementCourseCounter} = useCounter();
 
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export const CourseFormFields = () => {
         e.preventDefault();
         try {
             const res = await addCourse(courseName, selectTeacherId);
-            incrementCounter();
+            incrementCourseCounter();
 
             console.log('submit  course', res.data)
         }catch (e) {

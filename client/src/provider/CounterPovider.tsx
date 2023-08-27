@@ -2,26 +2,49 @@ import { createContext, useContext, useState } from 'react';
 
 
 interface DefaultValueInterface {
-    counter: number;
-    incrementCounter: () => void;
+    counterCourse: number;
+    counterStudent: number;
+    counterTeacher: number;
+    incrementCourseCounter: () => void;
+    incrementStudentCounter: () => void;
+    incrementTeacherCounter: () => void;
 }
 
 const defaultValue: DefaultValueInterface = {
-    counter: 0,
-    incrementCounter: () => {},
+    counterCourse: 0,
+    counterStudent: 0,
+    counterTeacher: 0,
+    incrementCourseCounter: () => {},
+    incrementTeacherCounter: () => {},
+    incrementStudentCounter: () => {},
 }
 const CounterContext = createContext(defaultValue);
 
 export const CounterProvider = ({ children }) => {
-    const [counter, setCounter] = useState<number>(0);
+    const [counterCourse, setCounterCourse] = useState<number>(0);
+    const [counterStudent, setCounterStudent] = useState<number>(0);
+    const [counterTeacher, setCounterTeacher] = useState<number>(0);
 
-    const incrementCounter = () => {
-        setCounter((prevCounter) => prevCounter + 1);
+    console.log('counter',counterCourse)
+    const incrementCourseCounter = () => {
+        setCounterCourse((prevCounter) => prevCounter + 1);
+    };
+
+    const incrementStudentCounter = () => {
+        setCounterStudent((prevCounter) => prevCounter + 1);
+    };
+
+    const incrementTeacherCounter = () => {
+        setCounterTeacher((prevCounter) => prevCounter + 1);
     };
 
     const contextValue = {
-        counter,
-        incrementCounter,
+        counterCourse,
+        counterStudent,
+        counterTeacher,
+        incrementCourseCounter,
+        incrementStudentCounter,
+        incrementTeacherCounter,
     };
 
     return (

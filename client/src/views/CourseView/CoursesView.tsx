@@ -3,19 +3,18 @@ import {
     Divider,
     Flex,
     useDisclosure,
-    SimpleGrid, HStack, Button,
+    SimpleGrid
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
 import {StudentsList} from "../../components/Students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
-import {Header} from "../../layouts/Header";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
 import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
 import {useCounter} from "../../provider/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {AddButton} from "../../components/common/addButton";
+import {Header} from "../../components/Header/Header";
 
 
 
@@ -28,7 +27,7 @@ export const CoursesView = () => {
     const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
-    const {counter} = useCounter();
+    const {counterCourse} = useCounter();
 
 
     useEffect(() => {
@@ -48,7 +47,7 @@ export const CoursesView = () => {
               console.log(e)
           }
         })()
-    }, [courseId, counter])
+    }, [courseId, counterCourse])
 
 
 
@@ -60,8 +59,7 @@ export const CoursesView = () => {
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box as="nav" p="30px">
                 <Flex w="95%" alignItems="center"  gap={50}>
-                    <Header title="courses" mr={30}/>
-                    <AddButton  text = '+ add course' onOpen={onOpen}/>
+                    <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
 
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
