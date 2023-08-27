@@ -15,6 +15,7 @@ import {NavSizeContext} from "../../provider/NavSizeProvider";
 import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
 import {useCounter} from "../../provider/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
+import {AddButton} from "../../components/common/addButton";
 
 
 
@@ -60,7 +61,7 @@ export const CoursesView = () => {
             <Box as="nav" p="30px">
                 <Flex w="95%" alignItems="center"  gap={50}>
                     <Header title="courses" mr={30}/>
-                    <Button onClick={onOpen}  variant='outline' color="brand.800" _hover={{bg: "gray.100"}} whiteSpace="wrap"> + add course </Button>
+                    <AddButton  text = '+ add course' onOpen={onOpen}/>
                 </Flex>
 
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
