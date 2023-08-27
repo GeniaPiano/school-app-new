@@ -6,7 +6,7 @@ export const SearchBar = () => {
         <>
             <form>
                 <FormControl color="gray.500" fontWeight="bolder">
-                    <Input border="3px solid" borderColor="gray.300"   focusBorderColor="brand.600" placeholder="Search..."></Input>
+                    <Input border="2px solid" borderColor="gray.400"   focusBorderColor="brand.600" placeholder="Search..."></Input>
 
                 </FormControl>
             </form>
