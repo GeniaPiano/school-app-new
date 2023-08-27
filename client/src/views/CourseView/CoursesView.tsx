@@ -57,11 +57,11 @@ export const CoursesView = () => {
 
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
-            <Box as="nav" p="30PX">
-                <HStack w="95%">
-                    <Header title="courses"/>
-                    <Button onClick={onOpen} variant="ghost" color="gray.500" _hover={{bg: "brand.500"}} whiteSpace="wrap"> + add course </Button>
-                </HStack>
+            <Box as="nav" p="30px">
+                <Flex w="95%" alignItems="center"  gap={50}>
+                    <Header title="courses" mr={30}/>
+                    <Button onClick={onOpen}  variant='outline' color="brand.800" _hover={{bg: "gray.100"}} whiteSpace="wrap"> + add course </Button>
+                </Flex>
 
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
 
