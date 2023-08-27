@@ -23,25 +23,8 @@ export const useTeachers = () => {
         }
     }
 
-    const addNewTeacher = async (teacher, selectedCourses)=> {
-        try {
-            const results = await axios.post(`${TEACHER_ULR}`, {
-                teacher,
-                selectedCourses
-            },{
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-            })
-            console.log(results)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
     return {
         getAllTeachers,
         getAvailableCourses,
-        addNewTeacher
     }
 }
