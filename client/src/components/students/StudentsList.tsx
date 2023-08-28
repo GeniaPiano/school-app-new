@@ -8,7 +8,7 @@ import {SingleStudentRes} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
 import {FiInfo} from "react-icons/fi";
-import {CourseInfo} from "../Course/CourseInfo";
+import {CourseInfo} from "../CourseInfo/CourseInfo";
 
 
 

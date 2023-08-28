@@ -3,7 +3,7 @@ import {useCallback, useState} from "react";
 import {STUDENT_URL} from "../utils/url";
 import {SingleStudentRes, StudentDataNameAndEmail} from "../types/student";
 import {CourseEntity} from "../types/course";
-import {InitialStudentState} from "../components/StudentForm/initialState";
+import {InitialStudentState} from "../components/studentForm/initialState";
 import {createLogger} from "vite";
 
 //const studentApi = axios.create({})

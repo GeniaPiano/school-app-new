@@ -11,7 +11,7 @@ import {StudentsList} from "../../components/students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
-import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
+import {CourseAddForm} from "../../components/courseForm/CourseAddForm";
 import {useCounter} from "../../provider/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {Header} from "../../components/Header/Header";

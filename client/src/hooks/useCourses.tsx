@@ -30,7 +30,10 @@ export const useCourses = () => {
     }
 
     const addCourse = async(name: string, teacher_id: string) => {
-
+        if (name === '' || name.length < 4 || name.length > 40) {
+            console.log('Invalid given data. Name should be from 4 to 40 chars.')
+            return;
+       }
         try {
             const res = await axios.post(COURSE_URL, {
                 name,

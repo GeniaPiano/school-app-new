@@ -1,20 +1,21 @@
-import {FC, useContext, useState} from "react";
+import {FC, useState} from "react";
 import {ReactNode} from "react";
 import {Flex} from "@chakra-ui/react";
-import {Sidebar} from "../components/Sidebar/Sidebar";
-import {NavSizeContext} from "../provider/NavSizeProvider";
+import {Sidebar} from "../components/sidebar/Sidebar";
+import { createStandaloneToast } from '@chakra-ui/react'
+
+const { ToastContainer } = createStandaloneToast();
 
 interface Props {
     children: ReactNode;
 }
 export const AdminLayout: FC<Props> = ({children}) => {
     const [isHoverLink, setIsHoverLink] = useState(false)
-    const {navSize} = useContext(NavSizeContext)
+
 
     const changeHoverLink = (bool:boolean): void => {
         setIsHoverLink(bool);
     }
-
 
 
     return (
@@ -23,6 +24,7 @@ export const AdminLayout: FC<Props> = ({children}) => {
             <Flex >
                 {children}
             </Flex>
+            <ToastContainer/>
         </Flex>
     )
 }

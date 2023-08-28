@@ -25,7 +25,7 @@ export const CounterProvider = ({ children }) => {
     const [counterStudent, setCounterStudent] = useState<number>(0);
     const [counterTeacher, setCounterTeacher] = useState<number>(0);
 
-    console.log('counter',counterCourse)
+
     const incrementCourseCounter = () => {
         setCounterCourse((prevCounter) => prevCounter + 1);
     };
