@@ -9,7 +9,7 @@ import {
     ModalOverlay,
     useDisclosure
 } from "@chakra-ui/react";
-import {InfoStudentModal} from "../Students/InfoStudentModal";
+import {InfoStudentModal} from "../students/InfoStudentModal";
 import {useState} from "react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
