@@ -61,7 +61,7 @@ export class CourseRecord implements CourseEntity {
         return results
             .map(obj => new CourseRecord(obj))
             .filter(course => course.teacher_id === null)
-        console.log(results)
+
     }
 
     static async getOne(id: string): Promise<CourseRecord | null> {
