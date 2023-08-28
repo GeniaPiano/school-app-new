@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from "express";
 import {TeacherRecord} from "../records/teacher.record";
 import {ValidationError} from "../utils/errors";
-import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherUpdateReq} from "../types";
+import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherReqSelectedCourses, TeacherUpdateReq} from "../types";
 import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
@@ -31,15 +31,14 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
 
 export const createTeacher = async (req: Request, res: Response, next: NextFunction) => {
 
-    const {name, last_name} = req.body as TeacherReq;
+    const {name, last_name } = req.body.teacher as TeacherReq
+    const {selectedCourses} = req.body as  TeacherReqSelectedCourses
     const rawPassword = generatePassword(name, last_name);
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
-
     const teacherData= {
-        ...req.body,
-        password: hashedPassword,
-        is_admin: 0,
+        ...req.body.teacher,
+        password: hashedPassword
     } as TeacherRecord
 
     const teacher = new TeacherRecord(teacherData);
@@ -48,10 +47,22 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
         throw new ValidationError('Email already exists.')
     }
 
-    // miejsce na wysłanie hasła na maila użytkownika
-    const hash = await bcrypt.hash(teacher.password, 10)
+    //miejsce na wysłanie hasła na maila użytkownika
+
     await teacher.insert();
-    res.json(teacher);
+
+    if (selectedCourses.length > 0)
+        for (const id of selectedCourses) {
+            await teacher.assignCourseToTeacher(id)
+        }
+    const courses = await TeacherRecord._getCoursesOfThisTeacher(teacher.id)
+    console.log('courses', courses)
+
+
+    res.json({
+        teacher: userWithoutPassword(teacher),
+        selectedCourses: courses,
+    });
 
 }
 
