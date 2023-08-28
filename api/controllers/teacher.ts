@@ -44,7 +44,11 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
     const teacher = new TeacherRecord(teacherData);
     const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
+        res.json({
+            message : "Email already exists."
+        })
         throw new ValidationError('Email already exists.')
+
     }
 
     //miejsce na wysłanie hasła na maila użytkownika

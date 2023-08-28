@@ -33,7 +33,7 @@ export const TeacherForm = () => {
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
 
 
-    const {getAvailableCourses} = useTeachers();
+    const {getAvailableCourses, addNewTeacher } = useTeachers();
 
 
     useEffect(()=> {
@@ -88,6 +88,18 @@ export const TeacherForm = () => {
         </Box>
     ))
 
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        console.log('submit')
+        try {
+            const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
+            console.log('res', res)
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
     return (
         <>
             <ModalOverlay />
@@ -95,7 +107,7 @@ export const TeacherForm = () => {
                 <ModalHeader>Add new teacher</ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <TeacherFormInputFields
                             inputValues={inputValues}
                             isError={isError}
@@ -115,10 +127,11 @@ export const TeacherForm = () => {
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
                         </SimpleGrid>
+                        <Btn text="save" type="submit"/>
                     </form>
                 </ModalBody>
                 <ModalFooter>
-                    <Btn text="save" type="button"/>
+
                 </ModalFooter>
             </ModalContent>
 

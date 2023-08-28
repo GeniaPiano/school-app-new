@@ -33,6 +33,7 @@ export const useTeachers = () => {
                         'Content-Type': 'application/json',
                     }
             })
+            console.log(results)
         } catch (err) {
             console.log(err)
         }
@@ -41,5 +42,6 @@ export const useTeachers = () => {
     return {
         getAllTeachers,
         getAvailableCourses,
+        addNewTeacher
     }
 }
