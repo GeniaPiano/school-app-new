@@ -4,10 +4,7 @@ import {
     FormErrorMessage,
     FormLabel,
     Input,
-    Modal, ModalBody,
-    ModalContent, ModalFooter, ModalHeader,
-    ModalOverlay,
-    Select
+    Select, useToast
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useEffect, useState} from "react";
@@ -15,32 +12,26 @@ import {TeacherEntity} from "../../types/teacher";
 import {useTeachers} from "../../hooks/useTeachers";
 import {useCourses} from "../../hooks/useCourses";
 import {useCounter} from "../../provider/CounterPovider";
-import { useToast } from '@chakra-ui/react'
+import {ConfirmModal} from "./ConfirmModal";
 
 interface Props {
     isConfirmationOpen: boolean;
     handleCloseConfirmModal: ()=> void;
     handleGoBackToForm: ()=> void;
-    handleCloseAfterConfirm: ()=> void;
-
+    onClose: ()=> void;
+    isPostedData: boolean;
+    changeIsPostedData: (bool: boolean)=> void;
 }
 
-export const CourseFormFields = ({
-                                     isConfirmationOpen,
-                                     handleCloseConfirmModal,
-                                     handleGoBackToForm}: Props) => {
+export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose, isPostedData, changeIsPostedData}: Props) => {
 
     const [teachers, setTeachers] = useState<TeacherEntity[] | null>(null);
-    const [isActive, setIsActive] = useState<boolean>(false)
     const {getAllTeachers} = useTeachers();
     const [courseName, setCourseName] = useState<string>('')
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
     const {addCourse} = useCourses();
     const {incrementCourseCounter} = useCounter();
 
-    const changeIsActive = (bool: boolean) => {
-        setIsActive(bool)
-    }
 
 
     useEffect(() => {
@@ -72,8 +63,14 @@ export const CourseFormFields = ({
             setCourseName('');
             setSelectTeacherId('');
             setInputTouchedCount(0)
+            if (res.success) {
+                changeIsPostedData(true);
+                setTimeout(()=> {
+                    onClose();
+                    changeIsPostedData(false)
+                }, 3000)
+                }
 
-            console.log('submit  course', res.data)
         }catch (e) {
             console.log(e)
         }
@@ -111,28 +108,13 @@ export const CourseFormFields = ({
                     <>{options}</>
                 </Select>
             </FormControl>
-            <Button type="submit" mb={35}>Save</Button>
+            <Button type="submit" mb={35} color="gray.500">Save</Button>
 
-
-            <div>
-                <Modal  isOpen={isConfirmationOpen}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Confirmation</ModalHeader>
-                        <ModalBody>
-                            Are you sure you want to close without saving changes?
-                        </ModalBody>
-                        <ModalFooter >
-                            <Button mr={2} colorScheme="gray"  color="gray.600" onClick={handleCloseConfirmModal}>
-                                Yes, Close
-                            </Button>
-                            <Button colorScheme="gray"  color="gray.600" onClick={handleGoBackToForm}>
-                                Go back to Form.
-                            </Button>
-                        </ModalFooter>
-                    </ModalContent>
-                </Modal>
-            </div>
+            <ConfirmModal
+                isConfirmationOpen={isConfirmationOpen}
+                handleCloseConfirmModal={handleCloseConfirmModal}
+                handleGoBackToForm={handleGoBackToForm}
+            />
 
         </form>
     )
