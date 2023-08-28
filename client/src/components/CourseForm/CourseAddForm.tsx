@@ -9,6 +9,7 @@ import {
 
 
 import {CourseFormFields} from "./CourseFormFields";
+import {useState} from "react";
 
 
 interface Props {
@@ -18,19 +19,33 @@ interface Props {
 
 export const CourseAddForm = ({isOpen, onClose}: Props) => {
 
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
+
+    const handleCloseConfirmModal = () => {
+        setIsConfirmationOpen(false);
+        onClose();
+    }
+
+    const handleGoBackToForm = () => {
+        setIsConfirmationOpen(false);
+    }
 
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={()=> setIsConfirmationOpen(true)}>
             <ModalOverlay />
             <ModalContent  color="gray.500">
                 <ModalHeader>Add new course </ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody>
-                  <CourseFormFields/>
-                </ModalBody>
+                  <CourseFormFields
 
+                      isConfirmationOpen={isConfirmationOpen}
+                      handleCloseConfirmModal={handleCloseConfirmModal}
+                      handleGoBackToForm={handleGoBackToForm}
+                  />
+                </ModalBody>
             </ModalContent>
         </Modal>
     )
