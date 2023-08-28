@@ -8,7 +8,7 @@ interface Props {
 export const AddButton = ({text, onOpen} : Props) =>
     <Button
         onClick={onOpen}
-        padding={{base: "2em", md: "2em"}}
+        padding={{base: "2em 1em ", md: "2em"}}
         borderWidth="2px"
         borderColor="brand.500"
         variant='outline'

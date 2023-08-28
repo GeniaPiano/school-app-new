@@ -1,13 +1,15 @@
-import {FC, useState} from "react";
+import {FC, useContext, useState} from "react";
 import {ReactNode} from "react";
 import {Flex} from "@chakra-ui/react";
 import {Sidebar} from "../components/Sidebar/Sidebar";
+import {NavSizeContext} from "../provider/NavSizeProvider";
 
 interface Props {
     children: ReactNode;
 }
 export const AdminLayout: FC<Props> = ({children}) => {
     const [isHoverLink, setIsHoverLink] = useState(false)
+    const {navSize} = useContext(NavSizeContext)
 
     const changeHoverLink = (bool:boolean): void => {
         setIsHoverLink(bool);
@@ -16,16 +18,11 @@ export const AdminLayout: FC<Props> = ({children}) => {
 
 
     return (
-        <Flex
-            gap={50}
-        >
+        <Flex gap={10}>
             <Sidebar isHoverLink={isHoverLink} changeHoverLink={changeHoverLink}/>
-            <Flex
-
-            >
+            <Flex >
                 {children}
             </Flex>
-
         </Flex>
     )
 }
