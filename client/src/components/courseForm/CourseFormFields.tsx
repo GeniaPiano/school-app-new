@@ -13,6 +13,7 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {useCourses} from "../../hooks/useCourses";
 import {useCounter} from "../../provider/CounterPovider";
 import {ConfirmModal} from "./ConfirmModal";
+import {Btn} from "../common/Btn";
 
 interface Props {
     isConfirmationOpen: boolean;
@@ -108,8 +109,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
                     <>{options}</>
                 </Select>
             </FormControl>
-            <Button type="submit" mb={35} color="gray.500">Save</Button>
-
+            <Btn type="submit" text="Save"/>
             <ConfirmModal
                 isConfirmationOpen={isConfirmationOpen}
                 handleCloseConfirmModal={handleCloseConfirmModal}

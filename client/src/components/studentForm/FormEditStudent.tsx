@@ -9,6 +9,7 @@ import {CourseEntity} from "../../types/course";
 import {InitialStudentState} from "./initialState";
 import {FormFields} from "./FormFields";
 import {CloseIcon} from "@chakra-ui/icons";
+import {CourseItem} from "../common/ CourseItem";
 
 
 interface Props {
@@ -43,16 +44,7 @@ export const FormEditStudent = (props: Props): ReactNode => {
 
     const chosenCourses = coursesReadyToUpdate.map(oneCourse => (
         <Box key={oneCourse.id} position="relative" bg="brand.800" color="white" p={3} borderRadius="10px" alignItems="center">
-            <Text mr="15px">{oneCourse.name}</Text>
-            <Icon as={CloseIcon}
-                  cursor="pointer"
-                  top="3" right="3"
-                  w={4} h={4} p="2px"
-                  position="absolute"
-                  _hover={{ color: "red.400" }}
-                  borderRadius="8px"
-                  onClick={() => handleRemoveCourse(oneCourse.id)}
-            />
+            <CourseItem name={oneCourse.name} courseId={oneCourse.id} handleRemove={handleRemoveCourse} />
         </Box>
     ));
 
