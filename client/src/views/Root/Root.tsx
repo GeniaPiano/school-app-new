@@ -20,8 +20,7 @@ export const Root =()=> {
                     <Route exact path='/teachers' element={<TeachersView/>} />
                     <Route exact path='/news' element={<News/>} />
                     <Route path='/logout' />
-
-                    <Route path='*' element={<NotFoundView/>} />
+                   <Route path='*' element={<NotFoundView/>} />
                 </Routes>
         </AdminLayout>
         </Router>

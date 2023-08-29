@@ -2,6 +2,7 @@ import {Box, Flex, GridItem, Heading, ModalBody, ModalCloseButton, ModalHeader, 
 import {CourseEntity} from "../../types/course";
 import {StudentEntity} from "../../types/student";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
+import {CourseFormDiv} from "../common/CourseFormDiv";
 
 
 interface Props {
@@ -26,12 +27,7 @@ export const InfoStudentModal = (props: Props) => {
                                              spacing={4}
                                              color="gray.500" >
                                     <> { selectedCourses.map(course =>
-                                        <GridItem
-                                            key={course.id}
-                                            bg="brand.800"
-                                            border="solid 1px"
-                                            borderRadius="8px"
-                                            color="white"
+                                        <CourseFormDiv key={course.id} as={GridItem}
                                         >
                                             <Flex
                                                 p={2}
@@ -41,7 +37,7 @@ export const InfoStudentModal = (props: Props) => {
                                                 textAlign="center"
                                             >
                                                 {course.name}</Flex>
-                                        </GridItem> ) } </>
+                                        </CourseFormDiv> ) } </>
                                 </SimpleGrid>
                             )
                         : <p color="gray.500">no selected courses.</p>} </>

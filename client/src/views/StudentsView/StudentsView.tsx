@@ -8,9 +8,10 @@ import {
     ModalHeader,
     ModalOverlay, useDisclosure,
 } from "@chakra-ui/react";
-import {Header} from "../../layouts/Header";
+
 import {SearchBar} from "../../components/SearchBar/SearchBar";
-import {StudentsList} from "../../components/Students/StudentsList";
+import {StudentsList} from "../../components/students/StudentsList";
+import {Header} from "../../components/Header/Header";
 
 
 export const StudentsView = () =>  {
@@ -20,8 +21,10 @@ export const StudentsView = () =>  {
     const {onOpen, onClose, isOpen} = useDisclosure();
         return (
             <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
-                <Box as="nav" p="30PX">
-                    <Header title="students" onOpen={onOpen} />
+                <Box as="nav" p="30px">
+                    <Flex>
+                        <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
+                    </Flex>
                     <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent  color="gray.500">
@@ -32,13 +35,12 @@ export const StudentsView = () =>  {
                         </ModalContent>
                     </Modal>
                 </Box>
-
+            <Flex display="column">
                 <SearchBar/>
                 <Box my={5}>
                     <StudentsList/>
                 </Box>
-
-
+            </Flex>
 
 
             </Flex>

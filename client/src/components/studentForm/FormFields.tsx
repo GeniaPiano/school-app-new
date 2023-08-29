@@ -12,7 +12,7 @@ export const FormFields = ({handleInputChange, newErrors, inputValues, loading})
         <FormControl key={oneForm.title} mb={5} isInvalid={!loading && newErrors[oneForm.name]}>
             <FormLabel>{oneForm.title}</FormLabel>
             <Input
-                value={firstLetterToUpper(inputValues[oneForm.name])}
+                value={oneForm.name === "email" ? inputValues[oneForm.name].toLowerCase() : firstLetterToUpper(inputValues[oneForm.name])}
                 name={oneForm.name}
                 onChange={handleInputChange}
                 type={oneForm.type} focusBorderColor="brand.600"

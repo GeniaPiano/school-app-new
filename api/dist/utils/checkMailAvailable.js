@@ -13,7 +13,7 @@ exports.checkMailAvaible = void 0;
 const db_1 = require("./db");
 const checkMailAvaible = (mail) => __awaiter(void 0, void 0, void 0, function* () {
     const [dataTeachers] = yield db_1.pool.execute("SELECT  `email` FROM `teachers` ");
-    const [dataStudents] = yield db_1.pool.execute("SELECT `email` FROM `Students`");
+    const [dataStudents] = yield db_1.pool.execute("SELECT `email` FROM `students`");
     const [dataAdmin] = yield db_1.pool.execute("SELECT `email` FROM `admin`");
     const dataTeachersStudents = [...dataTeachers, ...dataStudents, ...dataAdmin];
     let mails = [];

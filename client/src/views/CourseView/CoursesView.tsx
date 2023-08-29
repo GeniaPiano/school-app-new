@@ -3,18 +3,18 @@ import {
     Divider,
     Flex,
     useDisclosure,
-    SimpleGrid, HStack, Button,
+    SimpleGrid
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
-import {StudentsList} from "../../components/Students/StudentsList";
+import {StudentsList} from "../../components/students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
-import {Header} from "../../layouts/Header";
 import {NavSizeContext} from "../../provider/NavSizeProvider";
-import {CourseAddForm} from "../../components/CourseForm/CourseAddForm";
+import {CourseAddForm} from "../../components/courseForm/CourseAddForm";
 import {useCounter} from "../../provider/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
+import {Header} from "../../components/Header/Header";
 
 
 
@@ -27,7 +27,7 @@ export const CoursesView = () => {
     const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
-    const {counter} = useCounter();
+    const {counterCourse} = useCounter();
 
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export const CoursesView = () => {
               console.log(e)
           }
         })()
-    }, [courseId, counter])
+    }, [courseId, counterCourse])
 
 
 
@@ -59,8 +59,7 @@ export const CoursesView = () => {
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box as="nav" p="30px">
                 <Flex w="95%" alignItems="center"  gap={50}>
-                    <Header title="courses" mr={30}/>
-                    <Button onClick={onOpen}  variant='outline' color="brand.800" _hover={{bg: "gray.100"}} whiteSpace="wrap"> + add course </Button>
+                    <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
 
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
@@ -73,7 +72,7 @@ export const CoursesView = () => {
                             alignItems="center"
                             textAlign="center"
                             justifyContent="center"
-                            width={navSize === "large"?  {base: "65%", md: "100%"} : {base: "90%", md: "100%"}}
+                            width={navSize === "large"?  {base: "80%", md: "100%"} : {base: "90%", md: "100%"}}
                              p={{base: "5px 8px", md: "8px", lg: "10px"}}
                             _hover={{color:"white"}}
                             borderRadius="8px"

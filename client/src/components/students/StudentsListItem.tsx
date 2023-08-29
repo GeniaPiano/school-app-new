@@ -4,8 +4,8 @@ import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, 
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 import {CleanedStudent} from "../../types/student";
-import {FormEditStudent} from "../StudentForm/FormEditStudent";
-import {initialState} from "../StudentForm/initialState";
+import {FormEditStudent} from "../studentForm/FormEditStudent";
+import {initialState} from "../studentForm/initialState";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";

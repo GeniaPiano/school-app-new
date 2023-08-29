@@ -10,7 +10,7 @@ type RecordResults = [MailReq[], FieldPacket[]];
 export const checkMailAvaible = async (mail:string):Promise<boolean> => {
 
     const [dataTeachers] = await pool.execute("SELECT  `email` FROM `teachers` ") as RecordResults
-    const [dataStudents] = await pool.execute("SELECT `email` FROM `Students`") as RecordResults
+    const [dataStudents] = await pool.execute("SELECT `email` FROM `students`") as RecordResults
     const [dataAdmin] = await pool.execute("SELECT `email` FROM `admin`") as RecordResults
 
     const dataTeachersStudents = [...dataTeachers, ...dataStudents, ...dataAdmin]

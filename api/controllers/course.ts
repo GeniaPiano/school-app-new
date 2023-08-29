@@ -3,7 +3,7 @@ import {NextFunction, Request, Response} from "express";
 import {ValidationError} from "../utils/errors";
 import {CreateCourseReq, TeacherEntity} from "../types";
 import {TeacherRecord} from "../records/teacher.record";
-import {userWithoutPassword} from "../utils/dataWithoutPassword";
+
 
 export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
  try {
@@ -14,6 +14,17 @@ export const getAllCourses = async (req: Request, res: Response, next: NextFunct
    } catch(err) {
      next(err)
  }
+}
+
+export const getCoursesWithoutTeachers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const courses: CourseRecord[] = await CourseRecord.listCoursesWithoutChosenTeacher();
+        res.json({
+            courses,
+        })
+    } catch (err) {
+        next(err)
+    }
 }
 
 export const getOneCourse = async (req: Request, res: Response, next: NextFunction) => {
@@ -70,7 +81,7 @@ export const createCourse = async (req: Request, res: Response, next: NextFuncti
         if (newCourse.teacher_id !== null) {
             await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id)
         }
-        res.json(newCourse);
+        res.status(200).json(newCourse);
 }
 
 export const deleteCourse = async (req: Request, res: Response, next: NextFunction) => {

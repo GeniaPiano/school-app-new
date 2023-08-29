@@ -11,9 +11,13 @@ export interface GetSingleTeacherRes {
 export type DataCoursesResForSingleTeacher = Omit <CourseEntity, 'teacher_id'>
 
 export interface TeacherReq {
-    name: string;
-    last_name: string;
-    email: string;
+        name: string;
+        last_name: string;
+        email: string;
+}
+
+export interface TeacherReqSelectedCourses {
+    selectedCourses: string[] | []
 }
 
 export interface TeacherUpdateReq {

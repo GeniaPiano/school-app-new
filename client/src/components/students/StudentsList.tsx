@@ -1,5 +1,5 @@
 
-import {Box, Heading, HStack, Icon, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
+import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -7,8 +7,8 @@ import {useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
-import {FiEdit, FiInfo} from "react-icons/fi";
-import {CourseInfo} from "../Course/CourseInfo";
+import {FiInfo} from "react-icons/fi";
+import {CourseInfo} from "../CourseInfo/CourseInfo";
 
 
 
@@ -16,9 +16,8 @@ interface Props {
     courseName?: string;
 }
 
-export const StudentsList = (props: Props) => {
+export const StudentsList = ({courseName}: Props) => {
 
-    const {courseName} = props
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
     const {isOpen, onOpen, onClose} = useDisclosure()
@@ -39,7 +38,7 @@ export const StudentsList = (props: Props) => {
            })();
     }, [courseId])
 
-    if (!students) return <Spinner> Loading... </Spinner>
+
 
     return (
         <ViewWrapper>
@@ -48,7 +47,7 @@ export const StudentsList = (props: Props) => {
                     <Heading  as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={onOpen} />
                </HStack>
-               <CourseInfo isOpen={isOpen} onClose={onClose} courseId={courseId} />
+               <CourseInfo isOpen={isOpen} onOpen={onOpen} onClose={onClose} courseId={courseId} />
              </>
 
             )}  </>

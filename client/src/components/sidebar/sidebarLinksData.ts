@@ -9,7 +9,7 @@ export const sidebarLinksData = [
     },
     {
         icon: FiUsers,
-        title: 'Students',
+        title: 'students',
         path: '/students',
     },
     {
