@@ -16,8 +16,8 @@ interface Props {
     handleChangeInputValue: (e)=> void;
 }
 
-export const TeacherFormInputFields = ({inputValues, isError, handleChangeInputValue}:Props) => teacherFormData.map(oneForm => (
-    <FormControl key={oneForm.name} isInvalid={isError[oneForm.name]}>
+export const TeacherFormInputFields = ({inputValues, isError, handleChangeInputValue}:Props) => teacherFormData.map((oneForm, i) => (
+    <FormControl key={`${oneForm.name}-${i}`} isInvalid={isError[oneForm.name]}>
         <FormLabel>{oneForm.title}</FormLabel>
         <Input
             name={oneForm.name}
@@ -25,5 +25,6 @@ export const TeacherFormInputFields = ({inputValues, isError, handleChangeInputV
             onChange={handleChangeInputValue}
             focusBorderColor="brand.600"/>
         <>{isError[oneForm.name] &&  <FormErrorMessage> {oneForm.errorMessage} </FormErrorMessage>} </>
+
     </FormControl>
 ))

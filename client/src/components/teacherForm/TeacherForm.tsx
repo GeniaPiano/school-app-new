@@ -15,23 +15,17 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {Btn} from "../common/Btn";
 import {CourseItem} from "../common/ CourseItem";
+import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
+import {errorData} from "./errorData";
 
 export const TeacherForm = () => {
 
-    const [inputValues, setInputValues] = useState({
-        name: '',
-        last_name: "",
-        email: "",
-    })
-    const [inputTouchedCount, setInputTouchedCount] = useState({
-        name: 0,
-        last_name: 0,
-        email: 0,
-    });
+    const [inputValues, setInputValues] = useState(initialStateTeacher)
+    const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>(null)
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
-
+    const [errorMessage, setErrorMessage] = useState<string>('')
 
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
@@ -44,14 +38,9 @@ export const TeacherForm = () => {
     },[])
 
 
-    const {name, last_name, email} = inputValues
-    const isError = {
-       name: (inputTouchedCount.name > 2 && (name === '' || name.length < 2 || name.length > 40)),
-       last_name: (inputTouchedCount.last_name > 3 && (last_name === '' || last_name.length < 2 || last_name.length > 40)),
-       email: (inputTouchedCount.email > 3 && (email === '' || email.length < 4 || email.length > 40 || !email.includes('@')) ),
-   };
+    const isError = errorData(inputTouchedCount, inputValues);
 
-    const handleChangeInputValue = (e) => {
+      const handleChangeInputValue = (e) => {
          setInputTouchedCount(prev => ({
              ...prev,
              [e.target.name]: prev[e.target.name] + 1,
@@ -64,15 +53,12 @@ export const TeacherForm = () => {
     };
 
     const handleSelectCourse = (e) => {
-        const courseId = e.target.value;
+        const courseId: string = e.target.value;
         if (availableCourses) {
             const courseToAdd = availableCourses.find(course => course.id === courseId)
             setCoursesReadyToUpdate(prevState => [...prevState, courseToAdd])
             setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
         }
-
-        console.log("avail", availableCourses)
-        console.log("redy", coursesReadyToUpdate)
     }
 
     const options = availableCourses?.map(course => (
@@ -88,14 +74,33 @@ export const TeacherForm = () => {
         </Box>
     ))
 
+
+    const setTouchedCount = (field, count) => {
+        setInputTouchedCount(prev => ({
+            ...prev,
+            [field]: count
+        }));
+    };
+
     const handleSubmit = async(e) => {
         e.preventDefault();
-        console.log('submit')
+        if (inputValues.name === '') {
+            setTouchedCount('name', 3);
+        }
+
+        if (inputValues.last_name === '') {
+            setTouchedCount('last_name', 3);
+        }
+
+        if (inputValues.email === '') {
+            setTouchedCount('email', 4);
+        }
+
         try {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
             console.log('res', res)
         } catch (err) {
-            console.log(err)
+            setErrorMessage(err.response.data.message)
         }
 
     }
@@ -111,7 +116,9 @@ export const TeacherForm = () => {
                         <TeacherFormInputFields
                             inputValues={inputValues}
                             isError={isError}
-                            handleChangeInputValue={handleChangeInputValue}/>
+                            handleChangeInputValue={handleChangeInputValue}
+                            errorMessage={errorMessage}
+                        />
                         <FormControl mb={8}>
                             <FormLabel>Courses</FormLabel>
                             <Select onChange={handleSelectCourse}

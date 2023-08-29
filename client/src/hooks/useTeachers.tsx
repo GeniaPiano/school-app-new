@@ -1,7 +1,9 @@
 import axios from "axios";
 import {COURSE_URL, TEACHER_ULR} from "../utils/url";
 import {useCallback} from "react";
-import {TeacherEntity} from "../types/teacher";
+import {TeacherEntity, TeacherReq} from "../types/teacher";
+import {CourseEntity} from "../types/course";
+
 
 export const useTeachers = () => {
 
@@ -23,19 +25,34 @@ export const useTeachers = () => {
         }
     }
 
-    const addNewTeacher = async (teacher, selectedCourses)=> {
+
+
+    const addNewTeacher = async (teacher: TeacherReq, selectedCourses: CourseEntity[] | null)=> {
+
+        if (teacher.name === "" || teacher.name.length <2 || teacher.name.length > 40
+            || teacher.last_name === "" || teacher.last_name.length < 2 || teacher.last_name.length > 40
+            || teacher.email === "" || teacher.email.length < 4 || teacher.email.length > 40 || !teacher.email.includes('@')) {
+            return;
+        }
         try {
-            const results = await axios.post(`${TEACHER_ULR}`, {
+            const response = await axios.post(`${TEACHER_ULR}`, {
                 teacher,
                 selectedCourses
-            },{
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
-            console.log(results)
+
+            return response.data;
+
         } catch (err) {
-            console.log(err)
+            if (err.response.status === 400) {
+                console.log('Error:', err.response.data.message);
+            } else {
+                console.log('Unexpected Error:', err.response.data);
+            }
+            throw err;
         }
     }
 
