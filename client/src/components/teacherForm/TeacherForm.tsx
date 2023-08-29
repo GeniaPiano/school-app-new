@@ -17,15 +17,18 @@ import {Btn} from "../common/Btn";
 import {CourseItem} from "../common/ CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
+import {useError} from "../../provider/ErrorProvider";
 
 export const TeacherForm = () => {
+
+    const {dispatchError} = useError();
 
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>(null)
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
-    const [errorMessage, setErrorMessage] = useState<string>('')
+
 
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
@@ -100,7 +103,7 @@ export const TeacherForm = () => {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
             console.log('res', res)
         } catch (err) {
-            setErrorMessage(err.response.data.message)
+            dispatchError(err.response.data.message)
         }
 
     }
@@ -117,7 +120,7 @@ export const TeacherForm = () => {
                             inputValues={inputValues}
                             isError={isError}
                             handleChangeInputValue={handleChangeInputValue}
-                            errorMessage={errorMessage}
+
                         />
                         <FormControl mb={8}>
                             <FormLabel>Courses</FormLabel>

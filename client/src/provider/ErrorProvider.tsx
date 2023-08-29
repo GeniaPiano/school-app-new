@@ -13,7 +13,7 @@ interface ErrorProviderProps {
 export const ErrorProvider: FC<ErrorProviderProps>  = ({children}) => {
     const [error, setError] = useState <string | null>(null);
 
-    const dispatchError = useCallback((message) =>  {
+    const dispatchError = useCallback((message: string) =>  {
         setError(message);
         setTimeout(() => {
             setError('')
