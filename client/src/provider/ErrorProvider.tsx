@@ -1,4 +1,4 @@
-import React, {useCallback, useState, createContext, useContext, ReactNode} from 'react';
+import {useCallback, useState, createContext, useContext, ReactNode, FC} from 'react';
 
 interface ErrorContextType {
     error: string | null;
@@ -10,7 +10,7 @@ interface ErrorProviderProps {
     children: ReactNode;
 }
 
-export const ErrorProvider: React.FC<ErrorProviderProps>  = ({children}) => {
+export const ErrorProvider: FC<ErrorProviderProps>  = ({children}) => {
     const [error, setError] = useState <string | null>(null);
 
     const dispatchError = useCallback((message) =>  {
