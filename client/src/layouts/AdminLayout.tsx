@@ -15,12 +15,11 @@ export const AdminLayout: FC<Props> = ({children}) => {
     const {navSize} = useContext(NavSizeContext)
 
 
-
     return (
         <Flex gap={10} >
             <Sidebar />
             <Flex alignItems="center" justifyContent="center"
-                  ml={{  base: navSize === "large" ? "11em" : "6em", md: navSize === "large" ? "16em" : "9em"}}>
+                  ml={{  base: navSize === "large" ? "11em" : "6em", md: navSize === "large" ? "16em" : "8em"}}>
                 {children}
             </Flex>
 
