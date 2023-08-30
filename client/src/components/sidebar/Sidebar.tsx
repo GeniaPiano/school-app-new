@@ -14,7 +14,8 @@ export const Sidebar = () => {
         return (
         <Flex
             color="gray.500"
-            pos="sticky"
+            position="fixed" // Ustawienie pozycji na stałe
+            top={0}
             left={5}
             h="95vh"
             mt="2.5vh"
@@ -62,7 +63,7 @@ export const Sidebar = () => {
                 w="100%"
                 alignItems={navSize === "small" ? "center" : "flex-start"}
                 left="0"
-            >
+                            >
             <Divider  />
             <Flex mt={4} align="center" gap="5px">
                    <Avatar size="sm" name="admin" bg="gray.400"/>
