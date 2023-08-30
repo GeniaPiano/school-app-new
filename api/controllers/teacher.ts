@@ -6,6 +6,7 @@ import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
+import {NotFoundError, ValidationError} from "../utils/errors";
 
 
 
@@ -20,8 +21,8 @@ export const getAllTeachers = async (req: Request, res: Response, next: NextFunc
 export const getOneTeacher = async (req: Request, res: Response, next: NextFunction) => {
     const teacher = await TeacherRecord.getOne(req.params.id) as TeacherEntity;
     if (!teacher) {
-        res.status(404).json({message: 'Teacher not found.'})
-    }
+        throw new NotFoundError('Teacher not found')
+            }
     const teacherCleaned = userWithoutPassword(teacher)
     const selectedCourses = await TeacherRecord._getCoursesOfThisTeacher(req.params.id)
     res.json({
@@ -45,25 +46,21 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
     const teacher = new TeacherRecord(teacherData);
     const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
-        return res.status(400).json({
-            message : "Email already exists."
-        })
+        throw new ValidationError("Email already exists.")
+
 
     }
-
     //miejsce na wysłanie hasła na maila użytkownika
 
     await teacher.insert();
 
-    if (selectedCourses.length > 0)
+    if (selectedCourses)
         for (const id of selectedCourses) {
             await teacher.assignCourseToTeacher(id)
         }
     const courses = await TeacherRecord._getCoursesOfThisTeacher(teacher.id)
-    console.log('courses', courses)
 
-
-    res.json({
+    res.status(200).json({
         teacher: userWithoutPassword(teacher),
         selectedCourses: courses,
     });
@@ -73,7 +70,8 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
 export const updateTeacher = async (req: Request, res: Response, next: NextFunction) => {
     const teacher = await TeacherRecord.getOne(req.params.id);
     if (teacher === null) {
-        return res.status(404).json({message: 'The teacher with given ID does not exist.'});
+        throw new NotFoundError( 'Teacher with given ID does not exist.')
+
     }
     const { name, last_name, email } = req.body as TeacherUpdateReq;
     const fieldsToUpdate: Partial<TeacherReq> = { name, last_name, email };
@@ -92,24 +90,24 @@ export const assignCourseToTeacher = async (req: Request, res: Response, next: N
 
     const teacher = await TeacherRecord.getOne(req.params.id);
     if (!teacher) {
-        return res.status(404).json({message: "Cannot find teacher"})
+        throw new NotFoundError('Canot find teacher')
+
     }
 
     const {selectedCourseId} = req.body
     if (selectedCourseId === '' || !selectedCourseId) {
-        return res.status(404).json({message: 'No course to assign.' })
+        throw new NotFoundError('No course to assign.')
     }
 
     const course = await CourseRecord.getOne(selectedCourseId)
     if (!course) {
-       return  res.status(404).json({message: 'Course you want to assign does not exist.'})
-
+        throw new ValidationError('Course you want to assign does not exist.')
     }
 
     if (course.teacher_id === null) {
         await teacher.assignCourseToTeacher(selectedCourseId)
         } else {
-            return  res.status(400).json({message: 'The course has already assigned teacher .'})
+           throw new ValidationError('The course has already assigned teacher .')
           }
         res.end();
 
@@ -117,17 +115,17 @@ export const assignCourseToTeacher = async (req: Request, res: Response, next: N
 export const removeCourseFromTeacher = async (req: Request, res: Response, next: NextFunction) => {
       const teacher = await TeacherRecord.getOne(req.params.id)
       if (!teacher) {
-          return res.status(404).json({message: 'Teacher not found.'})
+        throw new ValidationError('Teacher not found.')
 
       }
     const {selectedCourseId} = req.body
     if (selectedCourseId === '' || !selectedCourseId) {
-        return res.status(400).json({message:'No course to remove'})
+       throw new ValidationError('No course to remove')
 
     }
     const course = await CourseRecord.getOne(selectedCourseId)
     if (!course) {
-        return res.status(400).json({message:'Course you want to remove does not exist.'})
+        throw new ValidationError('Course you want to remove does not exist.')
     }
     if (course.teacher_id !== null) {
         await teacher.removeCourseFromTeacher(selectedCourseId)
