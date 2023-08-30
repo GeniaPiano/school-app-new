@@ -89,6 +89,8 @@ export const deleteCourse = async (req: Request, res: Response, next: NextFuncti
     if(!course) {
         throw new ValidationError('No such course.');
     }
+    //@todo wykasować z bazy danych zależności z courses_teacher
+
     if(await course.countStudents() > 0 ) {
         throw new ValidationError('Cannot remove course. ')
     }
