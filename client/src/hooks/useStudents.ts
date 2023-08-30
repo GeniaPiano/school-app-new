@@ -5,6 +5,7 @@ import {SingleStudentRes, StudentDataNameAndEmail} from "../types/student";
 import {CourseEntity} from "../types/course";
 import {InitialStudentState} from "../components/studentForm/initialState";
 import {createLogger} from "vite";
+import {useCounter} from "../provider/CounterPovider";
 
 //const studentApi = axios.create({})
 // studentApi.interceptors.request.use( (config) => {
@@ -18,6 +19,8 @@ import {createLogger} from "vite";
 // });
 
 export const useStudents = () => {
+
+    const {incrementStudentCounter} = useCounter()
 
     const getStudentsByGroup = useCallback( async (courseId) => {
         try {
@@ -33,6 +36,7 @@ export const useStudents = () => {
         try {
             const results = await axios.get(`${STUDENT_URL}`);
             return results.data.students
+
             
         } catch (e) {
             console.log(e)
@@ -61,6 +65,7 @@ export const useStudents = () => {
                     'Content-Type': 'application/json',
                 }
             });
+             incrementStudentCounter();
              return { success: true, data: res.data }
 
         } catch (error) {

@@ -1,5 +1,6 @@
 
-import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
+
+import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure, useToast} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -9,6 +10,7 @@ import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
 import {FiInfo} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
+import {useCounter} from "../../provider/CounterPovider";
 
 
 
@@ -23,6 +25,7 @@ export const StudentsList = ({courseName}: Props) => {
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {courseId} = useParams();
     const {getStudentsByGroup, getAllStudents} = useStudents();
+    const {counterStudent}= useCounter()
 
     useEffect(() => {
         (async () => {
@@ -36,7 +39,8 @@ export const StudentsList = ({courseName}: Props) => {
                 setLoading(false)
             }
            })();
-    }, [courseId])
+    }, [courseId, counterStudent])
+
 
 
 
@@ -61,6 +65,7 @@ export const StudentsList = ({courseName}: Props) => {
                     key={student.student.id}
                     studentData={student}
                     studentId={student.student.id}
+
                     />)
                     : <span> No students. </span>}
                     </Box>
