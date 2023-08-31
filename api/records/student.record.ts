@@ -1,3 +1,4 @@
+
 import {pool} from "../utils/db";
 import {ValidationError} from "../utils/errors";
 import {v4 as uuid} from "uuid";
@@ -129,9 +130,16 @@ export class StudentRecord implements StudentEntity {
         if (!student) {
             throw new ValidationError('Student not found.')
         }
+        //najpierw usuwamy zależności
+        await pool.execute('DELETE FROM `courses_students` WHERE `student_id` = :id', {
+            id: student.id
+        })
+        //usuwamy rekord
         await pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
             id: student.id
         })
+
+
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(id);
         if (selectedCourses.length !== 0) {
             pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id", {
