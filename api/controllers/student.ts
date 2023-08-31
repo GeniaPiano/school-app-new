@@ -96,9 +96,11 @@ export const updateStudent = async (req: Request, res: Response ) => {
     }
     await student.updateNameAndEmail();
 
-    //aktualizacja coursesSelected
+    //aktua lizacja coursesSelected
+    await student.removeAllCourses();
     const {selectedCourses} = req.body;
-   if (selectedCourses.length === 0) {
+
+    if (selectedCourses.length === 0) {
         res.json({
            student: userWithoutPassword(student),
            selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id),
@@ -106,7 +108,6 @@ export const updateStudent = async (req: Request, res: Response ) => {
     }
 
     else if (selectedCourses.length > 0 ) {
-        await student.removeAllCourses();
         for (const course of selectedCourses) {
             await student.insertCourseForStudent(course)
         }

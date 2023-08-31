@@ -12,7 +12,6 @@ import {NotFoundError, ValidationError} from "../utils/errors";
 
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
     const teachers: TeacherEntity[] = await TeacherRecord.listAll();
-
     res.json( {
         teachers,
     });
