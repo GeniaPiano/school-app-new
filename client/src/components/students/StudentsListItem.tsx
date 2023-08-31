@@ -13,7 +13,7 @@ import {InfoStudentModal} from "./InfoStudentModal";
 import {ModalFooterButtons} from "./ModalFooterButtons";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-
+import {usePostingData} from "../../provider/PostingDataProvider";
 
 
 interface Props {
@@ -26,6 +26,7 @@ interface Props {
 export const StudentsListItem = (props: Props): ReactNode  => {
     const {updateStudentCourses} = useStudents()
     const {getAllCourses} = useCourses();
+    const {changeIsPostedData} = usePostingData();
     const {student:studentData, selectedCourses:coursesData} = props.studentData;
     const [student, setStudent] = useState<CleanedStudent>(studentData)
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>(coursesData)
@@ -35,17 +36,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
     const [inputValues, setInputValues] = useState (initialState(student));
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-    const { ToastContainer, toast } = createStandaloneToast()
 
-    const handleShowToast = () => {
-        toast({
-            title: 'Succes.',
-            description: 'Student data has been updated',
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-        });
-    };
 
    const handleCloseModal=()=> {
        if (isEditing) {
@@ -115,13 +106,14 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                 setIsEditing(prev => !prev)
                 await setStudent(res.data.student)
                 await setSelectedCourses(res.data.selectedCourses)
-                handleShowToast();
+                changeIsPostedData(true);
+                setTimeout(()=> {
+                    changeIsPostedData(false)
+                }, 3000)
 
             } catch (err) {
                 console.log(err.response.data)}
         }
-
-
     }
 
 
@@ -142,7 +134,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
     return (
         <ListItem>
-            <UserItem onOpen={onOpen}>
+            <UserItem onOpen={onOpen} >
                <Text>{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
             </UserItem>
             <Modal isOpen={isOpen} onClose={handleCloseModal}  >
@@ -162,7 +154,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                     handleSelectChange={handleSelectChange}
                                     availableCourses={availableCourses}/>
                             </ModalBody> </>
-                        : <InfoStudentModal student={student} selectedCourses={selectedCourses}/> }
+                        : <InfoStudentModal student={student} selectedCourses={selectedCourses} /> }
                     </Box>
 
                     <ModalFooter>
@@ -188,7 +180,6 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                 handleGoBackToEdit={handleGoBackToEdit}
                 handleCloseAfterConfirm={handleCloseAfterConfirm}
             />
-            <ToastContainer/>
-        </ListItem>
+           </ListItem>
     )
 }

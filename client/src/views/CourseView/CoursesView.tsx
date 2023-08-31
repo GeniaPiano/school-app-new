@@ -17,8 +17,6 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {Header} from "../../components/Header/Header";
 
 
-
-
 export const CoursesView = () => {
     const {navSize} = useContext(NavSizeContext)
     const {courseId}: string = useParams();

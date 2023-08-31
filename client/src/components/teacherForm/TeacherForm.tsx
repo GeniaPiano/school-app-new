@@ -31,7 +31,6 @@ export const TeacherForm = ({onClose})=> {
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>(null)
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
-
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
 
 

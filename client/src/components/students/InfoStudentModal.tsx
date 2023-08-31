@@ -3,6 +3,8 @@ import {CourseEntity} from "../../types/course";
 import {StudentEntity} from "../../types/student";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {CourseFormDiv} from "../common/CourseFormDiv";
+import {usePostingData} from "../../provider/PostingDataProvider";
+import {ConfirmTextAndIcon} from "../common/ConfirmTextAndIcon";
 
 
 interface Props {
@@ -12,12 +14,17 @@ interface Props {
 
 export const InfoStudentModal = (props: Props) => {
     const {student, selectedCourses} = props
+    const {isPostedData} = usePostingData()
 
     return ( <>
 
-        <ModalHeader color="gray.500">{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</ModalHeader>
+        <ModalHeader color="gray.500">
+           <> {isPostedData? <ConfirmTextAndIcon text="Updated" withLayer={true} /> : null} </>
+            {firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}
+        </ModalHeader>
             <ModalCloseButton />
                 <ModalBody>
+
                     <Flex flexDir="column"
                           my={4}>
                         <Heading color="gray.500" as="h3" size="sm" fontWeight="500" mb={5}>courses:</Heading>
