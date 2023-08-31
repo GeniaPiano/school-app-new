@@ -1,13 +1,12 @@
 import {
-    Box,
+    Box, Button,
     FormControl,
-    FormLabel,
+    FormLabel, Modal,
     ModalBody,
     ModalCloseButton,
-    ModalContent,
-    ModalFooter,
+    ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay, Select, SimpleGrid
+    ModalOverlay, Select, SimpleGrid, useDisclosure
 } from "@chakra-ui/react";
 import {useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
@@ -18,16 +17,23 @@ import {CourseItem} from "../common/ CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
+import {usePostingData} from "../../provider/PostingDataProvider";
 
-export const TeacherForm = () => {
+
+export const TeacherForm = ({onClose})=> {
 
     const {dispatchError} = useError();
+    const {onClose: closeConfirm} = useDisclosure();
+    const {changeIsPostedData} = usePostingData();
 
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>(null)
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
+
+    const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
+
 
 
     const {getAvailableCourses, addNewTeacher } = useTeachers();
@@ -101,26 +107,39 @@ export const TeacherForm = () => {
 
         try {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
-            console.log('res', res)
+            console.log("res succes", res?.succes)
+            if (res.success) {
+                changeIsPostedData(true);
+                setTimeout(()=> {
+                    onClose();
+                    changeIsPostedData(false)
+                }, 3000)
+            }
+
         } catch (err) {
             dispatchError(err.response.data.message)
         }
+   }
 
+    const handleCloseMainModal = () => {
+        if (inputValues.name !== '' || inputValues.last_name !== '' || inputValues.email !== '') {
+            setIsConfirmationOpen(true);
+        } else {
+            onClose();
+        }
     }
 
     return (
         <>
-            <ModalOverlay />
-            <ModalContent  color="gray.500">
+
                 <ModalHeader>Add new teacher</ModalHeader>
-                <ModalCloseButton/>
+                <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalBody>
                     <form onSubmit={handleSubmit}>
                         <TeacherFormInputFields
                             inputValues={inputValues}
                             isError={isError}
                             handleChangeInputValue={handleChangeInputValue}
-
                         />
                         <FormControl mb={8}>
                             <FormLabel>Courses</FormLabel>
@@ -138,12 +157,28 @@ export const TeacherForm = () => {
                             <> {selectedCourses} </>
                         </SimpleGrid>
                         <Btn text="save" type="submit"/>
+
+                        <Modal  isOpen={isConfirmationOpen} onClose={closeConfirm}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Confirmation</ModalHeader>
+                                <ModalBody>
+                                    Are you sure you want to close without saving changes?
+                                </ModalBody>
+                                <ModalFooter >
+                                    <Button mr={2} colorScheme="gray"  color="gray.600" >
+                                        Yes, Close
+                                    </Button>
+                                    <Button colorScheme="gray"  color="gray.600" >
+                                        Go back to Form.
+                                    </Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
                     </form>
                 </ModalBody>
-                <ModalFooter>
 
-                </ModalFooter>
-            </ModalContent>
+
 
         </>
     )

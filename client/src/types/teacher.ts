@@ -17,4 +17,3 @@ export interface TeacherReq {
     last_name: string;
     email: string;
 }
-

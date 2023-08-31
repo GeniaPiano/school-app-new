@@ -15,7 +15,6 @@ export const Header = ({title, buttonText, onOpen}: Props) => {
               mb={8}
               gap={5}
               flexDirection={{base: 'column', md: 'row'}}
-
         >
             <Heading
                 color="gray.500"

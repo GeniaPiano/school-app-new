@@ -3,7 +3,7 @@ import {
     Divider,
     Flex,
     useDisclosure,
-    SimpleGrid
+    SimpleGrid,
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
@@ -56,6 +56,8 @@ export const CoursesView = () => {
     )
 
     return (
+
+        <>
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box as="nav" p="30px">
                 <Flex w="95%" alignItems="center"  gap={50}>
@@ -97,5 +99,6 @@ export const CoursesView = () => {
 
 
         </Flex>
+        </>
     )
 }

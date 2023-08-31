@@ -1,5 +1,5 @@
 
-import {Flex, ListItem, Button, Text, useDisclosure, Box} from "@chakra-ui/react";
+import {ListItem, Button, Text, useDisclosure, Box, createStandaloneToast, Toast} from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
@@ -35,6 +35,17 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
     const [inputValues, setInputValues] = useState (initialState(student));
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+    const { ToastContainer, toast } = createStandaloneToast()
+
+    const handleShowToast = () => {
+        toast({
+            title: 'Succes.',
+            description: 'Student data has been updated',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+        });
+    };
 
    const handleCloseModal=()=> {
        if (isEditing) {
@@ -91,25 +102,26 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
     const handleSubmit = async(e) => {
         if (inputValues.name.length < 3 || inputValues.last_name.length < 3) {
-            console.log("Name and last name must be at least 3 characters long");
             return;
         }
         if (inputValues.email.length < 4) {
-            console.log("Email must be at least 4 characters long");
             return;
         }
-        setIsEditing(prev => !prev)
-        if (isEditing) {
+       if (isEditing) {
             e.preventDefault();
-
             try {
                 const coursesToSend = coursesReadyToUpdate.map(course => course.id)
                 const res = await updateStudentCourses(student.id, inputValues, coursesToSend)
-                setStudent(res.data.student)
-                setSelectedCourses(res.data.selectedCourses)
+                setIsEditing(prev => !prev)
+                await setStudent(res.data.student)
+                await setSelectedCourses(res.data.selectedCourses)
+                handleShowToast();
+
             } catch (err) {
                 console.log(err.response.data)}
         }
+
+
     }
 
 
@@ -121,7 +133,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                 setAvailableCourses(filteredCourses);
             }
         })();
-    }, [coursesReadyToUpdate, updateStudentCourses, selectedCourses]);
+    }, []);
 
     const cancelEditing = () => {
         setIsEditing(false);
@@ -158,7 +170,9 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                 color="gray.500"
                                 colorScheme='gray'
                                 mr={3}
-                                onClick={handleSubmit}>{isEditing ? 'Save' : 'Edit'}</Button>
+                                onClick={isEditing? handleSubmit : ()=>setIsEditing(prev => !prev)}>
+                            {isEditing ? 'Save' : 'Edit'}
+                        </Button>
                         <> {isEditing && (
                             <Button  color="gray.500" mr={3}
                                      colorScheme='gray'
@@ -174,6 +188,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                 handleGoBackToEdit={handleGoBackToEdit}
                 handleCloseAfterConfirm={handleCloseAfterConfirm}
             />
+            <ToastContainer/>
         </ListItem>
     )
 }

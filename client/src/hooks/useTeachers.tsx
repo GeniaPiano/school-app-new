@@ -1,9 +1,13 @@
 import axios from "axios";
 import {COURSE_URL, TEACHER_ULR} from "../utils/url";
 import {useCallback} from "react";
-import {TeacherEntity, TeacherReq} from "../types/teacher";
+import {GetSingleTeacherRes, TeacherEntity, TeacherReq} from "../types/teacher";
 import {CourseEntity} from "../types/course";
 
+interface AddTeacherRes {
+    succes: boolean,
+    data: GetSingleTeacherRes;
+}
 
 export const useTeachers = () => {
 
@@ -44,7 +48,7 @@ export const useTeachers = () => {
                 }
             })
 
-            return response.data;
+            return  {success: true, data: response.data as GetSingleTeacherRes} as AddTeacherRes
 
         } catch (err) {
             if (err.response.status === 400) {

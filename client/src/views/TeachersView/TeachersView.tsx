@@ -1,25 +1,34 @@
 import {
     Box, Divider,
     Flex,
-    Modal,
+    Modal, ModalOverlay, ModalContent,
     useDisclosure,
 } from "@chakra-ui/react";
 import {Header} from "../../components/Header/Header";
 import {TeacherForm} from "../../components/teacherForm/TeacherForm";
-import {TeacherList} from "../../  config/teachers/TeacherList";
+import {TeacherList} from "../../components/teachers/TeacherList";
+import {usePostingData} from "../../provider/PostingDataProvider";
+import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
 
 
 
 export const TeachersView = () =>  {
 
     const {onOpen, onClose, isOpen} = useDisclosure();
+    const {isPostedData} = usePostingData();
+
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
-            <Box as="nav" p="30PX">
-                <Header title="teachers" buttonText="+ add new teacher" onOpen={onOpen} />
+            <Box as="nav" p="30px">
+                <Header title="teachers" buttonText="+ add new teacher" onOpen={onOpen} onClick={onOpen}/>
                 <Modal isOpen={isOpen} onClose={onClose}>
-                    <TeacherForm/>
-                </Modal>
+                    <ModalOverlay />
+                    <ModalContent  color="gray.500">
+                    <>{isPostedData
+                        ? <ConfirmModalContent text="Teacher has been added."   onClose={onClose}/>
+                        : <TeacherForm onClose={onClose}/>} </>
+                    </ModalContent>
+                    </Modal>
             </Box>
             <Divider  border="3px gray.500 solid" mx={0}/>
             <TeacherList/>

@@ -8,7 +8,6 @@ import {ChangeEvent, FormEvent, ReactNode} from "react";
 import {CourseEntity} from "../../types/course";
 import {InitialStudentState} from "./initialState";
 import {FormFields} from "./FormFields";
-import {CloseIcon} from "@chakra-ui/icons";
 import {CourseItem} from "../common/ CourseItem";
 
 

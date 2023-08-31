@@ -14,17 +14,17 @@ import {useCourses} from "../../hooks/useCourses";
 import {useCounter} from "../../provider/CounterPovider";
 import {ConfirmModal} from "./ConfirmModal";
 import {Btn} from "../common/Btn";
+import {usePostingData} from "../../provider/PostingDataProvider";
+
 
 interface Props {
     isConfirmationOpen: boolean;
     handleCloseConfirmModal: ()=> void;
     handleGoBackToForm: ()=> void;
     onClose: ()=> void;
-    isPostedData: boolean;
-    changeIsPostedData: (bool: boolean)=> void;
 }
 
-export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose, isPostedData, changeIsPostedData}: Props) => {
+export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose}: Props) => {
 
     const [teachers, setTeachers] = useState<TeacherEntity[] | null>(null);
     const {getAllTeachers} = useTeachers();
@@ -32,6 +32,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
     const {addCourse} = useCourses();
     const {incrementCourseCounter} = useCounter();
+    const {changeIsPostedData} = usePostingData()
 
 
 

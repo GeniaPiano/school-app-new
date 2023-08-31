@@ -4,13 +4,14 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalHeader,
-    ModalOverlay,
+    ModalOverlay, useControllableProp,
 } from "@chakra-ui/react";
 
 
 import {CourseFormFields} from "./CourseFormFields";
 import {useState} from "react";
 import {ConfirmModalContent} from "../common/ConfirmModalContent";
+import {usePostingData} from "../../provider/PostingDataProvider";
 
 
 interface Props {
@@ -22,11 +23,7 @@ interface Props {
 export const CourseAddForm = ({isOpen, onClose}: Props) => {
 
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-    const [isPostedData, setIsPostedData] = useState<boolean>(false);
-
-    const changeIsPostedData = (bool: boolean) =>{
-        setIsPostedData(bool)
-    }
+    const {isPostedData} = usePostingData();
 
     const handleCloseConfirmModal = () => {
         setIsConfirmationOpen(false);
@@ -42,7 +39,7 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
         <Modal isOpen={isOpen} onClose={()=> setIsConfirmationOpen(true)}>
             <ModalOverlay />
             <ModalContent  color="gray.500">
-                <>{isPostedData
+                <> {isPostedData
                 ? <ConfirmModalContent text="Course has been added."   onClose={onClose}/>
                 : <>
                         <ModalHeader>Add new course </ModalHeader>
@@ -53,8 +50,6 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
                                 handleCloseConfirmModal={handleCloseConfirmModal}
                                 handleGoBackToForm={handleGoBackToForm}
                                 onClose={onClose}
-                                isPostedData={isPostedData}
-                                changeIsPostedData={changeIsPostedData}
 
                             />
                         </ModalBody>

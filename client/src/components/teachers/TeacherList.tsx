@@ -1,9 +1,9 @@
-import {ViewWrapper} from "../../components/common/ViewWrapper";
+import {ViewWrapper} from "../common/ViewWrapper";
 import {useEffect, useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
 import {Spinner} from "@chakra-ui/react";
-import {UserItem} from "../../components/common/UserItem";
+import {UserItem} from "../common/UserItem";
 
 export const TeacherList = () => {
 const [teachers, setTeachers] = useState<TeacherEntity[]>(null);
@@ -27,7 +27,7 @@ const {getAllTeachers} = useTeachers();
 
     if(!teachers) return <Spinner/>
     const list = teachers.map(oneTeacher => (
-        <UserItem key={oneTeacher.id}>
+        <UserItem key={oneTeacher.id} >
             {oneTeacher.name} {oneTeacher.last_name}
         </UserItem>
     ))

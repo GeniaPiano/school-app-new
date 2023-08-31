@@ -9,7 +9,7 @@ interface Props {
 export const  ConfirmModal = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm}:Props) => {
 
     return (
-        <Modal  isOpen={isConfirmationOpen}>
+        <Modal  isOpen={isConfirmationOpen}  >
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Confirmation</ModalHeader>
