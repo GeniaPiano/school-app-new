@@ -13,14 +13,14 @@ import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {Btn} from "../common/Btn";
-import {CourseItem} from "../common/ CourseItem";
+import {CourseItem} from "../common/CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
 
 
-export const TeacherForm = ({onClose})=> {
+export const TeacherAddForm = ({onClose})=> {
 
     const {dispatchError} = useError();
     const {onClose: closeConfirm} = useDisclosure();

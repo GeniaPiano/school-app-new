@@ -1,5 +1,11 @@
 
-import {ListItem, Button, Text, useDisclosure, Box, createStandaloneToast, Toast} from "@chakra-ui/react";
+import {ListItem, Button, Text, useDisclosure, Box, HStack,   AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
+    AlertDialogCloseButton, } from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
@@ -9,18 +15,22 @@ import {initialState} from "../studentForm/initialState";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";
-import {InfoStudentModal} from "./InfoStudentModal";
+import {InfoStudent} from "./InfoStudent";
 import {ModalFooterButtons} from "./ModalFooterButtons";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {usePostingData} from "../../provider/PostingDataProvider";
+import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
+
 
 
 interface Props {
     studentData: {
         student: CleanedStudent,
         selectedCourses: CourseEntity[],
-    }
+    };
+    mainList: boolean;
+    courseName: string;
 }
 
 export const StudentsListItem = (props: Props): ReactNode  => {
@@ -134,8 +144,14 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
     return (
         <ListItem>
-            <UserItem onOpen={onOpen} >
-               <Text>{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
+            <UserItem>
+               <Text   onClick={onOpen}  _hover={{color: "brand.700"}}
+               >{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
+
+               <HStack>
+                   <Button size="xs" colorScheme="teal"  onClick={onOpen} variant="solid">details</Button>
+                   <ConfirmDeleteStudent student={student} mainList={props.mainList} courseName={props.courseName}/>
+               </HStack>
             </UserItem>
             <Modal isOpen={isOpen} onClose={handleCloseModal}  >
                 <ModalOverlay />
@@ -154,7 +170,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                     handleSelectChange={handleSelectChange}
                                     availableCourses={availableCourses}/>
                             </ModalBody> </>
-                        : <InfoStudentModal student={student} selectedCourses={selectedCourses} /> }
+                        : <InfoStudent student={student} selectedCourses={selectedCourses} /> }
                     </Box>
 
                     <ModalFooter>

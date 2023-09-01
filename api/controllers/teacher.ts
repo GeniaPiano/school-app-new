@@ -136,8 +136,8 @@ export const removeCourseFromTeacher = async (req: Request, res: Response, next:
 export const deleteTeacher = async (req: Request, res: Response, next: NextFunction) => {
     const teacher = await TeacherRecord.getOne(req.params.id);
     if(!teacher) {
-        return res.status(404).json({message: 'No such teacher.'});
-    }
+        throw  new NotFoundError('Teacher not found')
+          }
     await teacher.delete();
     res.end();
 }

@@ -60,9 +60,19 @@ export const useTeachers = () => {
         }
     }
 
+    const deleteTeacher = async (teacherId: string) => {
+        try {
+            const res = await axios.delete(`${TEACHER_ULR}/${teacherId}`)
+            return res.status
+        } catch (err)  {
+            console.log(err)
+        }
+    }
+
     return {
         getAllTeachers,
         getAvailableCourses,
-        addNewTeacher
+        addNewTeacher,
+        deleteTeacher,
     }
 }

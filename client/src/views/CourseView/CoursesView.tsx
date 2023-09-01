@@ -1,6 +1,5 @@
 import {
     Box,
-    Divider,
     Flex,
     useDisclosure,
     SimpleGrid,
@@ -22,7 +21,8 @@ export const CoursesView = () => {
     const {courseId}: string = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [courses, setCourses] = useState <CourseEntity[]| null> (null);
-    const [selectedCourse, setSelectedCourse] = useState < string | ''>('')
+    const [selectedCourse, setSelectedCourse] = useState < string
+        >('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
     const {counterCourse} = useCounter();
@@ -54,10 +54,9 @@ export const CoursesView = () => {
     )
 
     return (
-
         <>
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
-            <Box as="nav" p="30px">
+            <Box>
                 <Flex w="95%" alignItems="center"  gap={50}>
                     <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
@@ -90,10 +89,10 @@ export const CoursesView = () => {
                 } </>
             </SimpleGrid>
             </Box>
-            <Divider
-                border="3px gray.500 solid"
-                mx={0}/>
-            <StudentsList courseName={selectedCourse}/>
+            {/*<Divider*/}
+            {/*    border="3px gray.500 solid"*/}
+            {/*    mx={0}/>*/}
+            <StudentsList courseName={selectedCourse} mainList={false}/>
 
 
         </Flex>

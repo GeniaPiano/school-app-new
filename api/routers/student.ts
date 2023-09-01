@@ -3,7 +3,7 @@ import {
     createStudent,
     deleteStudent,
     getAllStudents,
-    getOneStudent, getStudentsByCourseId, updateStudent,
+    getOneStudent, getStudentsByCourseId, removeCourseFromStudent, updateStudent,
 } from "../controllers/student";
 
 
@@ -15,6 +15,7 @@ studentRouter
     .get('/course/:courseId', getStudentsByCourseId)
     .post('/', createStudent)
     .patch('/:id/update', updateStudent)
+    .patch('/:id/remove-one-course', removeCourseFromStudent)
     .delete('/:id', deleteStudent)
     // .patch('/:id/assign-course', addCourseToStudent) //PRZYPISANIE KURSU DO STUDENTA
     // .delete('/:id/remove-course', removeCourseFromStudent)  //USUWANIE PRZYPISANEGO KURSU

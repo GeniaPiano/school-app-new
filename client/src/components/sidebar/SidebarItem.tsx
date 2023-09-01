@@ -49,7 +49,6 @@ export const SidebarItem = (props: Props) => {
                     onMouseEnter={()=> setIsHovered(true)}
                     onMouseLeave={()=> setIsHovered(false)}
                     display={isHovered ? "flex" : "none"}
-                    borderBottom="solid 1px"
                     color="brand.800"
                     fontSize="sm"
                     fontWeight="800"

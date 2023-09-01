@@ -109,6 +109,13 @@ export class StudentRecord implements StudentEntity {
         })
     }
 
+    async removeOneCourseFromStudent(course_id: string): Promise<void> {
+        await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id AND  `course_id` = :course_id", {
+            student_id:this.id,
+            course_id,
+        })
+    }
+
     static async _getSelectedCoursesByStudent(student_id:string): Promise<CourseRecord[] | null>  {
         const [results] = (await pool.execute("SELECT * FROM `courses_students` WHERE `student_id`= :student_id",{
                 student_id,

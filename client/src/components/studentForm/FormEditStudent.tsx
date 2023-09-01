@@ -8,7 +8,7 @@ import {ChangeEvent, FormEvent, ReactNode} from "react";
 import {CourseEntity} from "../../types/course";
 import {InitialStudentState} from "./initialState";
 import {FormFields} from "./FormFields";
-import {CourseItem} from "../common/ CourseItem";
+import {CourseItem} from "../common/CourseItem";
 
 
 interface Props {

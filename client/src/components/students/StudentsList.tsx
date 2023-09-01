@@ -1,6 +1,6 @@
 
 
-import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure, useToast} from "@chakra-ui/react";
+import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure, Flex} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -15,10 +15,11 @@ import {useCounter} from "../../provider/CounterPovider";
 
 
 interface Props {
-    courseName?: string;
+    courseName: string;
+    mainList:boolean;
 }
 
-export const StudentsList = ({courseName}: Props) => {
+export const StudentsList = ({courseName, mainList}: Props) => {
 
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
@@ -42,35 +43,32 @@ export const StudentsList = ({courseName}: Props) => {
     }, [courseId, counterStudent])
 
 
-
-
     return (
         <ViewWrapper>
            <>  {courseName && (
-               <> <HStack  mb={3}>
+               <> <HStack >
                     <Heading  as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={onOpen} />
                </HStack>
                <CourseInfo isOpen={isOpen} onOpen={onOpen} onClose={onClose} courseId={courseId} />
              </>
 
-            )}  </>
+            )} </>
 
-                <List
-            >
-                <>  {loading? <Spinner/> : (
-                   <Box>
-                {students.length !== 0
-                    ? students.map((student) => <StudentsListItem
-                    key={student.student.id}
-                    studentData={student}
-                    studentId={student.student.id}
+                <List>
+                    <>  {loading? <Spinner/> : (
+                       <> {students.length !== 0
+                           ? students.map((student) => <StudentsListItem
+                                key={student.student.id}
+                                studentData={student}
+                                studentId={student.student.id}
+                                courseName={courseName}
+                                mainList={mainList} /> )
+                            : <span> No students. </span>}
+                         </>
+                        )} </>
+                 </List>
 
-                    />)
-                    : <span> No students. </span>}
-                    </Box>
-                    )} </>
-            </List>
         </ViewWrapper>
 
 

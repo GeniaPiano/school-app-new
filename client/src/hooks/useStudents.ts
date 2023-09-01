@@ -1,10 +1,8 @@
 import axios from 'axios';
-import {useCallback, useState} from "react";
+import {useCallback} from "react";
 import {STUDENT_URL} from "../utils/url";
-import {SingleStudentRes, StudentDataNameAndEmail} from "../types/student";
-import {CourseEntity} from "../types/course";
-import {InitialStudentState} from "../components/studentForm/initialState";
-import {createLogger} from "vite";
+import {SingleStudentRes} from "../types/student";
+
 import {useCounter} from "../provider/CounterPovider";
 
 //const studentApi = axios.create({})
@@ -74,12 +72,35 @@ export const useStudents = () => {
         }
     }, []);
 
+    const deleteStudent = async(id:string) => {
+        try {
+            const res = await axios.delete(`${STUDENT_URL}/${id}`)
+            return res.status
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const deleteCourseFromStudent = async(student_id: string, course_id) => {
+        try {
+            const res = await axios.patch(`${STUDENT_URL}/${student_id}/remove-one-course`, {
+                course_id,
+            })
+            return res.status
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
 
     return {
         getStudentsByGroup,
         getStudentById,
         updateStudentCourses,
-        getAllStudents
+        getAllStudents,
+        deleteStudent,
+        deleteCourseFromStudent,
+
     }
 
 }

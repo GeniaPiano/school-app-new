@@ -20,11 +20,12 @@ export const StudentsView = () =>  {
     const {onOpen, onClose, isOpen} = useDisclosure();
         return (
 
-            <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column"  >
-                <Flex as="nav" p="30px">
-                    <Flex>
+            <Flex  color="gray.500" h="95vh" mt="2.5vh" flexDirection="column"  >
+
+                    <Flex w="95%">
                         <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
                     </Flex>
+
                     <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent  color="gray.500">
@@ -34,14 +35,10 @@ export const StudentsView = () =>  {
                             <ModalFooter>footer </ModalFooter>
                         </ModalContent>
                     </Modal>
-                </Flex>
 
-            <Flex display="column">
-                <SearchBar/>
                 <Flex my={5}>
-                    <StudentsList/>
+                    <StudentsList mainList={true}/>
                 </Flex>
-            </Flex>
 
 
             </Flex>

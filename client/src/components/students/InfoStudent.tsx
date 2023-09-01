@@ -1,4 +1,15 @@
-import {Box, Flex, GridItem, Heading, ModalBody, ModalCloseButton, ModalHeader, SimpleGrid} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Flex,
+    GridItem,
+    Heading,
+    ModalBody,
+    ModalCloseButton,
+    ModalHeader,
+    SimpleGrid,
+    Text
+} from "@chakra-ui/react";
 import {CourseEntity} from "../../types/course";
 import {StudentEntity} from "../../types/student";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
@@ -12,7 +23,7 @@ interface Props {
     selectedCourses: CourseEntity[];
 }
 
-export const InfoStudentModal = (props: Props) => {
+export const InfoStudent = (props: Props) => {
     const {student, selectedCourses} = props
     const {isPostedData} = usePostingData()
 
@@ -21,10 +32,10 @@ export const InfoStudentModal = (props: Props) => {
         <ModalHeader color="gray.500">
            <> {isPostedData? <ConfirmTextAndIcon text="Updated" withLayer={true} /> : null} </>
             {firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}
+            <br/> <Badge  colorScheme='teal' >student</Badge>
         </ModalHeader>
             <ModalCloseButton />
                 <ModalBody>
-
                     <Flex flexDir="column"
                           my={4}>
                         <Heading color="gray.500" as="h3" size="sm" fontWeight="500" mb={5}>courses:</Heading>

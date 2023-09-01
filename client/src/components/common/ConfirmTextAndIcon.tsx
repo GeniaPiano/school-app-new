@@ -16,9 +16,9 @@ export const ConfirmTextAndIcon = ({text, withLayer}: Props) => {
        <> {withLayer
             ?  <DarkLayer>
                 <Flex
-                      boxShadow="0px 4px 12px rgba(0, 0, 0, 0.1)" // Dodanie cienia
-                      borderRadius="8px" // Zaokrąglenie rogów
-                      bgColor="rgba(0, 0, 0, 0.5)" // Przyciemnione tło
+                      boxShadow="0px 4px 12px rgba(0, 0, 0, 0.1)"
+                      borderRadius="8px"
+                      bgColor="rgba(0, 0, 0, 0.5)"
                       zIndex={1000}
                 >
                     <Flex
@@ -29,7 +29,6 @@ export const ConfirmTextAndIcon = ({text, withLayer}: Props) => {
                         justifyContent="center"
                         gap={6}
                         borderRadius="8px"
-
                     >
                         <Text textAlign="center" color='brand.800' as="h2" fontSize={25} fontWeight="700"> {text} </Text>
                         <CheckIcon boxSize={6} color="brand.800"/>

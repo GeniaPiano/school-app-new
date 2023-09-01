@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from 'express';
-import {ValidationError} from "../utils/errors";
+import {NotFoundError, ValidationError} from "../utils/errors";
 import {
     CleanedStudent,
     GetSingleStudentRes,
@@ -125,15 +125,22 @@ export const deleteStudent = async (req: Request, res: Response, next: NextFunct
 
     const student = await StudentRecord.getOne(req.params.id);
     if (!student) {
-        throw new ValidationError('Cannot find student.')
+        throw new NotFoundError('Cannot find student.')
     }
+
     await student.delete(req.params.id)
-
     res.end();
-
 }
 
+export const removeCourseFromStudent = async (req: Request, res: Response, next: NextFunction) => {
+    const student = await StudentRecord.getOne(req.params.id);
+    if (!student) {
+        throw new NotFoundError('Cannot find student.')
+    }
 
+    await student.removeOneCourseFromStudent(req.body.course_id)
+    res.end();
+}
 
 
 

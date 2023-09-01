@@ -10,11 +10,10 @@ export const Sidebar = () => {
 
      const {navSize, changeNavSize} = useContext(NavSizeContext)
 
-
         return (
         <Flex
             color="gray.500"
-            position="fixed" // Ustawienie pozycji na stałe
+            position="fixed"
             top={0}
             left={5}
             h="95vh"
