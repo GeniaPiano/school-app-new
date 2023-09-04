@@ -8,7 +8,7 @@ import {
     ModalHeader,
     ModalOverlay, Select, SimpleGrid, useDisclosure
 } from "@chakra-ui/react";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
@@ -29,12 +29,9 @@ export const TeacherAddForm = ({onClose})=> {
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
-    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>(null)
-    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>([])
+    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | null>(null)
+    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>(null)
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
-
-
-
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
 
@@ -62,8 +59,8 @@ export const TeacherAddForm = ({onClose})=> {
 
     const handleSelectCourse = (e) => {
         const courseId: string = e.target.value;
-        if (availableCourses) {
-            const courseToAdd = availableCourses.find(course => course.id === courseId)
+        if (availableCourses.length !== null) {
+            const courseToAdd: CourseEntity = availableCourses.find(course => course.id === courseId)
             setCoursesReadyToUpdate(prevState => [...prevState, courseToAdd])
             setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
         }
@@ -106,7 +103,6 @@ export const TeacherAddForm = ({onClose})=> {
 
         try {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
-            console.log("res succes", res?.succes)
             if (res.success) {
                 changeIsPostedData(true);
                 setTimeout(()=> {
@@ -120,17 +116,25 @@ export const TeacherAddForm = ({onClose})=> {
         }
    }
 
-    const handleCloseMainModal = () => {
-        if (inputValues.name !== '' || inputValues.last_name !== '' || inputValues.email !== '') {
-            setIsConfirmationOpen(true);
-        } else {
+
+    const handleConfirmModalClose = useCallback((shouldClose) => {
+        setIsConfirmationOpen(false);
+
+        if (shouldClose) {
             onClose();
+        } else {
+
         }
-    }
+    }, [onClose]);
+
+
+
+    const handleCloseMainModal = () => {
+       setIsConfirmationOpen(true)
+    };
 
     return (
         <>
-
                 <ModalHeader>Add new teacher</ModalHeader>
                 <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalBody>
@@ -157,7 +161,7 @@ export const TeacherAddForm = ({onClose})=> {
                         </SimpleGrid>
                         <Btn text="save" type="submit"/>
 
-                        <Modal  isOpen={isConfirmationOpen} onClose={closeConfirm}>
+                        <Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>
                             <ModalOverlay />
                             <ModalContent>
                                 <ModalHeader>Confirmation</ModalHeader>
@@ -165,10 +169,10 @@ export const TeacherAddForm = ({onClose})=> {
                                     Are you sure you want to close without saving changes?
                                 </ModalBody>
                                 <ModalFooter >
-                                    <Button mr={2} colorScheme="gray"  color="gray.600" >
+                                    <Button mr={2} colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(true)}>
                                         Yes, Close
                                     </Button>
-                                    <Button colorScheme="gray"  color="gray.600" >
+                                    <Button colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(false)} >
                                         Go back to Form.
                                     </Button>
                                 </ModalFooter>

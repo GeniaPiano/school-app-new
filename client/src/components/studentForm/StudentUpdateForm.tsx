@@ -21,11 +21,11 @@ interface Props {
     handleSubmit: (e: FormEvent) => void;
     handleRemoveCourse: (courseId: string) => void,
     coursesReadyToUpdate: CourseEntity[],
-    handleSelectChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    handleSelectChange: (e) => void;
     availableCourses: CourseEntity[];
 }
 
-export const FormEditStudent = (props: Props): ReactNode => {
+export const StudentUpdateForm = (props: Props): ReactNode => {
 
     const {handleInputChange, inputValues, handleSubmit, handleRemoveCourse, coursesReadyToUpdate, handleSelectChange, availableCourses } = props
 

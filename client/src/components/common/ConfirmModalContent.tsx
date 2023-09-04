@@ -1,5 +1,5 @@
-import {Flex, ModalBody, ModalCloseButton, Text} from "@chakra-ui/react";
-import {CheckIcon} from "@chakra-ui/icons";
+import {ModalBody, ModalCloseButton} from "@chakra-ui/react";
+
 import {ConfirmTextAndIcon} from "./ConfirmTextAndIcon";
 
 interface Props {

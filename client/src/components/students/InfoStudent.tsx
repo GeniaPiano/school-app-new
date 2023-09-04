@@ -29,16 +29,15 @@ export const InfoStudent = (props: Props) => {
 
     return ( <>
 
-        <ModalHeader color="gray.500">
+        <ModalHeader  as={Flex} alignItems="center"  color="gray.500">
            <> {isPostedData? <ConfirmTextAndIcon text="Updated" withLayer={true} /> : null} </>
-            {firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}
-            <br/> <Badge  colorScheme='teal' >student</Badge>
+            <Text>{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)} </Text>
+            <Badge ml={5} colorScheme='teal' >student</Badge>
         </ModalHeader>
             <ModalCloseButton />
                 <ModalBody>
-                    <Flex flexDir="column"
-                          my={4}>
-                        <Heading color="gray.500" as="h3" size="sm" fontWeight="500" mb={5}>courses:</Heading>
+                    <Badge colorScheme='pink'> courses </Badge>
+                    <Flex flexDir="column"   mb={4} mt={2}>
                         <>{selectedCourses.length > 0
                             ? (
                                 <SimpleGrid  columns={3}
@@ -61,7 +60,7 @@ export const InfoStudent = (props: Props) => {
                         : <p color="gray.500">no selected courses.</p>} </>
                     </Flex>
                     <Box mt="40px" pb={6} color="gray.500">
-                        <Heading as="h3" size="sm" fontWeight="500" >email:</Heading>
+                        <Badge mb={2} colorScheme='pink' >email</Badge>
                         <p>{student.email}</p>
                     </Box>
         </ModalBody> </>

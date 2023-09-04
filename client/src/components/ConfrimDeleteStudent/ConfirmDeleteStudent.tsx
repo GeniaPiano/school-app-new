@@ -1,6 +1,6 @@
 import {
     AlertDialog, Box, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
-    Button,  ButtonGroup, Flex, useDisclosure,
+    Button, ButtonGroup, Flex, useDisclosure, Badge,
 } from "@chakra-ui/react";
 
 import {StudentEntity} from "../../types/student";
@@ -94,10 +94,11 @@ export const  ConfirmDeleteStudent = ({student, mainList, courseName}: Props) =>
                             : <>
                                 <AlertDialogHeader>Delete student </AlertDialogHeader>
                                 <AlertDialogBody>
-                                    {mainList
-                                        ? `Are you sure you want to delete ${firstLetterToUpper(student.name)} ${firstLetterToUpper(student.last_name)}?`
-                                        : `Are you sure you want to delete ${firstLetterToUpper(student.name)} ${firstLetterToUpper(student.last_name)} from ${courseName}?`}
-                                    <br/> You cannot undo this action.
+
+                                    Are you sure you want to delete
+                                    <Badge mx={1} colorScheme='pink'> {firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)} </Badge>
+                                    {mainList ? '?' : `from ${courseName} ?`  }
+
                                 </AlertDialogBody>
                                 <AlertDialogFooter>
                                     <ButtonGroup size='sm'>

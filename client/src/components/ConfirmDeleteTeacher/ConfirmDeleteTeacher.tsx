@@ -2,7 +2,7 @@ import {
     AlertDialog,
     AlertDialogBody, AlertDialogCloseButton,
     AlertDialogContent, AlertDialogFooter, AlertDialogHeader,
-    AlertDialogOverlay, Box,
+    AlertDialogOverlay, Badge, Box,
     Button, ButtonGroup, Flex,
     useDisclosure
 } from "@chakra-ui/react";
@@ -28,7 +28,6 @@ export const ConfirmDeleteTeacher = ({teacher} :Props) => {
     const handleDeleteTeacher = async() => {
          try {
             const res = await deleteTeacher(teacher.id)
-
             if (res === 200) {
                 changeIsPostedData(true);
                 changeIsLoadingData(true);
@@ -68,7 +67,8 @@ export const ConfirmDeleteTeacher = ({teacher} :Props) => {
                             : <>
                                 <AlertDialogHeader>Delete teacher </AlertDialogHeader>
                                 <AlertDialogBody>
-                                    {`Are you sure you want to delete ${firstLetterToUpper(teacher.last_name)} ${firstLetterToUpper(teacher.last_name)}? `}
+                                    Are you sure you want to delete
+                                    <Badge mx={1} colorScheme='pink'>{firstLetterToUpper(teacher.last_name)} {firstLetterToUpper(teacher.last_name)} </Badge>  ?
                                     <br/> You cannot undo this action.
                                 </AlertDialogBody>
                                 <AlertDialogFooter>

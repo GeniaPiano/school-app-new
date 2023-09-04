@@ -1,6 +1,6 @@
 
 
-import {Box, Heading, HStack, IconButton, List, Spinner, useDisclosure, Flex} from "@chakra-ui/react";
+import {Heading, HStack, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -11,7 +11,6 @@ import {ViewWrapper} from "../common/ViewWrapper";
 import {FiInfo} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
 import {useCounter} from "../../provider/CounterPovider";
-
 
 
 interface Props {

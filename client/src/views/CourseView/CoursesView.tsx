@@ -60,7 +60,6 @@ export const CoursesView = () => {
                 <Flex w="95%" alignItems="center"  gap={50}>
                     <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
-
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
 
             <SimpleGrid spacing={4} columns={[1, 2, 3, 6, 7, 8]}>

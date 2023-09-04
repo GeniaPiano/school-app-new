@@ -8,9 +8,9 @@ import {ListItem, Button, Text, useDisclosure, Box, HStack,   AlertDialog,
     AlertDialogCloseButton, } from "@chakra-ui/react";
 import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
-import {ChangeEvent, ReactNode, useEffect, useState} from "react";
+import {ChangeEvent, ReactNode, SyntheticEvent, useEffect, useState} from "react";
 import {CleanedStudent} from "../../types/student";
-import {FormEditStudent} from "../studentForm/FormEditStudent";
+import {StudentUpdateForm} from "../studentForm/StudentUpdateForm";
 import {initialState} from "../studentForm/initialState";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
@@ -160,7 +160,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                         ? <> <ModalHeader>Edit data</ModalHeader>
                             <ModalCloseButton/>
                             <ModalBody>
-                                <FormEditStudent
+                                <StudentUpdateForm
                                     studentData={props.studentData}
                                     handleSubmit={handleSubmit}
                                     handleInputChange={handleInputChange}

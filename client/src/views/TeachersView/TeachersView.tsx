@@ -26,7 +26,7 @@ export const TeachersView = () =>  {
                     <ModalContent  color="gray.500">
                     <>{isPostedData
                         ? <ConfirmModalContent text="Teacher has been added."   onClose={onClose}/>
-                        : <TeacherAddForm onClose={onClose}/>} </>
+                        : <TeacherAddForm   onClose={onClose}/>} </>
                     </ModalContent>
                     </Modal>
             </Box>

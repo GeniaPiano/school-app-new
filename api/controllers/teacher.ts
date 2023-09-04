@@ -24,9 +24,10 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
             }
     const teacherCleaned = userWithoutPassword(teacher)
     const selectedCourses = await TeacherRecord._getCoursesOfThisTeacher(req.params.id)
+
     res.json({
         teacher: teacherCleaned,
-        selectedCourses,
+        selectedCourses: selectedCourses === null ? [] : selectedCourses
     } as GetSingleTeacherRes)
 }
 

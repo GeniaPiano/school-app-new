@@ -5,7 +5,7 @@ import {GetSingleTeacherRes, TeacherEntity, TeacherReq} from "../types/teacher";
 import {CourseEntity} from "../types/course";
 
 interface AddTeacherRes {
-    succes: boolean,
+    success: boolean,
     data: GetSingleTeacherRes;
 }
 
@@ -20,6 +20,15 @@ export const useTeachers = () => {
         }
     }, [])
 
+    const getOneTeacher = useCallback(async(studentId) => {
+        try {
+            const results = await axios.get(`${TEACHER_ULR}/${studentId}`)
+            return results.data as GetSingleTeacherRes
+        } catch (err) {
+            console.log(err)
+        }
+    }, [])
+
     const getAvailableCourses = async()=> {
         try {
             const results = await axios.get(`${COURSE_URL}/courses-without-teacher`)
@@ -28,7 +37,6 @@ export const useTeachers = () => {
             console.log(err)
         }
     }
-
 
 
     const addNewTeacher = async (teacher: TeacherReq, selectedCourses: CourseEntity[] | null)=> {
@@ -71,6 +79,7 @@ export const useTeachers = () => {
 
     return {
         getAllTeachers,
+        getOneTeacher,
         getAvailableCourses,
         addNewTeacher,
         deleteTeacher,
