@@ -2,10 +2,7 @@ import {ViewWrapper} from "../common/ViewWrapper";
 import {useEffect, useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
-import {Box, Button, HStack, List, Spinner, Text, useDisclosure} from "@chakra-ui/react";
-import {UserItem} from "../common/UserItem";
-import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {ConfirmDeleteTeacher} from "../ConfirmDeleteTeacher/ConfirmDeleteTeacher";
+import {List, Spinner} from "@chakra-ui/react";
 import {useCounter} from "../../provider/CounterPovider";
 import {TeacherListItem} from "./TeacherListItem";
 
@@ -37,7 +34,7 @@ const {getAllTeachers} = useTeachers();
      return (
         <ViewWrapper>
             <List>
-                {loading ? <Spinner/> : (
+                <>{loading ? <Spinner/> : (
                    <> {teachers.length !== 0
                        ?  teachers.map(teacher => (
                            <TeacherListItem key={teacher.id} teacher={teacher}/>
@@ -45,7 +42,7 @@ const {getAllTeachers} = useTeachers();
                        : <span> No teachers. </span>
 
                    } </>
-                )}
+                )}</>
 
             </List>
         </ViewWrapper>
