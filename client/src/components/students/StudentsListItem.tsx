@@ -142,8 +142,9 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     return (
         <ListItem>
             <UserItem onOpen={onOpen}>
-               <Text   onClick={onOpen}  _hover={{color: "brand.700"}}
-               >{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
+               <Text   onClick={onOpen}  _hover={{color: "brand.700"}}>
+                   {firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}
+               </Text>
 
                <HStack>
                    <Button size="xs" colorScheme="teal"  onClick={onOpen} variant="solid">details</Button>
