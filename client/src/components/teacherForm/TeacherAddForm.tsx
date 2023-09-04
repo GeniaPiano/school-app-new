@@ -1,36 +1,40 @@
 import {
-    Box, Button,
+    Box,
     FormControl,
-    FormLabel, Modal,
+    FormLabel, Modal, ModalFooter,
     ModalBody,
     ModalCloseButton,
-    ModalContent, ModalFooter,
+    ModalContent,
     ModalHeader,
-    ModalOverlay, Select, SimpleGrid, useDisclosure
+    ModalOverlay, Select, SimpleGrid, useDisclosure, Button
 } from "@chakra-ui/react";
-import {useCallback, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
-import {Btn} from "../common/Btn";
 import {CourseItem} from "../common/CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
+import {useCounter} from "../../provider/CounterPovider";
 
+interface Props {
+    onClose: ()=> void;
+    isOpen: boolean;
+}
 
-export const TeacherAddForm = ({onClose})=> {
+export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
 
     const {dispatchError} = useError();
     const {onClose: closeConfirm} = useDisclosure();
     const {changeIsPostedData} = usePostingData();
-
+    const {incrementTeacherCounter} = useCounter()
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
-    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | null>(null)
-    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>(null)
+    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
+    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | []>([])
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
@@ -58,8 +62,8 @@ export const TeacherAddForm = ({onClose})=> {
     };
 
     const handleSelectCourse = (e) => {
-        const courseId: string = e.target.value;
-        if (availableCourses.length !== null) {
+        const courseId: string = e.target.value.toString()
+        if (availableCourses.length !== 0) {
             const courseToAdd: CourseEntity = availableCourses.find(course => course.id === courseId)
             setCoursesReadyToUpdate(prevState => [...prevState, courseToAdd])
             setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
@@ -69,6 +73,8 @@ export const TeacherAddForm = ({onClose})=> {
     const options = availableCourses?.map(course => (
         <option key={course.id} value={course.id} > {course.name} </option>
     ))
+
+
     const handleRemoveCourse = (courseId) => {
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
     };
@@ -106,8 +112,9 @@ export const TeacherAddForm = ({onClose})=> {
             if (res.success) {
                 changeIsPostedData(true);
                 setTimeout(()=> {
-                    onClose();
                     changeIsPostedData(false)
+                    incrementTeacherCounter();
+                    onClose();
                 }, 3000)
             }
 
@@ -117,24 +124,35 @@ export const TeacherAddForm = ({onClose})=> {
    }
 
 
-    const handleConfirmModalClose = useCallback((shouldClose) => {
+    const handleConfirmModalClose =(shouldClose) => {
         setIsConfirmationOpen(false);
-
         if (shouldClose) {
             onClose();
+            setInputValues({name: '', last_name: '', email: ''})
+            setInputTouchedCount(initialStateTouchCount)
         } else {
-
+            setIsConfirmationOpen(false)
         }
-    }, [onClose]);
+    }
 
 
 
     const handleCloseMainModal = () => {
-       setIsConfirmationOpen(true)
+
+        if (inputTouchedCount.name > 0 ) {
+           setIsConfirmationOpen(true)
+       }  else {
+           setIsConfirmationOpen(false);
+           setInputValues(initialStateTeacher);
+           onClose();
+       }
+
     };
 
     return (
-        <>
+        <Modal isOpen={isOpen} onClose={handleCloseMainModal}>
+            <ModalOverlay/>
+                <ModalContent>
                 <ModalHeader>Add new teacher</ModalHeader>
                 <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalBody>
@@ -159,7 +177,7 @@ export const TeacherAddForm = ({onClose})=> {
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
                         </SimpleGrid>
-                        <Btn text="save" type="submit"/>
+                        <Button type='submit' mb={35} colorScheme='gray' >save</Button>
 
                         <Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>
                             <ModalOverlay />
@@ -178,11 +196,12 @@ export const TeacherAddForm = ({onClose})=> {
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
+
                     </form>
                 </ModalBody>
 
 
-
-        </>
+            </ModalContent>
+        </Modal>
     )
 }

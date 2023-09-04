@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Btn = ({text, type, handleClick, colorScheme}: Props) =>  (
-    <Button type={type} mb={35}  onClick={handleClick && handleClick} colorScheme={colorScheme} >
+    <Button type={type} mb={35}  onClick={handleClick} colorScheme={colorScheme} >
         {text}
     </Button>
 )
