@@ -1,5 +1,5 @@
 import {
-    Button, HStack, ListItem, Modal, ModalContent, ModalOverlay, Text, useDisclosure
+    Button, HStack, ListItem, Modal, ModalContent, ModalFooter, ModalOverlay, Text, useDisclosure
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {ConfirmDeleteTeacher} from "../ConfirmDeleteTeacher/ConfirmDeleteTeacher";
@@ -23,7 +23,6 @@ export const TeacherListItem = ({teacher}: Props) => {
         onOpen();
         const res = await getOneTeacher(teacher.id)
         setSelectedCourses(res.selectedCourses)
-
     }
 
     return (
@@ -42,6 +41,9 @@ export const TeacherListItem = ({teacher}: Props) => {
                 <ModalContent>
                     <InfoTeacher selectedCourses={selectedCourses} teacher={teacher}/>
                 </ModalContent>
+                <ModalFooter>
+
+                </ModalFooter>
                 </Modal>
         </ListItem>
     )

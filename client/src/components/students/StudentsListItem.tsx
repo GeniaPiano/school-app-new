@@ -1,12 +1,6 @@
 
-import {ListItem, Button, Text, useDisclosure, Box, HStack,   AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    AlertDialogCloseButton, } from "@chakra-ui/react";
-import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton,
+import {ListItem, Button, Text, useDisclosure, Box, HStack } from "@chakra-ui/react";
+import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton,
 } from '@chakra-ui/react'
 import {ChangeEvent, ReactNode, SyntheticEvent, useEffect, useState} from "react";
 import {CleanedStudent} from "../../types/student";
@@ -16,11 +10,12 @@ import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";
 import {InfoStudent} from "./InfoStudent";
-import {ModalFooterButtons} from "./ModalFooterButtons";
+import {ConfirmationModal} from "./ConfirmationModal";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
+import {GroupButtonsEditSaveCancel} from "../GroupButtonsForm/GroupButtonsEditSaveCancel";
 
 
 
@@ -42,7 +37,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>(coursesData)
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isEditing, setIsEditing] = useState(false);
-    const [availableCourses, setAvailableCourses] = useState < CourseEntity[] | null> (null);
+    const [availableCourses, setAvailableCourses] = useState < CourseEntity[] | []> ([]);
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
     const [inputValues, setInputValues] = useState (initialState(student));
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -54,6 +49,8 @@ export const StudentsListItem = (props: Props): ReactNode  => {
        } else {
            onClose();
        }}
+
+    const toggleEditing = () => setIsEditing(prev=> !prev)
 
    const handleGoBackToEdit = () => {
        setIsConfirmationOpen(false)
@@ -101,7 +98,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
         }
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async(e: SyntheticEvent) => {
         if (inputValues.name.length < 3 || inputValues.last_name.length < 3) {
             return;
         }
@@ -144,7 +141,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
     return (
         <ListItem>
-            <UserItem>
+            <UserItem onOpen={onOpen}>
                <Text   onClick={onOpen}  _hover={{color: "brand.700"}}
                >{firstLetterToUpper(student.name)} {firstLetterToUpper(student.last_name)}</Text>
 
@@ -173,24 +170,15 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                         : <InfoStudent student={student} selectedCourses={selectedCourses} /> }
                     </Box>
 
-                    <ModalFooter>
-                        <Button type={isEditing ? "submit" : "button"}
-                                color="gray.500"
-                                colorScheme='gray'
-                                mr={3}
-                                onClick={isEditing? handleSubmit : ()=>setIsEditing(prev => !prev)}>
-                            {isEditing ? 'Save' : 'Edit'}
-                        </Button>
-                        <> {isEditing && (
-                            <Button  color="gray.500" mr={3}
-                                     colorScheme='gray'
-                                     onClick={cancelEditing}
-                            >Cancel</Button>
-                        )} </>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-              <ModalFooterButtons
+                    <GroupButtonsEditSaveCancel cancelEditing={cancelEditing}
+                                                toggleEditing={toggleEditing}
+                                                isEditing={isEditing}
+                                                handleSubmit={handleSubmit}
+                            />
+                  </ModalContent>
+
+                </Modal>
+              <ConfirmationModal
                 isConfirmationOpen={isConfirmationOpen}
                 handleCloseConfirmModal={handleCloseConfirmModal}
                 handleGoBackToEdit={handleGoBackToEdit}

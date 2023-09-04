@@ -7,7 +7,7 @@ interface Props {
     handleGoBackToEdit: ()=> void;
 }
 
-export const  ModalFooterButtons = (props: Props) => {
+export const  ConfirmationModal = (props: Props) => {
     const {isConfirmationOpen, handleCloseConfirmModal, handleCloseAfterConfirm, handleGoBackToEdit} = props
 
     return (
