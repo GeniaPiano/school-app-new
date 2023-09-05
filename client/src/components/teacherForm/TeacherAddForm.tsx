@@ -29,8 +29,8 @@ export const TeacherAddForm = ({onClose})=> {
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
-    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | null>(null)
-    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | null>(null)
+    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
+    const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | []>([])
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
@@ -59,7 +59,7 @@ export const TeacherAddForm = ({onClose})=> {
 
     const handleSelectCourse = (e) => {
         const courseId: string = e.target.value;
-        if (availableCourses.length !== null) {
+        if (availableCourses.length !== 0) {
             const courseToAdd: CourseEntity = availableCourses.find(course => course.id === courseId)
             setCoursesReadyToUpdate(prevState => [...prevState, courseToAdd])
             setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
