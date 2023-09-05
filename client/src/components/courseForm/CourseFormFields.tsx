@@ -22,9 +22,10 @@ interface Props {
     handleCloseConfirmModal: ()=> void;
     handleGoBackToForm: ()=> void;
     onClose: ()=> void;
+    changeInputTouched: (boolean)=> void;
 }
 
-export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose}: Props) => {
+export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose, changeInputTouched }: Props) => {
 
     const [teachers, setTeachers] = useState<TeacherEntity[] | null>(null);
     const {getAllTeachers} = useTeachers();
@@ -50,6 +51,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
         const value = firstLetterToUpper(e.target.value);
         setCourseName(value);
         setInputTouchedCount(prev => prev + 1);
+        changeInputTouched(true);
     };
 
 

@@ -23,8 +23,10 @@ interface Props {
 export const CourseAddForm = ({isOpen, onClose}: Props) => {
 
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
-    const {isPostedData} = usePostingData();
+    const {isPostedData } = usePostingData();
+    const [inputTouched, setInputTouched] = useState<boolean>(false)
 
+    const changeInputTouched = (bool: boolean) => setInputTouched(bool)
     const handleCloseConfirmModal = () => {
         setIsConfirmationOpen(false);
         onClose();
@@ -34,9 +36,14 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
         setIsConfirmationOpen(false);
     }
 
+    const handleCloseModal = () => {
+        if (!inputTouched) {
+            onClose();
+        } else setIsConfirmationOpen(true)
+    }
 
     return (
-        <Modal isOpen={isOpen} onClose={()=> setIsConfirmationOpen(true)}>
+        <Modal isOpen={isOpen} onClose={handleCloseModal}>
             <ModalOverlay />
             <ModalContent  color="gray.500">
                 <> {isPostedData
@@ -50,6 +57,7 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
                                 handleCloseConfirmModal={handleCloseConfirmModal}
                                 handleGoBackToForm={handleGoBackToForm}
                                 onClose={onClose}
+                                changeInputTouched={changeInputTouched }
 
                             />
                         </ModalBody>
