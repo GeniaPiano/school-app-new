@@ -45,6 +45,7 @@ export const useCourses = () => {
             });
             return { success: true, data: res.data as CourseEntity } as AddCourseRes
 
+
         } catch (error) {
             console.error("Error posting new courses:", error);
             throw error;

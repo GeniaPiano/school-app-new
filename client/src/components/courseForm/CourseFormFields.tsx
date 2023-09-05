@@ -32,7 +32,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
     const [courseName, setCourseName] = useState<string>('')
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
     const {addCourse} = useCourses();
-    const {incrementCourseCounter} = useCounter();
+    const {incrementCourseCounter, incrementTeacherCounter} = useCounter();
     const {changeIsPostedData} = usePostingData()
 
 
@@ -64,6 +64,9 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
         try {
             const res = await addCourse(courseName, selectTeacherId);
             incrementCourseCounter();
+            if(courseName) {
+                incrementTeacherCounter();
+            }
             setCourseName('');
             setSelectTeacherId('');
             setInputTouchedCount(0)
