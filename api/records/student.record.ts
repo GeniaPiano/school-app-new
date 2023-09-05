@@ -5,6 +5,7 @@ import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
+import {resourceLimits} from "worker_threads";
 
 
 
@@ -75,7 +76,10 @@ export class StudentRecord implements StudentEntity {
                 courseId,
             }
         ) as StudentRecordResults;
+
         return results.map(obj => new StudentRecord(obj));
+
+
     }
 
 
@@ -121,8 +125,8 @@ export class StudentRecord implements StudentEntity {
                 student_id,
         })) as StudentCoursesRelatedData;
         let selectedCourses:CourseRecord[] | null = []
-        if (results.length === null) {
-            selectedCourses = null
+        if (results.length === 0) {
+            selectedCourses = []
         } else {
             for (const one of results){
                 const course = await CourseRecord.getOne(one.course_id)

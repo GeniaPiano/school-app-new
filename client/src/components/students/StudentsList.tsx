@@ -14,7 +14,7 @@ import {useCounter} from "../../provider/CounterPovider";
 
 
 interface Props {
-    courseName: string;
+    courseName?: string;
     mainList:boolean;
 }
 
@@ -29,7 +29,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
 
     useEffect(() => {
         (async () => {
-            if (courseName === undefined && courseId === undefined) {
+            if (courseName === undefined && courseId === undefined)  {
                 const students = await getAllStudents()
                     setStudents(students);
                     setLoading(false)
@@ -61,7 +61,6 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                                 key={student.student.id}
                                 studentData={student}
                                 studentId={student.student.id}
-                                courseName={courseName}
                                 mainList={mainList} /> )
                             : <span> No students. </span>}
                          </>

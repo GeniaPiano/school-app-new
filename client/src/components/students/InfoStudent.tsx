@@ -26,6 +26,7 @@ interface Props {
 export const InfoStudent = (props: Props) => {
     const {student, selectedCourses} = props
     const {isPostedData} = usePostingData()
+    console.log('selectedCourses', selectedCourses)
 
     return ( <>
 
@@ -38,7 +39,7 @@ export const InfoStudent = (props: Props) => {
                 <ModalBody>
                     <Badge colorScheme='pink'> courses </Badge>
                     <Flex flexDir="column"   mb={4} mt={2}>
-                        <>{selectedCourses.length > 0
+                        <>{selectedCourses.length !== 0
                             ? (
                                 <SimpleGrid  columns={3}
                                              spacing={4}
@@ -63,6 +64,7 @@ export const InfoStudent = (props: Props) => {
                         <Badge mb={2} colorScheme='pink' >email</Badge>
                         <p>{student.email}</p>
                     </Box>
-        </ModalBody> </>
+        </ModalBody>
+</>
 )
 }

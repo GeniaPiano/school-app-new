@@ -89,6 +89,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     }
 
 
+
     const handleSelectChange = (e) => {
         const courseId = e.target.value;
         if (availableCourses) {
@@ -168,7 +169,9 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                     handleSelectChange={handleSelectChange}
                                     availableCourses={availableCourses}/>
                             </ModalBody> </>
-                        : <InfoStudent student={student} selectedCourses={selectedCourses} /> }
+                        : <InfoStudent student={student}
+                                       selectedCourses={coursesData}
+                        /> }
                     </Box>
 
                     <GroupButtonsEditSaveCancel cancelEditing={cancelEditing}

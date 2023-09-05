@@ -64,9 +64,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
         try {
             const res = await addCourse(courseName, selectTeacherId);
             incrementCourseCounter();
-            if(courseName) {
-                incrementTeacherCounter();
-            }
+            incrementTeacherCounter();
             setCourseName('');
             setSelectTeacherId('');
             setInputTouchedCount(0)

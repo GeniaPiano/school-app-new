@@ -23,7 +23,9 @@ export const getAllStudents = async (req: Request, res: Response, next: NextFunc
             };
         }));
 
-        res.json({ students: studentsWithSelectedCourses });
+       res.json({ students: studentsWithSelectedCourses });
+
+
 
     } catch(err) {
         next(err)
@@ -51,7 +53,6 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
             selectedCourses,
         };
     }));
-
     res.json({ students: studentsWithSelectedCourses });
 }
 
