@@ -20,7 +20,7 @@ import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
 
 
-export const TeacherAddForm = ({onClose})=> {
+export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const {dispatchError} = useError();
     const {onClose: closeConfirm} = useDisclosure();
@@ -117,49 +117,64 @@ export const TeacherAddForm = ({onClose})=> {
    }
 
 
-    const handleConfirmModalClose = useCallback((shouldClose) => {
+    const handleConfirmModalClose = (shouldClose) => {
         setIsConfirmationOpen(false);
-
         if (shouldClose) {
             onClose();
+            setInputValues({name: '', last_name: '', email: ''})
+            setInputTouchedCount(initialStateTouchCount)
         } else {
-
+            setIsConfirmationOpen(false);
         }
-    }, [onClose]);
+    }
 
 
 
     const handleCloseMainModal = () => {
        setIsConfirmationOpen(true)
+        if (inputTouchedCount.name > 0 ) {
+            setIsConfirmationOpen(true)
+        }  else {
+            setIsConfirmationOpen(false);
+            setInputValues(initialStateTeacher);
+            onClose();
+        }
     };
 
     return (
         <>
-                <ModalHeader>Add new teacher</ModalHeader>
-                <ModalCloseButton onClick={handleCloseMainModal}/>
-                <ModalBody>
-                    <form onSubmit={handleSubmit}>
-                        <TeacherFormInputFields
-                            inputValues={inputValues}
-                            isError={isError}
-                            handleChangeInputValue={handleChangeInputValue}
-                        />
-                        <FormControl mb={8}>
-                            <FormLabel>Courses</FormLabel>
-                            <Select onChange={handleSelectCourse}
-                                    placeholder='Select course'
-                                    variant='filled'
-                                    outline='none'
-                                    focusBorderColor="brand.600"
-                            >
-                                <>{availableCourses && options}</>
-                            </Select>
-                        </FormControl>
+            <Modal isOpen={isOpen}>
+               <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Add new teacher</ModalHeader>
+                    <ModalCloseButton onClick={handleCloseMainModal}/>
+                       <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <TeacherFormInputFields
+                                    inputValues={inputValues}
+                                    isError={isError}
+                                    handleChangeInputValue={handleChangeInputValue}
+                                />
+                                <FormControl mb={8}>
+                                    <FormLabel>Courses</FormLabel>
+                                    <Select onChange={handleSelectCourse}
+                                            placeholder='Select course'
+                                            variant='filled'
+                                            outline='none'
+                                            focusBorderColor="brand.600"
+                                    >
+                                        <>{availableCourses && options}</>
+                                    </Select>
+                                </FormControl>
+                            </form>
 
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
                         </SimpleGrid>
                         <Btn text="save" type="submit"/>
+                    </ModalBody>
+                       </ModalContent>
+                </Modal>
 
                         <Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>
                             <ModalOverlay />
@@ -176,10 +191,10 @@ export const TeacherAddForm = ({onClose})=> {
                                         Go back to Form.
                                     </Button>
                                 </ModalFooter>
+
                             </ModalContent>
                         </Modal>
-                    </form>
-                </ModalBody>
+
 
 
 

@@ -26,10 +26,10 @@ export const TeachersView = () =>  {
                     ? <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay />
                         <ModalContent  color="gray.500">
-                            <ConfirmModalContent text="Teacher has been added."   onClose={onClose}/>
+                            <ConfirmModalContent text="Teacher has been added."   onClose={onClose} />
                         </ModalContent>
                     </Modal>
-                    : <TeacherAddForm isOpen={isOpen} onClose={onClose}/>
+                    : <TeacherAddForm  onClose={onClose} isOpen={isOpen}/>
                 }
 
             </Box>
