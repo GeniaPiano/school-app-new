@@ -17,7 +17,7 @@ export interface TeacherReq {
 }
 
 export interface TeacherReqSelectedCourses {
-    selectedCourses: string[] | []
+    selectedCourses: CourseEntity[]
 }
 
 export interface TeacherUpdateReq {

@@ -18,6 +18,7 @@ import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
+import {useCounter} from "../../provider/CounterPovider";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
@@ -25,7 +26,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
     const {dispatchError} = useError();
     const {onClose: closeConfirm} = useDisclosure();
     const {changeIsPostedData} = usePostingData();
-
+    const {incrementTeacherCounter} = useCounter();
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
@@ -104,10 +105,12 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         try {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
             if (res.success) {
+                console.log('succes', res.success)
                 changeIsPostedData(true);
                 setTimeout(()=> {
                     onClose();
                     changeIsPostedData(false)
+                    incrementTeacherCounter();
                 }, 3000)
             }
 
@@ -143,13 +146,13 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     return (
         <>
-            <Modal isOpen={isOpen}>
+            <Modal isOpen={isOpen} onClose={onClose}>
                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Add new teacher</ModalHeader>
                     <ModalCloseButton onClick={handleCloseMainModal}/>
                        <ModalBody>
-                            <form onSubmit={handleSubmit}>
+                            <form >
                                 <TeacherFormInputFields
                                     inputValues={inputValues}
                                     isError={isError}
@@ -171,7 +174,8 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
                         </SimpleGrid>
-                        <Btn text="save" type="submit"/>
+                        <Button  mb={35} onClick={handleSubmit}>save</Button>
+
                     </ModalBody>
                        </ModalContent>
                 </Modal>

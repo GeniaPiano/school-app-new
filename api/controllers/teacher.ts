@@ -1,7 +1,14 @@
 import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from "express";
 import {TeacherRecord} from "../records/teacher.record";
-import {GetSingleTeacherRes, TeacherEntity, TeacherReq, TeacherReqSelectedCourses, TeacherUpdateReq} from "../types";
+import {
+    CourseEntity,
+    GetSingleTeacherRes,
+    TeacherEntity,
+    TeacherReq,
+    TeacherReqSelectedCourses,
+    TeacherUpdateReq
+} from "../types";
 import {checkMailAvaible} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
 import {CourseRecord} from "../records/course.record";
@@ -34,7 +41,7 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
 export const createTeacher = async (req: Request, res: Response, next: NextFunction) => {
 
     const {name, last_name } = req.body.teacher as TeacherReq
-    const {selectedCourses} = req.body as  TeacherReqSelectedCourses
+    const {selectedCourses} = req.body as TeacherReqSelectedCourses
     const rawPassword = generatePassword(name, last_name);
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
@@ -47,17 +54,16 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
     const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
         throw new ValidationError("Email already exists.")
-
-
     }
     //miejsce na wysłanie hasła na maila użytkownika
 
     await teacher.insert();
 
     if (selectedCourses)
-        for (const id of selectedCourses) {
+        for (const oneCourse of selectedCourses) {
+            const id = oneCourse.id
             await teacher.assignCourseToTeacher(id)
-        }
+           }
     const courses = await TeacherRecord._getCoursesOfThisTeacher(teacher.id)
 
     res.status(200).json({

@@ -38,7 +38,7 @@ export const ConfirmDeleteTeacher = ({teacher} :Props) => {
                     incrementTeacherCounter();
                     onClose();
                     changeIsPostedData(false)
-                }, 4000)
+                }, 3000)
             }
         } catch (err) {
             console.log(err)

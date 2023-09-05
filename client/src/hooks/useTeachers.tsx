@@ -49,7 +49,7 @@ export const useTeachers = () => {
         try {
             const response = await axios.post(`${TEACHER_ULR}`, {
                 teacher,
-                selectedCourses
+                selectedCourses,
             }, {
                 headers: {
                     'Content-Type': 'application/json',
