@@ -88,9 +88,7 @@ export const CoursesView = () => {
                 } </>
             </SimpleGrid>
             </Box>
-            {/*<Divider*/}
-            {/*    border="3px gray.500 solid"*/}
-            {/*    mx={0}/>*/}
+
             <StudentsList courseName={selectedCourse} mainList={false}/>
 
 
