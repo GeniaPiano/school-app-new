@@ -1,35 +1,31 @@
 import {
-    Box,
+    Box, Button,
     FormControl,
-    FormLabel, Modal, ModalFooter,
+    FormLabel, Modal,
     ModalBody,
     ModalCloseButton,
-    ModalContent,
+    ModalContent, ModalFooter,
     ModalHeader,
-    ModalOverlay, Select, SimpleGrid, useDisclosure, Button
+    ModalOverlay, Select, SimpleGrid, useDisclosure
 } from "@chakra-ui/react";
-import { useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
+import {Btn} from "../common/Btn";
 import {CourseItem} from "../common/CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
-import {useCounter} from "../../provider/CounterPovider";
 
-interface Props {
-    onClose: ()=> void;
-    isOpen: boolean;
-}
 
-export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
+export const TeacherAddForm = ({onClose})=> {
 
     const {dispatchError} = useError();
     const {onClose: closeConfirm} = useDisclosure();
     const {changeIsPostedData} = usePostingData();
-    const {incrementTeacherCounter} = useCounter()
+
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
@@ -62,7 +58,7 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
     };
 
     const handleSelectCourse = (e) => {
-        const courseId: string = e.target.value.toString()
+        const courseId: string = e.target.value;
         if (availableCourses.length !== 0) {
             const courseToAdd: CourseEntity = availableCourses.find(course => course.id === courseId)
             setCoursesReadyToUpdate(prevState => [...prevState, courseToAdd])
@@ -73,8 +69,6 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
     const options = availableCourses?.map(course => (
         <option key={course.id} value={course.id} > {course.name} </option>
     ))
-
-
     const handleRemoveCourse = (courseId) => {
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
     };
@@ -112,9 +106,8 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
             if (res.success) {
                 changeIsPostedData(true);
                 setTimeout(()=> {
-                    changeIsPostedData(false)
-                    incrementTeacherCounter();
                     onClose();
+                    changeIsPostedData(false)
                 }, 3000)
             }
 
@@ -124,35 +117,24 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
    }
 
 
-    const handleConfirmModalClose =(shouldClose) => {
+    const handleConfirmModalClose = useCallback((shouldClose) => {
         setIsConfirmationOpen(false);
+
         if (shouldClose) {
             onClose();
-            setInputValues({name: '', last_name: '', email: ''})
-            setInputTouchedCount(initialStateTouchCount)
         } else {
-            setIsConfirmationOpen(false)
+
         }
-    }
+    }, [onClose]);
 
 
 
     const handleCloseMainModal = () => {
-
-        if (inputTouchedCount.name > 0 ) {
-           setIsConfirmationOpen(true)
-       }  else {
-           setIsConfirmationOpen(false);
-           setInputValues(initialStateTeacher);
-           onClose();
-       }
-
+       setIsConfirmationOpen(true)
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={handleCloseMainModal}>
-            <ModalOverlay/>
-                <ModalContent>
+        <>
                 <ModalHeader>Add new teacher</ModalHeader>
                 <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalBody>
@@ -177,7 +159,7 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
                         </SimpleGrid>
-                        <Button type='submit' mb={35} colorScheme='gray' >save</Button>
+                        <Btn text="save" type="submit"/>
 
                         <Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>
                             <ModalOverlay />
@@ -196,12 +178,11 @@ export const TeacherAddForm = ({onClose, isOpen}: Props)=> {
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
-
                     </form>
                 </ModalBody>
 
 
-            </ModalContent>
-        </Modal>
+
+        </>
     )
 }
