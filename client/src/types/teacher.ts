@@ -12,7 +12,7 @@ export interface GetSingleTeacherRes {
     selectedCourses: [];
 }
 
-export interface TeacherReq {
+export interface TeacherBasicData {
     name: string;
     last_name: string;
     email: string;

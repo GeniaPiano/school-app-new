@@ -1,7 +1,7 @@
 import axios from "axios";
 import {COURSE_URL, TEACHER_ULR} from "../utils/url";
 import {useCallback} from "react";
-import {GetSingleTeacherRes, TeacherEntity, TeacherReq} from "../types/teacher";
+import {GetSingleTeacherRes, TeacherEntity, TeacherBasicData} from "../types/teacher";
 import {CourseEntity} from "../types/course";
 
 interface AddTeacherRes {
@@ -39,7 +39,7 @@ export const useTeachers = () => {
     }
 
 
-    const addNewTeacher = async (teacher: TeacherReq, selectedCourses: CourseEntity[] | null)=> {
+    const addNewTeacher = async (teacher: TeacherBasicData, selectedCourses: CourseEntity[] | null)=> {
 
         if (teacher.name === "" || teacher.name.length <2 || teacher.name.length > 40
             || teacher.last_name === "" || teacher.last_name.length < 2 || teacher.last_name.length > 40

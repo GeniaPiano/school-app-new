@@ -8,13 +8,12 @@ import {
     ModalHeader,
     ModalOverlay, Select, SimpleGrid, useDisclosure
 } from "@chakra-ui/react";
-import {useCallback, useEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
-import {Btn} from "../common/Btn";
 import {CourseItem} from "../common/CourseItem";
-import {initialStateTeacher, initialStateTouchCount} from "./teacherFormData";
+import {initialStateTeacher, initialStateTouchCount} from "./initialState";
 import {errorData} from "./errorData";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";

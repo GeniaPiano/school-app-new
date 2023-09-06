@@ -7,8 +7,9 @@ import {CleanedStudent} from "../../types/student";
 import {ChangeEvent, FormEvent, ReactNode} from "react";
 import {CourseEntity} from "../../types/course";
 import {InitialStudentState} from "./initialState";
-import {FormFields} from "./FormFields";
+import {StudentFormFields} from "./StudentFormFields";
 import {CourseItem} from "../common/CourseItem";
+import {errors} from "../../utils/errorsForm";
 
 
 interface Props {
@@ -28,18 +29,8 @@ interface Props {
 export const StudentUpdateForm = (props: Props): ReactNode => {
 
     const {handleInputChange, inputValues, handleSubmit, handleRemoveCourse, coursesReadyToUpdate, handleSelectChange, availableCourses } = props
+    const newErrors = errors(inputValues);
 
-    type FormErrors = {
-        name: boolean;
-        last_name: boolean;
-        email: boolean;
-       }
-
-    const newErrors: FormErrors  = {
-        name: inputValues.name.length < 3 || inputValues.name.length > 40 || inputValues.name === '',
-        last_name: inputValues.last_name.length < 3 || inputValues.last_name.length > 40 || inputValues.last_name === '',
-        email: inputValues.email.length < 4 || inputValues.email.length > 40 || inputValues.email === '',
-    };
 
     const chosenCourses = coursesReadyToUpdate.map(oneCourse => (
         <Box key={oneCourse.id} position="relative" bg="brand.800" color="white" p={3} borderRadius="10px" alignItems="center">
@@ -56,7 +47,7 @@ export const StudentUpdateForm = (props: Props): ReactNode => {
     return (
         <Box >
             <form onSubmit={handleSubmit}>
-                <FormFields handleInputChange={handleInputChange} newErrors={newErrors} inputValues={inputValues}/>
+                <StudentFormFields handleInputChange={handleInputChange}  newErrors={newErrors} inputValues={inputValues}/>
                 <FormControl mb={10}>
                     <FormLabel>Courses</FormLabel>
                     <Select placeholder='Select courses'

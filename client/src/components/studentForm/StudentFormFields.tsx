@@ -1,14 +1,13 @@
-
 import {FormControl, FormErrorMessage, FormLabel, Input} from "@chakra-ui/react";
-import {formFieldsData} from "./formFieldsData";
+import {userFormData} from "../../utils/userFormData";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 
 
-export const FormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
+export const StudentFormFields = ({handleInputChange, newErrors, inputValues, loading}) => {
 
     return (
-     formFieldsData.map(oneForm => (
+     userFormData.map(oneForm => (
         <FormControl key={oneForm.title} mb={5} isInvalid={!loading && newErrors[oneForm.name]}>
             <FormLabel>{oneForm.title}</FormLabel>
             <Input
