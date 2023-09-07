@@ -8,7 +8,7 @@ import {
 } from "../types";
 import {StudentRecord} from "../records/student.record";
 import {generatePassword} from "../utils/generatePassword";
-import {checkMailAvaible} from "../utils/checkMailAvailable";
+import {checkMailAvailable} from "../utils/checkMailAvailable";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 
 
@@ -67,7 +67,7 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
         } as StudentRecord;
 
     const student = new StudentRecord(studentData);
-    const checkOkMail = checkMailAvaible(student.email) //sprawdzanie dostępności maila
+    const checkOkMail = checkMailAvailable(student.email) //sprawdzanie dostępności maila
         if (!checkOkMail) {
         throw new ValidationError('Mail already exists.')
     }
@@ -81,7 +81,7 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
 }
 
 
-export const updateStudent = async (req: Request, res: Response ) => {
+export const updateStudent = async (req: Request, res: Response, next: NextFunction ) => {
 
     const student = await StudentRecord.getOne(req.params.id);
        if (student === null) {
@@ -95,6 +95,7 @@ export const updateStudent = async (req: Request, res: Response ) => {
             student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
         }
     }
+
     await student.updateNameAndEmail();
 
     //aktua lizacja coursesSelected

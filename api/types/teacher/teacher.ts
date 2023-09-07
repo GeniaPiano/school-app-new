@@ -10,7 +10,7 @@ export interface GetSingleTeacherRes {
 
 export type DataCoursesResForSingleTeacher = Omit <CourseEntity, 'teacher_id'>
 
-export interface TeacherReq {
+export interface TeacherBasicData {
         name: string;
         last_name: string;
         email: string;

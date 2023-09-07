@@ -2,16 +2,15 @@ import * as bcrypt from 'bcryptjs';
 import {NextFunction, Request, Response} from "express";
 import {TeacherRecord} from "../records/teacher.record";
 import {
-    CourseEntity,
+
     GetSingleTeacherRes,
     TeacherEntity,
-    TeacherReq,
+    TeacherBasicData,
     TeacherReqSelectedCourses,
-    TeacherUpdateReq
+
 } from "../types";
-import {checkMailAvaible} from "../utils/checkMailAvailable";
+import {checkMailAvailable, checkMailAvailableWhenUpdating} from "../utils/checkMailAvailable";
 import {generatePassword} from "../utils/generatePassword";
-import {CourseRecord} from "../records/course.record";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 import {NotFoundError, ValidationError} from "../utils/errors";
 
@@ -40,7 +39,7 @@ export const getOneTeacher = async (req: Request, res: Response, next: NextFunct
 
 export const createTeacher = async (req: Request, res: Response, next: NextFunction) => {
 
-    const {name, last_name } = req.body.teacher as TeacherReq
+    const {name, last_name } = req.body.teacher as TeacherBasicData
     const {selectedCourses} = req.body as TeacherReqSelectedCourses
     const rawPassword = generatePassword(name, last_name);
     const hashedPassword = await bcrypt.hash(rawPassword, 10);
@@ -51,7 +50,7 @@ export const createTeacher = async (req: Request, res: Response, next: NextFunct
     } as TeacherRecord
 
     const teacher = new TeacherRecord(teacherData);
-    const checkOkMail = await checkMailAvaible(teacher.email); //sprawdzanie dostępności maila
+    const checkOkMail = await checkMailAvailable(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
         throw new ValidationError("Email already exists.")
     }
@@ -77,67 +76,30 @@ export const updateTeacher = async (req: Request, res: Response, next: NextFunct
     const teacher = await TeacherRecord.getOne(req.params.id);
     if (teacher === null) {
         throw new NotFoundError( 'Teacher with given ID does not exist.')
+    }
+    const { name, last_name, email } = req.body.teacher
+    const mailOk = await checkMailAvailableWhenUpdating(teacher.email, email);
+    if (!mailOk) {
+        throw new ValidationError('Given email, already exists in database, give the correct email.')
+    }
 
-    }
-    const { name, last_name, email } = req.body as TeacherUpdateReq;
-    const fieldsToUpdate: Partial<TeacherReq> = { name, last_name, email };
-    for (const key in fieldsToUpdate) {
-        if (fieldsToUpdate[key as keyof TeacherReq]) {
-            teacher[key as keyof TeacherReq] = fieldsToUpdate[key as keyof TeacherReq]!;
-        }
-    }
-    console.log(teacher)
+    teacher.name = name;
+    teacher.last_name = last_name;
+    teacher.email = email
+
     await teacher.update();
-    res.json(teacher);
-}
+    await teacher.removeAllCoursesFromTeacher();
 
-//PRZENIEŚĆ DO ODDZIELNEJ KLASY APLIKACJI Z METODAMI STATIC
-export const assignCourseToTeacher = async (req: Request, res: Response, next: NextFunction) => {
-
-    const teacher = await TeacherRecord.getOne(req.params.id);
-    if (!teacher) {
-        throw new NotFoundError('Canot find teacher')
-
-    }
-
-    const {selectedCourseId} = req.body
-    if (selectedCourseId === '' || !selectedCourseId) {
-        throw new NotFoundError('No course to assign.')
-    }
-
-    const course = await CourseRecord.getOne(selectedCourseId)
-    if (!course) {
-        throw new ValidationError('Course you want to assign does not exist.')
-    }
-
-    if (course.teacher_id === null) {
-        await teacher.assignCourseToTeacher(selectedCourseId)
-        } else {
-           throw new ValidationError('The course has already assigned teacher .')
-          }
-        res.end();
-
-}
-export const removeCourseFromTeacher = async (req: Request, res: Response, next: NextFunction) => {
-      const teacher = await TeacherRecord.getOne(req.params.id)
-      if (!teacher) {
-        throw new ValidationError('Teacher not found.')
-
-      }
-    const {selectedCourseId} = req.body
-    if (selectedCourseId === '' || !selectedCourseId) {
-       throw new ValidationError('No course to remove')
-
-    }
-    const course = await CourseRecord.getOne(selectedCourseId)
-    if (!course) {
-        throw new ValidationError('Course you want to remove does not exist.')
-    }
-    if (course.teacher_id !== null) {
-        await teacher.removeCourseFromTeacher(selectedCourseId)
-    }
-    res.end()
-
+    const {selectedCourses} = req.body as TeacherReqSelectedCourses
+    if (selectedCourses)
+        for (const oneCourse of selectedCourses) {
+            const id = oneCourse.id
+            await teacher.assignCourseToTeacher(id)
+        }
+    res.json({
+        teacher: userWithoutPassword(teacher),
+        selectedCourses: await TeacherRecord._getCoursesOfThisTeacher(teacher.id)
+    })
 }
 
 export const deleteTeacher = async (req: Request, res: Response, next: NextFunction) => {

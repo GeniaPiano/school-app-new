@@ -88,14 +88,9 @@ export class TeacherRecord implements TeacherEntity {
         })
     }
 
-    async removeCourseFromTeacher(courseId: string) {
-
-          await pool.execute("UPDATE `courses` SET `teacher_id`=:teacher_id WHERE `id`= :id", {
-              id: courseId,
-              teacher_id: null,
-          })
-          await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` =:course_id", {
-              course_id: courseId,
+    async removeAllCoursesFromTeacher() {
+          await pool.execute("DELETE FROM `courses_teachers` WHERE `teacher_id` =:teacher_id", {
+              teacher_id: this.id
           })
     }
 
