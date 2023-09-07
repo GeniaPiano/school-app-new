@@ -1,4 +1,15 @@
-import {Badge, Box, Flex, GridItem, ModalBody, ModalCloseButton, ModalHeader, SimpleGrid, Text} from "@chakra-ui/react";
+import {
+    Badge,
+    Box,
+    Button,
+    Flex,
+    GridItem,
+    ModalBody,
+    ModalCloseButton, ModalFooter,
+    ModalHeader,
+    SimpleGrid,
+    Text
+} from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {CourseFormDiv} from "../common/CourseFormDiv";
 import {TeacherEntity} from "../../types/teacher";
@@ -9,7 +20,7 @@ interface Props {
     selectedCourses: CourseEntity[];
 }
 
-export const InfoTeacher = ({teacher, selectedCourses}: Props) => {
+export const InfoTeacher = ({teacher, selectedCourses, toggleEditing}: Props) => {
 
 
 
@@ -46,10 +57,19 @@ export const InfoTeacher = ({teacher, selectedCourses}: Props) => {
                         )
                         : <Text color="gray.500">no selected courses.</Text>} </>
                 </Flex>
-                <Box mt="40px" pb={6} color="gray.500">
+                <Box mt="40px" pb={6} color="gray.500" position="relative">
                     <Badge  mb={2} colorScheme='pink' >email</Badge>
                     <p>{teacher.email}</p>
                 </Box>
+
+            <ModalFooter>
+                <Button
+                        color="gray.500"
+                        colorScheme='gray'
+                        onClick={toggleEditing}>
+                    Edit
+                </Button>
+            </ModalFooter>
     </ModalBody>
     </>)
 }

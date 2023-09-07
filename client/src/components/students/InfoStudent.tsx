@@ -26,7 +26,6 @@ interface Props {
 export const InfoStudent = (props: Props) => {
     const {student, selectedCourses} = props
     const {isPostedData} = usePostingData()
-    console.log('selectedCourses', selectedCourses)
 
     return ( <>
 

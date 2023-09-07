@@ -14,7 +14,7 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {CourseItem} from "../common/CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "./initialState";
-import {errorData} from "./errorData";
+import {errorDataAddTeacher} from "./errorDataAddTeacher";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {useCounter} from "../../provider/CounterPovider";
@@ -43,7 +43,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
     },[])
 
 
-    const isError = errorData(inputTouchedCount, inputValues);
+    const isError = errorDataAddTeacher(inputTouchedCount, inputValues);
 
       const handleChangeInputValue = (e) => {
          setInputTouchedCount(prev => ({
@@ -104,7 +104,6 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         try {
             const res = await addNewTeacher(inputValues, coursesReadyToUpdate)
             if (res.success) {
-                console.log('succes', res.success)
                 changeIsPostedData(true);
                 setTimeout(()=> {
                     onClose();

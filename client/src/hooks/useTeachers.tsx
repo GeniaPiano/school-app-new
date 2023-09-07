@@ -4,7 +4,7 @@ import {useCallback} from "react";
 import {GetSingleTeacherRes, TeacherEntity, TeacherBasicData} from "../types/teacher";
 import {CourseEntity} from "../types/course";
 
-interface AddTeacherRes {
+interface TeacherRes {
     success: boolean,
     data: GetSingleTeacherRes;
 }
@@ -38,6 +38,26 @@ export const useTeachers = () => {
         }
     }
 
+    const updateTeacher = async(teacherId: string, teacher: TeacherBasicData, selectedCourses: CourseEntity[] | [])=> {
+        try {
+            const response = await axios.patch(`${TEACHER_ULR}/${teacherId}`, {
+                teacher,
+                selectedCourses,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            return  {success: true, data: response.data as GetSingleTeacherRes } as TeacherRes
+        } catch (err) {
+            if (err.response.status === 400) {
+                console.log('Error:', err.response.data.message);
+            } else {
+                console.log('Unexpected Error:', err.response.data);
+            }
+            throw err;
+        }
+    }
 
     const addNewTeacher = async (teacher: TeacherBasicData, selectedCourses: CourseEntity[] | null)=> {
 
@@ -56,7 +76,7 @@ export const useTeachers = () => {
                 }
             })
 
-            return  {success: true, data: response.data as GetSingleTeacherRes} as AddTeacherRes
+            return  {success: true, data: response.data as GetSingleTeacherRes} as TeacherRes
 
         } catch (err) {
             if (err.response.status === 400) {
@@ -67,6 +87,8 @@ export const useTeachers = () => {
             throw err;
         }
     }
+
+
 
     const deleteTeacher = async (teacherId: string) => {
         try {
@@ -83,5 +105,6 @@ export const useTeachers = () => {
         getAvailableCourses,
         addNewTeacher,
         deleteTeacher,
+        updateTeacher,
     }
 }

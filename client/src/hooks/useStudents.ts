@@ -52,7 +52,7 @@ export const useStudents = () => {
     },[])
 
 
-    const updateStudentCourses = useCallback(async (studentId:string, student, selectedCourses: string[]) => {
+    const updateStudent = useCallback(async (studentId:string, student, selectedCourses: string[]) => {
 
         try {
             const res = await axios.patch(`${STUDENT_URL}/${studentId}/update`, {
@@ -96,7 +96,7 @@ export const useStudents = () => {
     return {
         getStudentsByGroup,
         getStudentById,
-        updateStudentCourses,
+        updateStudentCourses: updateStudent,
         getAllStudents,
         deleteStudent,
         deleteCourseFromStudent,

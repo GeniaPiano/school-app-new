@@ -77,8 +77,10 @@ export const StudentsListItem = (props: Props): ReactNode  => {
         setCoursesReadyToUpdate(selectedCourses);
    }
 
-    const handleRemoveCourse = (courseId) => {
+    const handleRemoveCourse = (courseId: string) => {
+        const course = coursesReadyToUpdate.find(course => course.id === courseId)
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
+        setAvailableCourses(prev => ([...prev, course]))
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {

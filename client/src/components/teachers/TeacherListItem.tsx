@@ -41,14 +41,11 @@ export const TeacherListItem = ({teacher}: Props) => {
         setSelectedCourses(res.selectedCourses)
     }
 
-    const handleSubmit = () => {
-        console.log('submit')
-    }
 
 
     return (
         <ListItem>
-            <UserItem >
+            <UserItem  onOpen={onOpen}>
                 <Text   onClick={onOpen}  _hover={{color: "brand.700"}}>
                     {firstLetterToUpper(teacher.name)} {firstLetterToUpper(teacher.last_name)}
                 </Text>
@@ -64,23 +61,22 @@ export const TeacherListItem = ({teacher}: Props) => {
                         ? <> <ModalHeader>Edit teacher data</ModalHeader>
                            <ModalCloseButton/>
                             <ModalBody>
-                                 <TeacherUpdateForm teacherId={teacher.id} teacher={teacher}/>
+                                 <TeacherUpdateForm teacher={teacher}
+                                                    selectedCourses={selectedCourses}
+                                                    isEditing={isEditing}
+                                                    cancelEditing={cancelEditing}/>
                             </ModalBody>  </>
 
                         : <InfoTeacher
                             selectedCourses={selectedCourses}
-                            teacher={teacher}/> }</>
-
-                    <GroupButtonsEditSaveCancel
+                            teacher={teacher}
                             isEditing={isEditing}
                             toggleEditing={toggleEditing}
-                            handleSubmit={handleSubmit}
-                            cancelEditing={cancelEditing}
-                                            />
-                </ModalContent>
-                <ModalFooter>
 
-                </ModalFooter>
+                        /> }</>
+
+
+                </ModalContent>
                 </Modal>
         </ListItem>
     )

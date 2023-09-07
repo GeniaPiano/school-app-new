@@ -1,4 +1,4 @@
-import {Icon, Text} from "@chakra-ui/react";
+import {Box, HStack, Text} from "@chakra-ui/react";
 import {CloseIcon} from "@chakra-ui/icons";
 
 interface Props {
@@ -8,16 +8,18 @@ interface Props {
 }
 
 export const CourseItem = ({name, handleRemove, courseId}: Props) => (
-    <>
-        <Text mr="15px">{name}</Text>
-        <Icon as={CloseIcon}
+    <Box>
+
+        <CloseIcon
+
               cursor="pointer"
-              top="3" right="3"
+              top="1.5" right="1.5"
               w={4} h={4} p="2px"
               position="absolute"
               _hover={{ color: "red.400" }}
               borderRadius="8px"
               onClick={()=>handleRemove(courseId)}
         />
-    </>
+        <Text mr="15px">{name}</Text>
+    </Box>
 )
