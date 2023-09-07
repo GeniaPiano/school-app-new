@@ -1,3 +1,5 @@
-import {Text} from '@chakra-ui/react'
 
-export const ErrorText = ({text}: string) => <Text color="red" > {text} </Text>
+
+export const ErrorText = ({text}: string) => <p
+    style={{ color:"red",  marginBottom: '5px'}}
+    > {text} </p>
