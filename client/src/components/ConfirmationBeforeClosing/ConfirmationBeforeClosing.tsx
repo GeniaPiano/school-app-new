@@ -7,7 +7,7 @@ interface Props {
     handleGoBackToEdit: ()=> void;
 }
 
-export const  ConfirmationModal = (props: Props) => {
+export const  ConfirmationBeforeClosing = (props: Props) => {
     const {isConfirmationOpen, handleCloseConfirmModal, handleCloseAfterConfirm, handleGoBackToEdit} = props
 
     return (
