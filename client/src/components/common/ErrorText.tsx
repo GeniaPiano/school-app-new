@@ -1,4 +1,9 @@
+import {Text} from '@chakra-ui/react'
 
+interface Props {
+    text: string;
+}
 
-export const ErrorText = ({text}: string) =>
-    <p style={{ color:"red",  marginBottom: '5px'}}> {text} </p>
+export const ErrorText = (props: Props) => (
+    <Text color="red"  mB='5px' size='xs'> {props.text} </Text>
+    )
