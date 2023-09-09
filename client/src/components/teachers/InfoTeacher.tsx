@@ -14,15 +14,16 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {CourseFormDiv} from "../common/CourseFormDiv";
 import {TeacherEntity} from "../../types/teacher";
 import {CourseEntity} from "../../types/course";
+import {useFormState} from "../../provider/FormStateProvider";
 
 interface Props {
     teacher: TeacherEntity;
     selectedCourses: CourseEntity[];
 }
 
-export const InfoTeacher = ({teacher, selectedCourses, toggleEditing}: Props) => {
+export const InfoTeacher = ({teacher, selectedCourses}: Props) => {
 
-
+    const {changeIsEditing} = useFormState();
 
     return (
         <>
@@ -66,7 +67,7 @@ export const InfoTeacher = ({teacher, selectedCourses, toggleEditing}: Props) =>
                 <Button
                         color="gray.500"
                         colorScheme='gray'
-                        onClick={toggleEditing}>
+                        onClick={()=> changeIsEditing(true)}>
                     Edit
                 </Button>
             </ModalFooter>

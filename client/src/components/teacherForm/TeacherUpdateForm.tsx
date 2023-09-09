@@ -1,4 +1,4 @@
-import {Box, Button, ModalFooter, SimpleGrid} from "@chakra-ui/react";
+import {Box, SimpleGrid} from "@chakra-ui/react";
 
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import {TeacherEntity, TeacherBasicData} from "../../types/teacher";
@@ -14,16 +14,17 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {useError} from "../../provider/ErrorProvider";
 import {useCounter} from "../../provider/CounterPovider";
 import {ErrorText} from "../common/ErrorText";
+import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {TeacherUpdateFooterBtns} from "./TeacherUpdateFooterBtns";
 
 
 interface Props {
     teacher: TeacherEntity;
     selectedCourses: CourseEntity[];
-    isEditing: boolean;
-    cancelEditing: ()=>void;
 }
 
-export const TeacherUpdateForm = ({teacher, selectedCourses, cancelEditing }:Props) => {
+
+export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
 
 
     const [inputValues, setInputValues] = useState<TeacherBasicData>(initialStateValues(teacher))
@@ -32,6 +33,7 @@ export const TeacherUpdateForm = ({teacher, selectedCourses, cancelEditing }:Pro
     const {getAvailableCourses, updateTeacher} = useTeachers();
     const {dispatchError, error} = useError();
     const {incrementTeacherCounter} = useCounter();
+
 
     useEffect(()=> {
         (async () => {
@@ -77,8 +79,6 @@ export const TeacherUpdateForm = ({teacher, selectedCourses, cancelEditing }:Pro
         } catch (err) {
             dispatchError(err.response.data.message)
         }
-
-
     }
 
     const chosenCourses = coursesReadyToUpdate.map(oneCourse => (
@@ -87,54 +87,46 @@ export const TeacherUpdateForm = ({teacher, selectedCourses, cancelEditing }:Pro
         </Box>
     ));
 
-    const options = availableCourses === []
+    const options = availableCourses.length !== 0
         ? null
         : availableCourses.map(oneCourse => (
         <option key={oneCourse.id} value={oneCourse.id}> {oneCourse.name} </option>
     ))
 
-
-
-
     return (
-       <> <Box>
-            <form>
-                {userFormData.map((oneForm) => (
-                    <FormField key={oneForm.title}
-                               name={oneForm.name}
-                               value={inputValues[oneForm.name]}
-                               type={oneForm.type}
-                               label={oneForm.title}
-                               errorMessage={oneForm.errorMessage}
-                               error={newErrors[oneForm.name]}
-                               onChange={handleInputChange}
+               <>
+                   <Box>
+                    <form>
+                        {userFormData.map((oneForm) => (
+                            <FormField key={oneForm.title}
+                                       name={oneForm.name}
+                                       value={inputValues[oneForm.name]}
+                                       type={oneForm.type}
+                                       label={oneForm.title}
+                                       errorMessage={oneForm.errorMessage}
+                                       error={newErrors[oneForm.name]}
+                                       onChange={handleInputChange}
 
-                    />
-                ))}
+                            />
+                        ))}
+                        {error && <ErrorText text={error}/>}
+                        {error && <Text color='red' size="s"> {error} </Text>}
+                        <FormSelect children={options} placeholder={availableCourses === [] ? "Bo courses to assign. " : "Select courses"} handleSelect={handleSelect} />
+                        <SimpleGrid columns={3} spacing={4} my={5}>
+                            <> {chosenCourses} </>
+                        </SimpleGrid>
+                     </form>
+                     </Box>
+                     <TeacherUpdateFooterBtns
+                         handleSubmit={handleSubmit}
 
-                {error && <ErrorText text={error}/>}
-
-                <FormSelect children={options} placeholder={availableCourses === [] ? "Bo courses to assign. " : "Select courses"} handleSelect={handleSelect} />
-                <SimpleGrid columns={3} spacing={4} my={5}>
-                    <> {chosenCourses} </>
-                </SimpleGrid>
-            </form>
-        </Box>
-
-           <ModalFooter>
-               <Button
-                       color="gray.500"
-                       colorScheme='gray'
-                       mr={3}
-                       onClick={handleSubmit}>
-                   Save
-               </Button>
-                   <Button  color="gray.500"
-                            colorScheme='gray'
-                            onClick={cancelEditing}
-                   >Cancel</Button>
-           </ModalFooter>
-
-       </>
+                     />
+                     <ConfirmationBeforeClosing
+                           // isConfirmationOpen={isConfirmationOpen}
+                           // handleCloseConfirmModal={handleCloseConfirmModal}
+                           // handleGoBackToEdit={handleGoBackToEdit}
+                           // handleCloseAfterConfirm={handleCloseAfterConfirm}
+                       />
+           </>
     )
 }

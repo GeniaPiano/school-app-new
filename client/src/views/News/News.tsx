@@ -94,7 +94,7 @@ export const News = () =>  {
 
                 {error && <p>Cannot connect to Data CMS.</p>}
 
-                <SimpleGrid columns={{base: 1, md: 3}} spacing={4} my={5}>
+                <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5}>
                     <>
                         {articles ? articles.map((article) => (
                                 <Card key={article.title} mb={5}>

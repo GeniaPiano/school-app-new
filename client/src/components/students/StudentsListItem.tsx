@@ -10,12 +10,12 @@ import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";
 import {InfoStudent} from "./InfoStudent";
-import {ConfirmationModal} from "./ConfirmationModal";
+import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
-import {GroupButtonsEditSaveCancel} from "../GroupButtonsForm/GroupButtonsEditSaveCancel";
+import {GroupButtonsEditSaveCancel} from "./GroupButtonsEditSaveCancel";
 
 
 
@@ -57,12 +57,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
    }
 
     const handleCloseAfterConfirm = () => {
-        setIsConfirmationOpen(false);
-        if (isEditing) {
-            setIsEditing(false);
-        } else {
-            onClose();
-        }};
+       };
 
    const handleCloseConfirmModal = () => {
         setIsConfirmationOpen(false)
@@ -184,7 +179,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                   </ModalContent>
 
                 </Modal>
-              <ConfirmationModal
+              <ConfirmationBeforeClosing
                 isConfirmationOpen={isConfirmationOpen}
                 handleCloseConfirmModal={handleCloseConfirmModal}
                 handleGoBackToEdit={handleGoBackToEdit}

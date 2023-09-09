@@ -19,8 +19,9 @@ import {useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {InfoTeacher} from "./InfoTeacher";
-import {GroupButtonsEditSaveCancel} from "../GroupButtonsForm/GroupButtonsEditSaveCancel";
+import {GroupButtonsEditSaveCancel} from "../students/GroupButtonsEditSaveCancel";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
+import {useFormState} from "../../provider/FormStateProvider";
 
 interface Props {
     teacher: TeacherEntity;
@@ -30,11 +31,7 @@ export const TeacherListItem = ({teacher}: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const {getOneTeacher} = useTeachers();
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity [] | []>([])
-    const [isEditing, setIsEditing] = useState<boolean>(false)
-    const toggleEditing = () => setIsEditing(prev => !prev)
-    const cancelEditing = () => setIsEditing(false)
-
-
+    const {isEditing,  openConfirmation} = useFormState();
     const handleOpenTeacherInfo = async() => {
         onOpen();
         const res = await getOneTeacher(teacher.id)
@@ -54,25 +51,25 @@ export const TeacherListItem = ({teacher}: Props) => {
                     <ConfirmDeleteTeacher teacher={teacher} />
                 </HStack>
             </UserItem>
-            <Modal  isOpen={isOpen} onClose={onClose} color='gray.500'>
+            <Modal
+                isOpen={isOpen} onClose={isEditing ?  openConfirmation : onClose}
+                color='gray.500'>
                 <ModalOverlay/>
                 <ModalContent color="gray.500">
-                    <>{isEditing
+                    <>
+                        <ModalCloseButton />
+                        {isEditing
                         ? <> <ModalHeader>Edit teacher data</ModalHeader>
-                           <ModalCloseButton/>
-                            <ModalBody>
+                                <ModalBody>
                                  <TeacherUpdateForm teacher={teacher}
                                                     selectedCourses={selectedCourses}
-                                                    isEditing={isEditing}
-                                                    cancelEditing={cancelEditing}/>
+
+                                 />
                             </ModalBody>  </>
 
                         : <InfoTeacher
                             selectedCourses={selectedCourses}
                             teacher={teacher}
-                            isEditing={isEditing}
-                            toggleEditing={toggleEditing}
-
                         /> }</>
 
 
