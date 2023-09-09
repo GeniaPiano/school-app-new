@@ -5,6 +5,7 @@ import {colors, components} from "../assets/style/theme";
 import {CounterProvider} from "./CounterPovider";
 import {NavSizeProvider} from "./NavSizeProvider";
 import {PostingDataProvider} from "./PostingDataProvider";
+import {FormStateProvider} from "./FormStateProvider";
 
 const theme = extendTheme({colors, components})
 
@@ -12,6 +13,7 @@ const theme = extendTheme({colors, components})
 export const AllProviders: FC = ({ children }) => {
     return (
         <ChakraProvider theme={theme}>
+            <FormStateProvider>
               <ErrorProvider>
                 <CounterProvider>
                     <NavSizeProvider>
@@ -21,6 +23,7 @@ export const AllProviders: FC = ({ children }) => {
                     </NavSizeProvider>
                 </CounterProvider>
               </ErrorProvider>
+            </FormStateProvider>
         </ChakraProvider>
     );
 };
