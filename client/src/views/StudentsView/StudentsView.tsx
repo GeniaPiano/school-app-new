@@ -9,9 +9,9 @@ import {
     ModalOverlay, useDisclosure, useToast,
 } from "@chakra-ui/react";
 
-import {SearchBar} from "../../components/SearchBar/SearchBar";
 import {StudentsList} from "../../components/students/StudentsList";
 import {Header} from "../../components/Header/Header";
+import {StudentAddForm} from "../../components/studentForm/StudentAddForm";
 
 
 export const StudentsView = () =>  {
@@ -26,19 +26,10 @@ export const StudentsView = () =>  {
                         <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
                     </Flex>
 
-                    <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay />
-                        <ModalContent  color="gray.500">
-                            <ModalHeader>Add new student to </ModalHeader>
-                            <ModalCloseButton/>
-                            <ModalBody> form </ModalBody>
-                            <ModalFooter>footer </ModalFooter>
-                        </ModalContent>
-                    </Modal>
-
-                <Flex my={5}>
-                    <StudentsList mainList={true}/>
-                </Flex>
+                    <StudentAddForm isOpen={isOpen} onClose={onClose}/>
+                   <Flex my={5}>
+                            <StudentsList mainList={true}/>
+                   </Flex>
 
 
             </Flex>

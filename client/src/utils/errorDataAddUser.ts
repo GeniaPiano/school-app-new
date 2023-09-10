@@ -11,7 +11,7 @@ interface InputValuesInterface {
 }
 
 
-export const errorDataAddTeacher = (inputTouchedCount: InputTouchCountInterface, inputValues: InputValuesInterface) => {
+export const errorDataAddUser = (inputTouchedCount: InputTouchCountInterface, inputValues: InputValuesInterface) => {
     const {name, last_name, email} = inputValues;
     return {
         name: (inputTouchedCount.name > 2 && (name === '' || name.length < 2 || name.length > 40)),

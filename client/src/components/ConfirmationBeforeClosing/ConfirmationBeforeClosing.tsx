@@ -13,7 +13,6 @@ import {useFormState} from "../../provider/FormStateProvider";
 interface Props {
 
     handleConfirmModalCloseForAdding?: (confirmed: boolean) => void;
-    forUpdateStudentFlag: boolean
     handleCloseConfirmStudentModal?: () => void}
 
 export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding, handleCloseConfirmStudentModal  }: Props) => {

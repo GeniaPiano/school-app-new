@@ -13,8 +13,8 @@ import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {CourseItem} from "../common/CourseItem";
-import {initialStateTeacher, initialStateTouchCount} from "./initialState";
-import {errorDataAddTeacher} from "./errorDataAddTeacher";
+import {initialStateTeacher, initialStateTouchCount} from "../../utils/initialState";
+import {errorDataAddUser} from "../../utils/errorDataAddUser";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {useCounter} from "../../provider/CounterPovider";
@@ -33,7 +33,6 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | []>([])
-    //const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
 
@@ -45,7 +44,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
     },[])
 
 
-    const isError = errorDataAddTeacher(inputTouchedCount, inputValues);
+    const isError = errorDataAddUser(inputTouchedCount, inputValues);
 
     const handleChangeInputValue = (e) => {
         setInputTouchedCount(prev => ({
@@ -181,29 +180,6 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
             </Modal>
 
             <ConfirmationBeforeClosing forAdding={true}  handleConfirmModalCloseForAdding={handleConfirmModalClose}/>
-
-            {/*<Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>*/}
-            {/*    <ModalOverlay />*/}
-            {/*    <ModalContent>*/}
-            {/*        <ModalHeader>Confirmation</ModalHeader>*/}
-            {/*        <ModalBody>*/}
-            {/*            Are you sure you want to close without saving changes?*/}
-            {/*        </ModalBody>*/}
-            {/*        <ModalFooter >*/}
-            {/*            <Button mr={2} colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(true)}>*/}
-            {/*                Yes, Close*/}
-            {/*            </Button>*/}
-            {/*            <Button colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(false)} >*/}
-            {/*                Go back to Form.*/}
-            {/*            </Button>*/}
-            {/*        </ModalFooter>*/}
-
-            {/*    </ModalContent>*/}
-            {/*</Modal>*/}
-
-
-
-
         </>
     )
 }

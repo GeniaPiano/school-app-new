@@ -4,7 +4,7 @@ import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import {TeacherEntity, TeacherBasicData} from "../../types/teacher";
 import {userFormData} from "../../utils/userFormData";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {initialStateValues} from "./initialState";
+import {initialStateValues} from "../../utils/initialState";
 import {errors} from "../../utils/errorsForm";
 import {FormField} from "../FormField/FormField";
 import {FormSelect} from "../FormSelect/FormSelect";
