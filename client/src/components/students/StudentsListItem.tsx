@@ -16,6 +16,7 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
 import {GroupButtonsEditSaveCancel} from "./GroupButtonsEditSaveCancel";
+import {useFormState} from "../../provider/FormStateProvider";
 
 
 
@@ -36,32 +37,26 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const [student, setStudent] = useState<CleanedStudent>(studentData)
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>(coursesData)
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [isEditing, setIsEditing] = useState(false);
     const [availableCourses, setAvailableCourses] = useState < CourseEntity[] | []> ([]);
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[]>(selectedCourses);
     const [inputValues, setInputValues] = useState (initialState(student));
-    const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
 
-   const handleCloseModal=()=> {
+    const {isEditing, toggleEditing, changeIsEditing, openConfirmation, closeConfirmation} = useFormState()
+
+
+   const handleCloseModal =()=> {
        if (isEditing) {
-           setIsConfirmationOpen(true);
+           openConfirmation()
        } else {
            onClose();
        }}
 
-    const toggleEditing = () => setIsEditing(prev=> !prev)
-
-   const handleGoBackToEdit = () => {
-       setIsConfirmationOpen(false)
-   }
-
-    const handleCloseAfterConfirm = () => {
-       };
 
    const handleCloseConfirmModal = () => {
-        setIsConfirmationOpen(false)
-        setIsEditing(false)
+       changeIsEditing(false)
+       closeConfirmation()
+
         setInputValues((prev) => ({
             ...prev,
             name: student.name,
@@ -71,6 +66,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
         );
         setCoursesReadyToUpdate(selectedCourses);
    }
+
 
     const handleRemoveCourse = (courseId: string) => {
         const course = coursesReadyToUpdate.find(course => course.id === courseId)
@@ -108,7 +104,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
             try {
                 const coursesToSend = coursesReadyToUpdate.map(course => course.id)
                 const res = await updateStudentCourses(student.id, inputValues, coursesToSend)
-                setIsEditing(prev => !prev)
+                toggleEditing()
                 await setStudent(res.data.student)
                 await setSelectedCourses(res.data.selectedCourses)
                 changeIsPostedData(true);
@@ -133,7 +129,8 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     }, []);
 
     const cancelEditing = () => {
-        setIsEditing(false);
+        //setIsEditing(false);
+        changeIsEditing(false)
         setCoursesReadyToUpdate(selectedCourses);
     }
 
@@ -180,11 +177,8 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
                 </Modal>
               <ConfirmationBeforeClosing
-                isConfirmationOpen={isConfirmationOpen}
-                handleCloseConfirmModal={handleCloseConfirmModal}
-                handleGoBackToEdit={handleGoBackToEdit}
-                handleCloseAfterConfirm={handleCloseAfterConfirm}
-            />
+                     handleCloseConfirmStudentModal={handleCloseConfirmModal}
+                          />
            </ListItem>
     )
 }

@@ -6,16 +6,17 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    useDisclosure
+
 } from "@chakra-ui/react";
 import {useFormState} from "../../provider/FormStateProvider";
 
 interface Props {
 
     handleConfirmModalCloseForAdding?: (confirmed: boolean) => void;
-}
+    forUpdateStudentFlag: boolean
+    handleCloseConfirmStudentModal?: () => void}
 
-export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding }: Props) => {
+export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding, handleCloseConfirmStudentModal  }: Props) => {
     const {isConfirmationOpen, handleCloseConfirmModal, handleGoBackToEdit, handleModalCloseBtn, forAdding} = useFormState();
 
     return (
@@ -51,7 +52,7 @@ export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding }: P
                                 mr={2}
                                 colorScheme="gray"
                                 color="gray.600"
-                                onClick={handleCloseConfirmModal}
+                                onClick={handleCloseConfirmStudentModal ? handleCloseConfirmStudentModal : handleCloseConfirmModal}
                             >
                                 Yes, Close
                             </Button>

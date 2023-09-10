@@ -9,7 +9,7 @@ interface FormStateType {
     handleGoBackToEdit: () => void;
     handleModalCloseBtn: () => void;
     handleCloseConfirmModal: () => void;
-
+    toggleEditing: () => void;
 }
 
 export const FormStateContext = createContext<FormStateType | undefined>( undefined )
@@ -35,6 +35,8 @@ export const FormStateProvider: FC<FormStateProviderProps>  = ({children, forAdd
        setIsConfirmationOpen(false)
     }
 
+    const toggleEditing = () => setIsEditing(!isEditing)
+
     const handleModalCloseBtn =  () => {
        return
    }
@@ -57,6 +59,7 @@ export const FormStateProvider: FC<FormStateProviderProps>  = ({children, forAdd
                 handleModalCloseBtn,
                 closeConfirmation,
                 openConfirmation,
+                toggleEditing,
         }}>
             {children}
         </FormStateContext.Provider>

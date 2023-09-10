@@ -133,8 +133,6 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         }
     }
 
-
-
     const handleCloseMainModal = () => {
         openConfirmation();
         if (inputTouchedCount.name > 0 ) {

@@ -11,6 +11,7 @@ import {ViewWrapper} from "../common/ViewWrapper";
 import {FiInfo} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
 import {useCounter} from "../../provider/CounterPovider";
+import {FormStateProvider} from "../../provider/FormStateProvider";
 
 
 interface Props {
@@ -55,16 +56,20 @@ export const StudentsList = ({courseName, mainList}: Props) => {
             )} </>
 
                 <List>
+                    <FormStateProvider forAdding={false}>
                     <>  {loading? <Spinner/> : (
                        <> {students.length !== 0
-                           ? students.map((student) => <StudentsListItem
+                           ? students.map((student) =>
+                                <StudentsListItem
                                 key={student.student.id}
                                 studentData={student}
                                 studentId={student.student.id}
-                                mainList={mainList} /> )
+                                mainList={mainList} />
+                              )
                             : <span> No students. </span>}
                          </>
                         )} </>
+                 </FormStateProvider>
                  </List>
 
         </ViewWrapper>
