@@ -9,6 +9,7 @@ import {TeacherAddForm} from "../../components/teacherForm/TeacherAddForm";
 import {TeacherList} from "../../components/teachers/TeacherList";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
+import {FormStateProvider} from "../../provider/FormStateProvider";
 
 
 
@@ -29,12 +30,19 @@ export const TeachersView = () =>  {
                             <ConfirmModalContent text="Teacher has been added."   onClose={onClose} />
                         </ModalContent>
                     </Modal>
-                    : <TeacherAddForm  onClose={onClose} isOpen={isOpen}/>
+                    : (
+                        <FormStateProvider forAdding={true}>
+                            <TeacherAddForm  onClose={onClose} isOpen={isOpen}/>
+                        </FormStateProvider>
+                             )
                 }
 
             </Box>
             <Divider  border="3px gray.500 solid" mx={0}/>
-            <TeacherList/>
+            <FormStateProvider forAdding={false}>
+                <TeacherList/>
+            </FormStateProvider>
+
         </Flex>
     )
 

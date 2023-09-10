@@ -7,7 +7,7 @@ interface FormStateType {
     openConfirmation: () => void;
     closeConfirmation: () => void;
     handleGoBackToEdit: () => void;
-    handleCloseAfterConfirm: () => void;
+    handleModalCloseBtn: () => void;
     handleCloseConfirmModal: () => void;
 
 }
@@ -15,9 +15,10 @@ interface FormStateType {
 export const FormStateContext = createContext<FormStateType | undefined>( undefined )
 interface FormStateProviderProps {
     children: ReactNode;
+    forAdding: boolean;
 }
 
-export const FormStateProvider: FC<FormStateProviderProps>  = ({children}) => {
+export const FormStateProvider: FC<FormStateProviderProps>  = ({children, forAdding}) => {
    const [isEditing, setIsEditing] = useState<boolean>(false)
    const changeIsEditing = (bool: boolean) => setIsEditing(bool)
 
@@ -34,12 +35,13 @@ export const FormStateProvider: FC<FormStateProviderProps>  = ({children}) => {
        setIsConfirmationOpen(false)
     }
 
-    const handleCloseAfterConfirm =  () => {
+    const handleModalCloseBtn =  () => {
        return
    }
 
     const handleCloseConfirmModal = () => {
-        setIsConfirmationOpen(false)
+        console.log('close')
+        closeConfirmation();
         setIsEditing(false)
     }
 
@@ -49,9 +51,10 @@ export const FormStateProvider: FC<FormStateProviderProps>  = ({children}) => {
                 isEditing,
                 changeIsEditing,
                 isConfirmationOpen,
+                forAdding,
                 handleGoBackToEdit,
                 handleCloseConfirmModal,
-                handleCloseAfterConfirm,
+                handleModalCloseBtn,
                 closeConfirmation,
                 openConfirmation,
         }}>

@@ -58,7 +58,6 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
         const courseId: string = e.target.value;
         const course = availableCourses.find(oneCourse => oneCourse.id === courseId)
         setCoursesReadyToUpdate(prev => ([...prev, course]))
-
     }
 
     const handleRemoveCourse =(courseId: string)=> {
@@ -117,16 +116,8 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
                         </SimpleGrid>
                      </form>
                      </Box>
-                     <TeacherUpdateFooterBtns
-                         handleSubmit={handleSubmit}
-
-                     />
-                     <ConfirmationBeforeClosing
-                           // isConfirmationOpen={isConfirmationOpen}
-                           // handleCloseConfirmModal={handleCloseConfirmModal}
-                           // handleGoBackToEdit={handleGoBackToEdit}
-                           // handleCloseAfterConfirm={handleCloseAfterConfirm}
-                       />
+                     <TeacherUpdateFooterBtns   handleSubmit={handleSubmit}  />
+                     <ConfirmationBeforeClosing forAdding={false}/>
            </>
     )
 }

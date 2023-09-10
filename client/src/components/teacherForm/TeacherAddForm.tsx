@@ -18,6 +18,8 @@ import {errorDataAddTeacher} from "./errorDataAddTeacher";
 import {useError} from "../../provider/ErrorProvider";
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {useCounter} from "../../provider/CounterPovider";
+import {useFormState} from "../../provider/FormStateProvider";
+import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
@@ -31,7 +33,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [coursesReadyToUpdate, setCoursesReadyToUpdate] = useState<CourseEntity[] | []>([])
-    const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
+    //const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false)
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
 
@@ -45,16 +47,15 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const isError = errorDataAddTeacher(inputTouchedCount, inputValues);
 
-      const handleChangeInputValue = (e) => {
-         setInputTouchedCount(prev => ({
-             ...prev,
-             [e.target.name]: prev[e.target.name] + 1,
-         }));
-
-         setInputValues( prev => ({
-             ...prev,
-             [e.target.name] : e.target.value
-         }))
+    const handleChangeInputValue = (e) => {
+        setInputTouchedCount(prev => ({
+            ...prev,
+            [e.target.name]: prev[e.target.name] + 1,
+        }));
+        setInputValues( prev => ({
+            ...prev,
+            [e.target.name] : e.target.value
+        }))
     };
 
     const handleSelectCourse = (e) => {
@@ -115,28 +116,31 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         } catch (err) {
             dispatchError(err.response.data.message)
         }
-   }
+    }
+
+    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
 
 
     const handleConfirmModalClose = (shouldClose) => {
-        setIsConfirmationOpen(false);
+        closeConfirmation();
+        console.log('forAdding')
         if (shouldClose) {
             onClose();
             setInputValues({name: '', last_name: '', email: ''})
             setInputTouchedCount(initialStateTouchCount)
         } else {
-            setIsConfirmationOpen(false);
+            closeConfirmation()
         }
     }
 
 
 
     const handleCloseMainModal = () => {
-       setIsConfirmationOpen(true)
+        openConfirmation();
         if (inputTouchedCount.name > 0 ) {
-            setIsConfirmationOpen(true)
+            openConfirmation()
         }  else {
-            setIsConfirmationOpen(false);
+            closeConfirmation()
             setInputValues(initialStateTeacher);
             onClose();
         }
@@ -144,30 +148,30 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose}>
-               <ModalOverlay />
+            <Modal isOpen={isOpen} onClose={handleModalCloseBtn}>
+                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Add new teacher</ModalHeader>
                     <ModalCloseButton onClick={handleCloseMainModal}/>
-                       <ModalBody>
-                            <form >
-                                <TeacherFormInputFields
-                                    inputValues={inputValues}
-                                    isError={isError}
-                                    handleChangeInputValue={handleChangeInputValue}
-                                />
-                                <FormControl mb={8}>
-                                    <FormLabel>Courses</FormLabel>
-                                    <Select onChange={handleSelectCourse}
-                                            placeholder='Select course'
-                                            variant='filled'
-                                            outline='none'
-                                            focusBorderColor="brand.600"
-                                    >
-                                        <>{availableCourses && options}</>
-                                    </Select>
-                                </FormControl>
-                            </form>
+                    <ModalBody>
+                        <form >
+                            <TeacherFormInputFields
+                                inputValues={inputValues}
+                                isError={isError}
+                                handleChangeInputValue={handleChangeInputValue}
+                            />
+                            <FormControl mb={8}>
+                                <FormLabel>Courses</FormLabel>
+                                <Select onChange={handleSelectCourse}
+                                        placeholder='Select course'
+                                        variant='filled'
+                                        outline='none'
+                                        focusBorderColor="brand.600"
+                                >
+                                    <>{availableCourses && options}</>
+                                </Select>
+                            </FormControl>
+                        </form>
 
                         <SimpleGrid columns={3} spacing={4} my={5}>
                             <> {selectedCourses} </>
@@ -175,27 +179,29 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                         <Button  mb={35} onClick={handleSubmit}>save</Button>
 
                     </ModalBody>
-                       </ModalContent>
-                </Modal>
+                </ModalContent>
+            </Modal>
 
-                        <Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>
-                            <ModalOverlay />
-                            <ModalContent>
-                                <ModalHeader>Confirmation</ModalHeader>
-                                <ModalBody>
-                                    Are you sure you want to close without saving changes?
-                                </ModalBody>
-                                <ModalFooter >
-                                    <Button mr={2} colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(true)}>
-                                        Yes, Close
-                                    </Button>
-                                    <Button colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(false)} >
-                                        Go back to Form.
-                                    </Button>
-                                </ModalFooter>
+            <ConfirmationBeforeClosing forAdding={true}  handleConfirmModalCloseForAdding={handleConfirmModalClose}/>
 
-                            </ModalContent>
-                        </Modal>
+            {/*<Modal onClose={closeConfirm} isOpen={isConfirmationOpen}>*/}
+            {/*    <ModalOverlay />*/}
+            {/*    <ModalContent>*/}
+            {/*        <ModalHeader>Confirmation</ModalHeader>*/}
+            {/*        <ModalBody>*/}
+            {/*            Are you sure you want to close without saving changes?*/}
+            {/*        </ModalBody>*/}
+            {/*        <ModalFooter >*/}
+            {/*            <Button mr={2} colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(true)}>*/}
+            {/*                Yes, Close*/}
+            {/*            </Button>*/}
+            {/*            <Button colorScheme="gray"  color="gray.600"  onClick={()=> handleConfirmModalClose(false)} >*/}
+            {/*                Go back to Form.*/}
+            {/*            </Button>*/}
+            {/*        </ModalFooter>*/}
+
+            {/*    </ModalContent>*/}
+            {/*</Modal>*/}
 
 
 

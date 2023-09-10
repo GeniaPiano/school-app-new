@@ -5,7 +5,6 @@ import {
     Modal, ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
     Text,
@@ -19,7 +18,6 @@ import {useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {InfoTeacher} from "./InfoTeacher";
-import {GroupButtonsEditSaveCancel} from "../students/GroupButtonsEditSaveCancel";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
 import {useFormState} from "../../provider/FormStateProvider";
 
@@ -38,8 +36,6 @@ export const TeacherListItem = ({teacher}: Props) => {
         setSelectedCourses(res.selectedCourses)
     }
 
-
-
     return (
         <ListItem>
             <UserItem  onOpen={onOpen}>
@@ -52,7 +48,8 @@ export const TeacherListItem = ({teacher}: Props) => {
                 </HStack>
             </UserItem>
             <Modal
-                isOpen={isOpen} onClose={isEditing ?  openConfirmation : onClose}
+                isOpen={isOpen}
+                onClose={isEditing ?  openConfirmation : onClose}
                 color='gray.500'>
                 <ModalOverlay/>
                 <ModalContent color="gray.500">
@@ -62,16 +59,12 @@ export const TeacherListItem = ({teacher}: Props) => {
                         ? <> <ModalHeader>Edit teacher data</ModalHeader>
                                 <ModalBody>
                                  <TeacherUpdateForm teacher={teacher}
-                                                    selectedCourses={selectedCourses}
-
-                                 />
+                                                    selectedCourses={selectedCourses}/>
                             </ModalBody>  </>
 
-                        : <InfoTeacher
-                            selectedCourses={selectedCourses}
-                            teacher={teacher}
-                        /> }</>
-
+                        : <InfoTeacher selectedCourses={selectedCourses}
+                                       teacher={teacher}/>
+                        } </>
 
                 </ModalContent>
                 </Modal>

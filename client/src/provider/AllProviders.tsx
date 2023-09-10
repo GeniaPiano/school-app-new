@@ -13,8 +13,7 @@ const theme = extendTheme({colors, components})
 export const AllProviders: FC = ({ children }) => {
     return (
         <ChakraProvider theme={theme}>
-            <FormStateProvider>
-              <ErrorProvider>
+            <ErrorProvider>
                 <CounterProvider>
                     <NavSizeProvider>
                         <PostingDataProvider>
@@ -23,7 +22,6 @@ export const AllProviders: FC = ({ children }) => {
                     </NavSizeProvider>
                 </CounterProvider>
               </ErrorProvider>
-            </FormStateProvider>
         </ChakraProvider>
     );
 };
