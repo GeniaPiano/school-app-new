@@ -20,6 +20,7 @@ import {usePostingData} from "../../provider/PostingDataProvider";
 import {useCounter} from "../../provider/CounterPovider";
 import {useFormState} from "../../provider/FormStateProvider";
 import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {FormSelect} from "../FormSelect/FormSelect";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
@@ -157,17 +158,12 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                                 isError={isError}
                                 handleChangeInputValue={handleChangeInputValue}
                             />
-                            <FormControl mb={8}>
-                                <FormLabel>Courses</FormLabel>
-                                <Select onChange={handleSelectCourse}
-                                        placeholder='Select course'
-                                        variant='filled'
-                                        outline='none'
-                                        focusBorderColor="brand.600"
-                                >
-                                    <>{availableCourses && options}</>
-                                </Select>
-                            </FormControl>
+
+                            <FormSelect
+                                handleSelect={handleSelectCourse}
+                                placeholder='Select course'
+                                children={availableCourses && options}/>
+
                         </form>
 
                         <SimpleGrid columns={3} spacing={4} my={5}>
