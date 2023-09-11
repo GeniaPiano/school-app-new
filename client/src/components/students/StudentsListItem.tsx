@@ -83,7 +83,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
 
 
 
-    const handleSelectChange = (e) => {
+    const handleSelectChange = (e : ChangeEvent<HTMLInputElement>) => {
         const courseId = e.target.value;
         if (availableCourses) {
             const courseToAdd = availableCourses.find(course => course.id === courseId)
@@ -129,7 +129,6 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     }, []);
 
     const cancelEditing = () => {
-        //setIsEditing(false);
         changeIsEditing(false)
         setCoursesReadyToUpdate(selectedCourses);
     }

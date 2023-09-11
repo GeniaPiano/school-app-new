@@ -1,18 +1,16 @@
 import {
-    Box, Button,
-    FormControl,
-    FormLabel, Modal,
+    Button,
+    Modal,
     ModalBody,
     ModalCloseButton,
-    ModalContent, ModalFooter,
+    ModalContent,
     ModalHeader,
-    ModalOverlay, Select, SimpleGrid, useDisclosure
+    ModalOverlay,
 } from "@chakra-ui/react";
 import { useEffect, useState} from "react";
 import {TeacherFormInputFields} from "./TeacherFormInputFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
-import {CourseItem} from "../common/CourseItem";
 import {initialStateTeacher, initialStateTouchCount} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
 import {useError} from "../../provider/ErrorProvider";
@@ -20,15 +18,16 @@ import {usePostingData} from "../../provider/PostingDataProvider";
 import {useCounter} from "../../provider/CounterPovider";
 import {useFormState} from "../../provider/FormStateProvider";
 import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
-import {FormSelect} from "../FormSelect/FormSelect";
+
+import {SelectForm} from "../FormSelect/SelectForm";
+import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const {dispatchError} = useError();
-    const {onClose: closeConfirm} = useDisclosure();
     const {changeIsPostedData} = usePostingData();
-    const {incrementTeacherCounter} = useCounter();
+    const {incrementTeacherCounter, counterTeacher} = useCounter();
     const [inputValues, setInputValues] = useState(initialStateTeacher)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
@@ -37,12 +36,13 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
     const {getAvailableCourses, addNewTeacher } = useTeachers();
 
 
+
     useEffect(()=> {
         (async () => {
             const courses = await getAvailableCourses();
             setAvailableCourses(courses)
         } )()
-    },[])
+    },[counterTeacher])
 
 
     const isError = errorDataAddUser(inputTouchedCount, inputValues);
@@ -67,19 +67,11 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         }
     }
 
-    const options = availableCourses?.map(course => (
-        <option key={course.id} value={course.id} > {course.name} </option>
-    ))
     const handleRemoveCourse = (courseId) => {
+        const course = coursesReadyToUpdate.find(one => one.id === courseId)
         setCoursesReadyToUpdate(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
+        setAvailableCourses(prev => ([...prev, course]))
     };
-
-    const selectedCourses = coursesReadyToUpdate?.map(oneCourse => (
-        <Box key={oneCourse.id} position="relative" bg="brand.800" color="white" p={3} borderRadius="10px" alignItems="center">
-            <CourseItem name={oneCourse.name} courseId={oneCourse.id} handleRemove={handleRemoveCourse} />
-        </Box>
-    ))
-
 
     const setTouchedCount = (field, count) => {
         setInputTouchedCount(prev => ({
@@ -123,7 +115,6 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const handleConfirmModalClose = (shouldClose) => {
         closeConfirmation();
-        console.log('forAdding')
         if (shouldClose) {
             onClose();
             setInputValues({name: '', last_name: '', email: ''})
@@ -135,11 +126,13 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const handleCloseMainModal = () => {
         openConfirmation();
-        if (inputTouchedCount.name > 0 ) {
+        if (inputTouchedCount.name > 0  ) {
             openConfirmation()
         }  else {
             closeConfirmation()
             setInputValues(initialStateTeacher);
+            setCoursesReadyToUpdate([])
+            incrementTeacherCounter();
             onClose();
         }
     };
@@ -158,17 +151,9 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                                 isError={isError}
                                 handleChangeInputValue={handleChangeInputValue}
                             />
-
-                            <FormSelect
-                                handleSelect={handleSelectCourse}
-                                placeholder='Select course'
-                                children={availableCourses && options}/>
-
+                            <SelectForm data={availableCourses} handleChange={handleSelectCourse} placeholder="Select course/courses." label="Courses"/>
                         </form>
-
-                        <SimpleGrid columns={3} spacing={4} my={5}>
-                            <> {selectedCourses} </>
-                        </SimpleGrid>
+                        <ChosenCourses data={coursesReadyToUpdate} handleRemove={handleRemoveCourse}/>
                         <Button  mb={35} onClick={handleSubmit}>save</Button>
 
                     </ModalBody>

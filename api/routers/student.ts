@@ -17,7 +17,5 @@ studentRouter
     .patch('/:id/update', updateStudent)
     .patch('/:id/remove-one-course', removeCourseFromStudent)
     .delete('/:id', deleteStudent)
-    // .patch('/:id/assign-course', addCourseToStudent) //PRZYPISANIE KURSU DO STUDENTA
-    // .delete('/:id/remove-course', removeCourseFromStudent)  //USUWANIE PRZYPISANEGO KURSU
 
 

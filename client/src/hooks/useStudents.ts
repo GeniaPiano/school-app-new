@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {useCallback} from "react";
 import {STUDENT_URL} from "../utils/url";
-import {SingleStudentRes} from "../types/student";
+import {SingleStudentRes, StudentBasicData} from "../types/student";
 
 import {useCounter} from "../provider/CounterPovider";
 
@@ -51,6 +51,17 @@ export const useStudents = () => {
         }
     },[])
 
+    const addNewStudent = ({student, selectedCourses}) => {
+        try {
+            const res = axios.post(STUDENT_URL, {
+                student,
+                selectedCourses,
+            })
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
     const updateStudent = useCallback(async (studentId:string, student, selectedCourses: string[]) => {
 
@@ -100,6 +111,7 @@ export const useStudents = () => {
         getAllStudents,
         deleteStudent,
         deleteCourseFromStudent,
+        addNewStudent,
 
     }
 

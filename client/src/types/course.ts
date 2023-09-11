@@ -12,3 +12,5 @@ export interface GetSingleCourseRes {
     countStudents: number;
     teacher: null | TeacherEntity;
 }
+
+export type CourseId = string;

@@ -17,11 +17,7 @@ export interface SingleStudentRes {
     selectedCourses: CourseEntity[];
 }
 
-export interface StudentDataNameAndEmail {
-    id: string;
-    name: string;
-    last_name: string;
-}
+
 
 export interface FormFieldProps {
     studentData: {

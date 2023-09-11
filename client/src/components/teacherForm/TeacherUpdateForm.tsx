@@ -7,7 +7,6 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {initialStateValues} from "../../utils/initialState";
 import {errors} from "../../utils/errorsForm";
 import {FormField} from "../FormField/FormField";
-import {FormSelect} from "../FormSelect/FormSelect";
 import {CourseEntity} from "../../types/course";
 import {CourseItem} from "../common/CourseItem";
 import {useTeachers} from "../../hooks/useTeachers";
@@ -16,6 +15,8 @@ import {useCounter} from "../../provider/CounterPovider";
 import {ErrorText} from "../common/ErrorText";
 import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 import {TeacherUpdateFooterBtns} from "./TeacherUpdateFooterBtns";
+import {SelectForm} from "../FormSelect/SelectForm";
+import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 
 
 interface Props {
@@ -74,23 +75,10 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
             if (res.success) {
                 incrementTeacherCounter();
             }
-
         } catch (err) {
             dispatchError(err.response.data.message)
-        }
-    }
+        } }
 
-    const chosenCourses = coursesReadyToUpdate.map(oneCourse => (
-        <Box key={oneCourse.id} position="relative" bg="brand.800" color="white" p={3} borderRadius="10px" alignItems="center">
-            <CourseItem name={oneCourse.name} courseId={oneCourse.id} handleRemove={handleRemoveCourse} />
-        </Box>
-    ));
-
-    const options = availableCourses.length !== 0
-        ? null
-        : availableCourses.map(oneCourse => (
-        <option key={oneCourse.id} value={oneCourse.id}> {oneCourse.name} </option>
-    ))
 
     return (
                <>
@@ -105,15 +93,13 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
                                        errorMessage={oneForm.errorMessage}
                                        error={newErrors[oneForm.name]}
                                        onChange={handleInputChange}
-
                             />
                         ))}
                         {error && <ErrorText text={error}/>}
                         {error && <Text color='red' size="s"> {error} </Text>}
-                        <FormSelect children={options} placeholder={availableCourses === [] ? "Bo courses to assign. " : "Select courses"} handleSelect={handleSelect} />
-                        <SimpleGrid columns={3} spacing={4} my={5}>
-                            <> {chosenCourses} </>
-                        </SimpleGrid>
+
+                        <SelectForm handleChange={handleSelect} label="Courses" data={availableCourses} placeholder={"Select course/courses"}/>
+                        <ChosenCourses data={coursesReadyToUpdate} handleRemove={handleRemoveCourse}/>
                      </form>
                      </Box>
                      <TeacherUpdateFooterBtns   handleSubmit={handleSubmit}  />

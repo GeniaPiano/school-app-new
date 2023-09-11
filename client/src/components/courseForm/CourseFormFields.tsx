@@ -11,9 +11,9 @@ import {ConfirmModal} from "./ConfirmModal";
 
 import {usePostingData} from "../../provider/PostingDataProvider";
 import {FormField} from "../FormField/FormField";
-import {FormSelect} from "../FormSelect/FormSelect";
 import {useError} from "../../provider/ErrorProvider";
 import {ErrorText} from "../common/ErrorText";
+import {SelectForm} from "../FormSelect/SelectForm";
 
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 
 export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm, onClose, changeInputTouched }: Props) => {
 
-    const [teachers, setTeachers] = useState<TeacherEntity[] | null>(null);
+    const [teachers, setTeachers] = useState<TeacherEntity[] | []>([]);
     const {getAllTeachers} = useTeachers();
     const [courseName, setCourseName] = useState<string>('')
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
@@ -82,12 +82,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
         }
     }
 
-    const options = teachers ? teachers.map(oneTeacher => (
-        <option key={oneTeacher.id} value={oneTeacher.id}> {firstLetterToUpper(oneTeacher.name)} {firstLetterToUpper(oneTeacher.last_name)} </option>
-    )) : null;
-
-
-    const isError = (inputTouchedCount > 3 && (courseName === '' || courseName.length < 4 || courseName.length > 40));
+   const isError = (inputTouchedCount > 3 && (courseName === '' || courseName.length < 4 || courseName.length > 40));
 
    const handleSelect = (e)=> setSelectTeacherId(e.target.value)
 
@@ -102,8 +97,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
                        errorMessage=" Course name is required. It should contain from 4 to 40 chars."
             />
             {error &&  <ErrorText text={error}/>}
-
-            <FormSelect handleSelect={handleSelect} placeholder="Select teacher" >{options}</FormSelect>
+            <SelectForm label="Teacher" data={teachers} handleChange={handleSelect} placeholder="Select teacher." />
             <Button mb={8} colorScheme="gray" onClick={handleSubmit}>Save</Button>
             <ConfirmModal
                 isConfirmationOpen={isConfirmationOpen}
