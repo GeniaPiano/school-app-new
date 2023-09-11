@@ -14,7 +14,7 @@ import {CourseEntity} from "../../types/course";
 import {StudentEntity} from "../../types/student";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {CourseFormDiv} from "../common/CourseFormDiv";
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 import {ConfirmTextAndIcon} from "../common/ConfirmTextAndIcon";
 
 

@@ -12,6 +12,7 @@ import {
 import {StudentsList} from "../../components/students/StudentsList";
 import {Header} from "../../components/Header/Header";
 import {StudentAddForm} from "../../components/studentForm/StudentAddForm";
+import {FormStateProvider} from "../../providers/FormStateProvider";
 
 
 export const StudentsView = () =>  {
@@ -25,8 +26,9 @@ export const StudentsView = () =>  {
                     <Flex w="95%">
                         <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
                     </Flex>
-
-                    <StudentAddForm isOpen={isOpen} onClose={onClose}/>
+                    <FormStateProvider forAdding={true}>
+                        <StudentAddForm isOpen={isOpen} onClose={onClose}/>
+                    </FormStateProvider>
                    <Flex my={5}>
                             <StudentsList mainList={true}/>
                    </Flex>

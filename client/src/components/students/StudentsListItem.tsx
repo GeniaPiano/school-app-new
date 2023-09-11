@@ -13,10 +13,10 @@ import {InfoStudent} from "./InfoStudent";
 import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
 import {GroupButtonsEditSaveCancel} from "./GroupButtonsEditSaveCancel";
-import {useFormState} from "../../provider/FormStateProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 
 

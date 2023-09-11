@@ -3,7 +3,8 @@ import {useCallback} from "react";
 import {STUDENT_URL} from "../utils/url";
 import {SingleStudentRes, StudentBasicData} from "../types/student";
 
-import {useCounter} from "../provider/CounterPovider";
+import {useCounter} from "../providers/CounterPovider";
+import {CourseEntity} from "../types/course";
 
 //const studentApi = axios.create({})
 // studentApi.interceptors.request.use( (config) => {
@@ -51,12 +52,14 @@ export const useStudents = () => {
         }
     },[])
 
-    const addNewStudent = ({student, selectedCourses}) => {
+    const addStudent = (student: StudentBasicData, selectedCourses: CourseEntity[]) => {
         try {
             const res = axios.post(STUDENT_URL, {
                 student,
-                selectedCourses,
+                selectedCourses: selectedCourses.map(one => one.id)
             })
+            return res
+
         } catch (err) {
             console.log(err)
         }
@@ -111,7 +114,7 @@ export const useStudents = () => {
         getAllStudents,
         deleteStudent,
         deleteCourseFromStudent,
-        addNewStudent,
+        addStudent,
 
     }
 

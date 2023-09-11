@@ -10,8 +10,8 @@ import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
 import {FiInfo} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
-import {useCounter} from "../../provider/CounterPovider";
-import {FormStateProvider} from "../../provider/FormStateProvider";
+import {useCounter} from "../../providers/CounterPovider";
+import {FormStateProvider} from "../../providers/FormStateProvider";
 
 
 interface Props {

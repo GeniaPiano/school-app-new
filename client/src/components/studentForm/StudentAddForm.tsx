@@ -1,22 +1,28 @@
 import {
-    FormControl, FormLabel,
+    Button,
     Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay, Select, SelectField
+    ModalOverlay,
 } from "@chakra-ui/react";
 import {userFormData} from "../../utils/userFormData";
 import {FormField} from "../FormField/FormField";
 import {ChangeEvent, useEffect, useState} from "react";
-import {initialStateTouchCount} from "../../utils/initialState";
+import {initialStateTouchCount, initialStateUser} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
 import {CourseEntity, CourseId} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 import {SelectForm} from "../FormSelect/SelectForm";
+import {useError} from "../../providers/ErrorProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
+import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {useFormState} from "../../providers/FormStateProvider";
+import {useCounter} from "../../providers/CounterPovider";
+import {useStudents} from "../../hooks/useStudents";
 
 interface Props {
     isOpen: boolean;
@@ -26,17 +32,19 @@ interface Props {
 export const StudentAddForm = ({isOpen, onClose}: Props) => {
 
     const {getAllCourses} = useCourses()
+    const {dispatchError} = useError();
+    const {changeIsPostedData} = usePostingData();
+    const {addStudent} = useStudents();
+    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
 
-    const [inputValues, setInputValues] = useState({
-        name: '',
-        last_name: '',
-        email: '',
-    })
+    const [inputValues, setInputValues] = useState(initialStateUser)
+    const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
+    const {incrementStudentCounter} = useCounter();
 
-    const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
+
 
     useEffect(()=> {
         (async() => {
@@ -49,14 +57,15 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
 
 
     const handleInputChange = (e) => {
-        setInputValues(prev => ({
-                ...prev,
-                [e.target.name] : e.target.value
-        }))
+        const {name, value} = e.target
         setInputTouchedCount(prev => ({
             ...prev,
-            [e.target.name]: prev[e.target.name] + 1,
+            [name]: prev[name] + 1,
         }));
+        setInputValues( prev => ({
+            ...prev,
+            [name] : value
+        }))
     }
 
      const handleSelectChange = (e : ChangeEvent<HTMLInputElement>) => {
@@ -72,14 +81,68 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
         setAvailableCourses(prev => ([...prev, course]))
     };
 
+    const setTouchedCount = (field, count) => {
+        setInputTouchedCount(prev => ({
+            ...prev,
+            [field]: count
+        }));
+    };
+    const handleSubmit = async(e)=> {
+        e.preventDefault();
+        if (inputValues.name === '') {
+            setTouchedCount('name', 3);
+        }
+
+        if (inputValues.last_name === '') {
+            setTouchedCount('last_name', 3);
+        }
+
+        if (inputValues.email === '') {
+            setTouchedCount('email', 4);
+        }
+        try {
+            const response = await addStudent(inputValues, selectedCourses)
+            console.log(response)
+        } catch (err) {
+            console.log(err)
+        }
+
+
+
+    }
+
 
     const isError = errorDataAddUser(inputTouchedCount, inputValues);
+    const handleConfirmModalClose = (shouldClose) => {
+        closeConfirmation();
+        if (shouldClose) {
+            onClose();
+            setInputValues({name: '', last_name: '', email: ''})
+            setInputTouchedCount(initialStateTouchCount)
+        } else {
+            closeConfirmation()
+        }
+    }
+
+    const handleCloseMainModal = () => {
+        openConfirmation();
+        if (inputTouchedCount.name > 0  ) {
+            openConfirmation()
+        }  else {
+            closeConfirmation()
+            setInputValues(initialStateUser);
+            setSelectedCourses([])
+            incrementStudentCounter();
+            onClose();
+        }
+    };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <>
+        <Modal isOpen={isOpen} onClose={handleModalCloseBtn}>
             <ModalOverlay />
             <ModalContent  color="gray.500">
-                <ModalCloseButton/>
+                <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalHeader>Add new student to </ModalHeader>
 
                 <ModalBody>
@@ -101,8 +164,12 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
                     <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />
                 </ModalBody>
 
-                <ModalFooter>footer </ModalFooter>
+                <ModalFooter>
+                    <Button mb={8} onClick={handleSubmit}>Save</Button>
+                </ModalFooter>
             </ModalContent>
         </Modal>
-    )
+    <ConfirmationBeforeClosing forAdding={true}  handleConfirmModalCloseForAdding={handleConfirmModalClose}/>
+   </>
+)
 }
