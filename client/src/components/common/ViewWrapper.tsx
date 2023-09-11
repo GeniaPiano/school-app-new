@@ -1,6 +1,6 @@
 import {Flex} from "@chakra-ui/react";
 import {FC, ReactNode, useContext} from "react";
-import {NavSizeContext} from "../../provider/NavSizeProvider";
+import {NavSizeContext} from "../../providers/NavSizeProvider";
 
 interface Props {
     children: ReactNode;

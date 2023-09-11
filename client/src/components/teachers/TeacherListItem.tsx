@@ -19,7 +19,7 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {InfoTeacher} from "./InfoTeacher";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
-import {useFormState} from "../../provider/FormStateProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 interface Props {
     teacher: TeacherEntity;

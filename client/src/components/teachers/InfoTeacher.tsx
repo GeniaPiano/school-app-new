@@ -14,7 +14,7 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {CourseFormDiv} from "../common/CourseFormDiv";
 import {TeacherEntity} from "../../types/teacher";
 import {CourseEntity} from "../../types/course";
-import {useFormState} from "../../provider/FormStateProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 interface Props {
     teacher: TeacherEntity;

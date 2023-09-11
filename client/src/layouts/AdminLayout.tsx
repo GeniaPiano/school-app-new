@@ -2,7 +2,7 @@ import {FC, useContext} from "react";
 import {ReactNode} from "react";
 import {Flex} from "@chakra-ui/react";
 import {Sidebar} from "../components/sidebar/Sidebar";
-import {NavSizeContext} from "../provider/NavSizeProvider";
+import {NavSizeContext} from "../providers/NavSizeProvider";
 
 
 

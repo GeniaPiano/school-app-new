@@ -3,7 +3,7 @@ import {Avatar, Divider, Flex, Heading, IconButton, Text} from "@chakra-ui/react
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {sidebarLinksData} from "./sidebarLinksData";
-import {NavSizeContext} from "../../provider/NavSizeProvider";
+import {NavSizeContext} from "../../providers/NavSizeProvider";
 
 
 export const Sidebar = () => {

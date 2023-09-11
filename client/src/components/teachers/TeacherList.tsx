@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
 import {List, Spinner} from "@chakra-ui/react";
-import {useCounter} from "../../provider/CounterPovider";
+import {useCounter} from "../../providers/CounterPovider";
 import {TeacherListItem} from "./TeacherListItem";
 
 export const TeacherList = () => {

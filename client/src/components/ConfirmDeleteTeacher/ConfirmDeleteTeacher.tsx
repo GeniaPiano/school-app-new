@@ -10,10 +10,10 @@ import {Loader} from "../common/Loader";
 import {CheckIcon} from "@chakra-ui/icons";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {Btn} from "../common/Btn";
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 import {TeacherEntity} from "../../types/teacher";
 import {useTeachers} from "../../hooks/useTeachers";
-import {useCounter} from "../../provider/CounterPovider";
+import {useCounter} from "../../providers/CounterPovider";
 
 interface Props {
     teacher: TeacherEntity;

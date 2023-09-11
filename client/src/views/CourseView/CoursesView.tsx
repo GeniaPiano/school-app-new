@@ -9,9 +9,9 @@ import {useParams, NavLink, Navigate} from "react-router-dom";
 import {StudentsList} from "../../components/students/StudentsList";
 import {useCourses} from "../../hooks/useCourses";
 import {CourseEntity} from "../../types/course";
-import {NavSizeContext} from "../../provider/NavSizeProvider";
+import {NavSizeContext} from "../../providers/NavSizeProvider";
 import {CourseAddForm} from "../../components/courseForm/CourseAddForm";
-import {useCounter} from "../../provider/CounterPovider";
+import {useCounter} from "../../providers/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {Header} from "../../components/Header/Header";
 

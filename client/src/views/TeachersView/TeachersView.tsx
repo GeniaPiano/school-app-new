@@ -7,9 +7,9 @@ import {
 import {Header} from "../../components/Header/Header";
 import {TeacherAddForm} from "../../components/teacherForm/TeacherAddForm";
 import {TeacherList} from "../../components/teachers/TeacherList";
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
-import {FormStateProvider} from "../../provider/FormStateProvider";
+import {FormStateProvider} from "../../providers/FormStateProvider";
 
 
 

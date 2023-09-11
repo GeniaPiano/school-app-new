@@ -6,12 +6,12 @@ import {useEffect, useState} from "react";
 import {TeacherEntity} from "../../types/teacher";
 import {useTeachers} from "../../hooks/useTeachers";
 import {useCourses} from "../../hooks/useCourses";
-import {useCounter} from "../../provider/CounterPovider";
+import {useCounter} from "../../providers/CounterPovider";
 import {ConfirmModal} from "./ConfirmModal";
 
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 import {FormField} from "../FormField/FormField";
-import {useError} from "../../provider/ErrorProvider";
+import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../common/ErrorText";
 import {SelectForm} from "../FormSelect/SelectForm";
 

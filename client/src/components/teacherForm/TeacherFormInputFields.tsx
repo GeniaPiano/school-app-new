@@ -1,7 +1,7 @@
 
 import {Box} from "@chakra-ui/react";
 
-import {useError} from "../../provider/ErrorProvider";
+import {useError} from "../../providers/ErrorProvider";
 import {userFormData} from "../../utils/userFormData";
 import {FormField} from "../FormField/FormField";
 import {ErrorText} from "../common/ErrorText";

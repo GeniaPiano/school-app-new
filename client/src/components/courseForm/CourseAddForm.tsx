@@ -11,7 +11,7 @@ import {
 import {CourseFormFields} from "./CourseFormFields";
 import {useState} from "react";
 import {ConfirmModalContent} from "../common/ConfirmModalContent";
-import {usePostingData} from "../../provider/PostingDataProvider";
+import {usePostingData} from "../../providers/PostingDataProvider";
 
 
 interface Props {

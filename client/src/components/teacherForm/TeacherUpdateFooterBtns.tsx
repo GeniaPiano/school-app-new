@@ -1,6 +1,6 @@
 import {Button, ModalFooter} from "@chakra-ui/react";
 import {SyntheticEvent} from "react";
-import {useFormState} from "../../provider/FormStateProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 interface Props {
     handleSubmit: (e: SyntheticEvent)=>void;

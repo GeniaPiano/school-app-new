@@ -2,7 +2,7 @@ import {TeacherBasicData, TeacherEntity} from "../types/teacher";
 import {StudentBasicData, StudentEntity} from "../types/student";
 
 
-export const initialStateTeacher = {
+export const initialStateUser = {
     name: '',
     last_name: "",
     email: "",

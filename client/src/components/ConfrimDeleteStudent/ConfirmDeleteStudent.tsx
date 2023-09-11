@@ -7,8 +7,8 @@ import {StudentEntity} from "../../types/student";
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from 'react-router-dom'
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {usePostingData} from "../../provider/PostingDataProvider";
-import {useCounter} from "../../provider/CounterPovider";
+import {usePostingData} from "../../providers/PostingDataProvider";
+import {useCounter} from "../../providers/CounterPovider";
 import {CheckIcon} from "@chakra-ui/icons";
 import {Btn} from "../common/Btn";
 import {Loader} from "../common/Loader";

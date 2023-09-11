@@ -8,7 +8,7 @@ import {
     ModalOverlay,
 
 } from "@chakra-ui/react";
-import {useFormState} from "../../provider/FormStateProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 interface Props {
 
