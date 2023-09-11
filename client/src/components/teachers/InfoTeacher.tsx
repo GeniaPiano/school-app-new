@@ -3,18 +3,16 @@ import {
     Box,
     Button,
     Flex,
-    GridItem,
     ModalBody,
     ModalCloseButton, ModalFooter,
     ModalHeader,
-    SimpleGrid,
     Text
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {CourseFormDiv} from "../common/CourseFormDiv";
 import {TeacherEntity} from "../../types/teacher";
 import {CourseEntity} from "../../types/course";
 import {useFormState} from "../../providers/FormStateProvider";
+import {SelectedCoursesInfo} from "../SelectedCoursesInfo/SelectedCoursesInfo";
 
 interface Props {
     teacher: TeacherEntity;
@@ -35,30 +33,9 @@ export const InfoTeacher = ({teacher, selectedCourses}: Props) => {
         </ModalHeader>
         <ModalBody>
             <Badge  colorScheme='pink'>courses</Badge>
-             <Flex flexDir="column"
-              mb={4} mt={2}>
-                    <>{selectedCourses.length > 0
-                        ? (
-                            <SimpleGrid  columns={3}
-                                         spacing={4}
-                                         color="gray.500" >
-                                <> { selectedCourses.map(course =>
-                                    <CourseFormDiv key={course.id} as={GridItem} >
-                                        <Flex
-                                            p={2}
-                                            justifyContent="center"
-                                            alignItems="center"
-                                            borderRadius="8px"
-                                            textAlign="center"
-                                        >
-                                            {course.name}</Flex>
-                                    </CourseFormDiv> )
-                                } </>
-                            </SimpleGrid>
-                        )
-                        : <Text color="gray.500">no selected courses.</Text>} </>
-                </Flex>
-                <Box mt="40px" pb={6} color="gray.500" position="relative">
+            <SelectedCoursesInfo data={selectedCourses} />
+
+               <Box mt="40px" pb={6} color="gray.500" position="relative">
                     <Badge  mb={2} colorScheme='pink' >email</Badge>
                     <p>{teacher.email}</p>
                 </Box>

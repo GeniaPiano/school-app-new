@@ -2,20 +2,17 @@ import {
     Badge,
     Box,
     Flex,
-    GridItem,
-    Heading,
     ModalBody,
     ModalCloseButton,
     ModalHeader,
-    SimpleGrid,
     Text
 } from "@chakra-ui/react";
 import {CourseEntity} from "../../types/course";
 import {StudentEntity} from "../../types/student";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {CourseFormDiv} from "../common/CourseFormDiv";
 import {usePostingData} from "../../providers/PostingDataProvider";
 import {ConfirmTextAndIcon} from "../common/ConfirmTextAndIcon";
+import {SelectedCoursesInfo} from "../SelectedCoursesInfo/SelectedCoursesInfo";
 
 
 interface Props {
@@ -37,28 +34,7 @@ export const InfoStudent = (props: Props) => {
             <ModalCloseButton />
                 <ModalBody>
                     <Badge colorScheme='pink'> courses </Badge>
-                    <Flex flexDir="column"   mb={4} mt={2}>
-                        <>{selectedCourses.length !== 0
-                            ? (
-                                <SimpleGrid  columns={3}
-                                             spacing={4}
-                                             color="gray.500" >
-                                    <> { selectedCourses.map(course =>
-                                        <CourseFormDiv key={course.id} as={GridItem}
-                                        >
-                                            <Flex
-                                                p={2}
-                                                justifyContent="center"
-                                                alignItems="center"
-                                                borderRadius="8px"
-                                                textAlign="center"
-                                            >
-                                                {course.name}</Flex>
-                                        </CourseFormDiv> ) } </>
-                                </SimpleGrid>
-                            )
-                        : <p color="gray.500">no selected courses.</p>} </>
-                    </Flex>
+                    <SelectedCoursesInfo data={selectedCourses} />
                     <Box mt="40px" pb={6} color="gray.500">
                         <Badge mb={2} colorScheme='pink' >email</Badge>
                         <p>{student.email}</p>
