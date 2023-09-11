@@ -4,7 +4,7 @@ import {NotFoundError, ValidationError} from "../utils/errors";
 import {
     CleanedStudent,
     GetSingleStudentRes,
-    StudentReq,
+    StudentBasicData,
 } from "../types";
 import {StudentRecord} from "../records/student.record";
 import {generatePassword} from "../utils/generatePassword";
@@ -24,8 +24,6 @@ export const getAllStudents = async (req: Request, res: Response, next: NextFunc
         }));
 
        res.json({ students: studentsWithSelectedCourses });
-
-
 
     } catch(err) {
         next(err)
@@ -57,26 +55,34 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
 }
 
     export const createStudent = async (req: Request, res: Response) => {
-        const { name, last_name } = req.body as StudentReq;
+        const { name, last_name } = req.body.student as StudentBasicData;
         const rawPassword = generatePassword(name, last_name);
         const hashedPassword = await bcrypt.hash(rawPassword, 10);
+        const {selectedCourses} = req.body
+
 
         const studentData = {
-            ...req.body,
+            ...req.body.student,
             password: hashedPassword,
         } as StudentRecord;
 
-    const student = new StudentRecord(studentData);
-    const checkOkMail = checkMailAvailable(student.email) //sprawdzanie dostępności maila
+        const student = new StudentRecord(studentData);
+        const checkOkMail = await checkMailAvailable(student.email); //sprawdzanie dostępności maila
         if (!checkOkMail) {
-        throw new ValidationError('Mail already exists.')
-    }
+            throw new ValidationError("Email already exists.")
+        }
+        //miejsce na wysłanie hasła na maila użytkownika
+        await student.insert();
 
-    //miejsce na wysłanie hasła na maila użytkownika
-    await student.insert();
+        if (selectedCourses.length > 0) {
+            for (const id of selectedCourses) {
+               await student.insertCourseForStudent(id)
+            }
+        }
+
     res.json({
-            password: rawPassword,
-            student: userWithoutPassword(student),
+           student: userWithoutPassword(student),
+           selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id)
         })
 }
 
@@ -88,11 +94,11 @@ export const updateStudent = async (req: Request, res: Response, next: NextFunct
         throw new ValidationError('Student with given ID does not exist.');
     }
     //aktualizacja name, lastName, email
-    const { name, last_name, email} = req.body.student;
-    const fieldsToUpdate: Partial<StudentReq> = { name, last_name, email };
+    const { name, last_name, email} = req.body.student as StudentBasicData
+    const fieldsToUpdate: Partial<StudentBasicData> = { name, last_name, email };
     for (const key in fieldsToUpdate) {
-        if (fieldsToUpdate[key as keyof StudentReq]) {
-            student[key as keyof StudentReq] = fieldsToUpdate[key as keyof StudentReq]!;
+        if (fieldsToUpdate[key as keyof StudentBasicData]) {
+            student[key as keyof StudentBasicData] = fieldsToUpdate[key as keyof StudentBasicData]!;
         }
     }
 
@@ -153,22 +159,6 @@ export const removeCourseFromStudent = async (req: Request, res: Response, next:
 
 
 
-
-
-// export const addCourseToStudent = async (req: Request, res: Response ) => {
-//         const student = await StudentRecord.getOne(req.params.id);
-//         if (!student) throw new ValidationError('Cannot find student');
-//         const courseId: string = req.body.courseId
-//         const courseToAdd = await CourseRecord.getOne(courseId)
-//         if (!courseToAdd) throw new ValidationError('Course wanted to assign to student not found.')
-//         const check = await AlreadyExistsRelations(student.id, courseToAdd.id)
-//         if (check) throw new ValidationError('Cannot assign this course to student. Chosen course is already assigned to this student.')
-//         await student.insertCourseForStudent(courseToAdd.id);
-//
-//         res.json({
-//             message: "ok"
-//         })
-// }
 
 
 
