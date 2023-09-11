@@ -5,5 +5,5 @@ interface Props {
 }
 
 export const ErrorText = (props: Props) => (
-    <Text color="red"  mB='5px' size='xs'> {props.text} </Text>
+    <Text color="red"  mb='5px' size='xs'> {props.text} </Text>
     )
