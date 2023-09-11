@@ -10,12 +10,16 @@ export type DataCoursesResForSingleStudent = Omit <CourseEntity, 'teacher_id'>
 
 export type CleanedStudent = Omit <StudentEntity, 'password' >
 
-export interface StudentReq {
+export interface StudentBasicData {
     name: string;
     last_name: string;
     email: string;
 }
 
+export interface StudentPostInt {
+    student: StudentBasicData;
+    selectedCourses: string[]
+}
 
 export interface StudentAssignCourseReq {
     courseId: string;
