@@ -3,6 +3,7 @@ import {COURSE_URL, TEACHER_ULR} from "../utils/url";
 import {useCallback} from "react";
 import {GetSingleTeacherRes, TeacherEntity, TeacherBasicData} from "../types/teacher";
 import {CourseEntity} from "../types/course";
+import {validateUserBasicData} from "../utils/validateBasicData";
 
 interface TeacherRes {
     success: boolean,
@@ -39,6 +40,8 @@ export const useTeachers = () => {
     }
 
     const updateTeacher = async(teacherId: string, teacher: TeacherBasicData, selectedCourses: CourseEntity[] | [])=> {
+
+        validateUserBasicData(teacher)
         try {
             const response = await axios.patch(`${TEACHER_ULR}/${teacherId}`, {
                 teacher,
@@ -60,12 +63,8 @@ export const useTeachers = () => {
     }
 
     const addNewTeacher = async (teacher: TeacherBasicData, selectedCourses: CourseEntity[] | null)=> {
+        validateUserBasicData(teacher)
 
-        if (teacher.name === "" || teacher.name.length <2 || teacher.name.length > 40
-            || teacher.last_name === "" || teacher.last_name.length < 2 || teacher.last_name.length > 40
-            || teacher.email === "" || teacher.email.length < 4 || teacher.email.length > 40 || !teacher.email.includes('@')) {
-            return;
-        }
         try {
             const response = await axios.post(`${TEACHER_ULR}`, {
                 teacher,

@@ -1,10 +1,16 @@
 import axios from 'axios';
 import {useCallback} from "react";
 import {STUDENT_URL} from "../utils/url";
-import {SingleStudentRes, StudentBasicData} from "../types/student";
+import {SingleStudentRes, StudentBasicData, StudentEntity} from "../types/student";
 
 import {useCounter} from "../providers/CounterPovider";
 import {CourseEntity} from "../types/course";
+import {validateUserBasicData} from "../utils/validateBasicData";
+
+interface StudentReqPost {
+    student: StudentEntity;
+    selectedCourses: CourseEntity[]
+}
 
 //const studentApi = axios.create({})
 // studentApi.interceptors.request.use( (config) => {
@@ -52,22 +58,32 @@ export const useStudents = () => {
         }
     },[])
 
-    const addStudent = (student: StudentBasicData, selectedCourses: CourseEntity[]) => {
+    const addStudent = async(student: StudentBasicData, selectedCourses: CourseEntity[]) => {
+        validateUserBasicData(student)
         try {
-            const res = axios.post(STUDENT_URL, {
+            const res = await axios.post(STUDENT_URL, {
                 student,
-                selectedCourses: selectedCourses.map(one => one.id)
+                selectedCourses: selectedCourses.length !== 0 ?  selectedCourses.map(one => one.id) : []
+            } ,{
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             })
-            return res
+            return { success: true, data: res.data }
 
         } catch (err) {
-            console.log(err)
+            if (err.response.status === 400) {
+                console.log('Error:', err.response.data.message);
+            } else {
+                console.log('Unexpected Error:', err.response.data);
+            }
+            throw err;
         }
 
     }
 
-    const updateStudent = useCallback(async (studentId:string, student, selectedCourses: string[]) => {
-
+    const updateStudent = useCallback(async (studentId:string, student: StudentBasicData, selectedCourses: string[]) => {
+        validateUserBasicData(student)
         try {
             const res = await axios.patch(`${STUDENT_URL}/${studentId}/update`, {
                 student,
