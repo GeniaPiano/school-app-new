@@ -1,10 +1,8 @@
 
 import {Box} from "@chakra-ui/react";
-
-import {useError} from "../../providers/ErrorProvider";
 import {userFormData} from "../../utils/userFormData";
 import {FormField} from "../FormField/FormField";
-import {ErrorText} from "../common/ErrorText";
+
 
 interface Props {
     inputValues: {
@@ -23,7 +21,7 @@ interface Props {
 
 
 export const TeacherFormFields = ({inputValues, isError, handleChangeInputValue}:Props) => {
-    const {error} = useError();
+
     return (
         <Box mb={7}>
             {userFormData.map((oneForm) => (
@@ -39,7 +37,7 @@ export const TeacherFormFields = ({inputValues, isError, handleChangeInputValue}
                 />
                 
             ))}
-            {error && <ErrorText text={error}/>}
+
         </Box>
     )
 }

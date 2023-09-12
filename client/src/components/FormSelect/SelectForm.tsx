@@ -1,4 +1,4 @@
-import {FormControl, FormLabel, Select} from "@chakra-ui/react";
+import {FormControl, FormLabel, Select, Text} from "@chakra-ui/react";
 import {CourseEntity} from "../../types/course";
 import {TeacherEntity} from "../../types/teacher";
 
@@ -7,14 +7,13 @@ interface Props {
     handleChange: (e) => void;
     placeholder: string;
     label: string;
+    comment?: string;
 }
 
 
 
 
-
-
-export const SelectForm = ({data, handleChange, placeholder, label}:Props) => {
+export const SelectForm = ({data, comment, handleChange, placeholder, label}:Props) => {
 
     return (
             <FormControl mb={10}>
@@ -24,16 +23,18 @@ export const SelectForm = ({data, handleChange, placeholder, label}:Props) => {
                         outline='none'
                         focusBorderColor="brand.600"
                         onChange={handleChange}
+                        comment={comment}
                 >
                     {
-                        data.length !== 0
+                      data.length !== 0
                         ?  data.map(course=> (
                                  <option key={course.id} value={course.id}>
                                      {course.name}</option>
                              ))
                         :    'No data to select at this moment.'
                     }
-                </Select>
+                    </Select>
+                { comment && <Text mt={2} fontSize='0.8rem' color="teal"> {comment} </Text> }
             </FormControl>
     )
 }

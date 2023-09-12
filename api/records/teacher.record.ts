@@ -17,19 +17,10 @@ export class TeacherRecord implements TeacherEntity {
     readonly role: 'teacher';
 
     constructor(obj: TeacherRecord) {
-        if (!obj.name || obj.name.length < 2 || obj.name.length > 40) {
-            throw new ValidationError('Teacher name should contain from to 40 characters');
-        }
-        if (!obj.last_name || obj.last_name.length < 2 || obj.last_name.length > 40) {
-            throw new ValidationError('Teacher last name should contain from 2 to 40 characters');
-        }
-            if (!obj.email || obj.email.length < 4 || obj.email.length > 40) {
-            throw new ValidationError('Teacher email should contain from 4 to 40 characters');
+        if (!obj.name || obj.name.length < 2 || obj.name.length > 40 || !obj.last_name || obj.last_name.length < 2 || obj.last_name.length > 40 || !obj.email || obj.email.length < 4 || obj.email.length > 40) {
+            throw new ValidationError('Missing data or data not correct.');
         }
 
-        if (!obj.password || obj.password.length < 8 || obj.password.length > 86) {
-            throw new ValidationError('Password should contain from 8 to 40 characters');
-        }
 
         this.id = obj.id;
         this.name = obj.name;

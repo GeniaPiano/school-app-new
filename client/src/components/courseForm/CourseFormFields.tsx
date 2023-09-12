@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Text,
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useEffect, useState} from "react";
@@ -97,7 +97,8 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
                        errorMessage=" Course name is required. It should contain from 4 to 40 chars."
             />
             {error &&  <ErrorText text={error}/>}
-            <SelectForm label="Teacher" data={teachers} handleChange={handleSelect} placeholder="Select teacher." />
+            <SelectForm comment="* You can add teacher later." label="Teacher" data={teachers} handleChange={handleSelect} placeholder="Select teacher." />
+
             <Button mb={8} colorScheme="gray" onClick={handleSubmit}>Save</Button>
             <ConfirmModal
                 isConfirmationOpen={isConfirmationOpen}

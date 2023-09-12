@@ -21,11 +21,12 @@ import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/Confirmati
 
 import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
+import {ErrorText} from "../common/ErrorText";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
 
-    const {dispatchError} = useError();
+    const {dispatchError,error} = useError();
     const {changeIsPostedData, dispatchText} = usePostingData();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
     const [inputValues, setInputValues] = useState(initialStateUser)
@@ -156,6 +157,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                             <SelectForm data={availableCourses} handleChange={handleSelectCourse} placeholder="Select course/courses." label="Courses"/>
                         </form>
                         <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse}/>
+                        {error && <ErrorText text={error}/>}
                         <Button  mb={35} onClick={handleSubmit}>save</Button>
 
                     </ModalBody>

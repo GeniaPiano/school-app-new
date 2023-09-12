@@ -166,10 +166,12 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
                                 error={isError[oneForm.name]}
                             />
                         ))}
-                        {error && <ErrorText text={error}/>}
-                        <SelectForm label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>
+
+                        <SelectForm comment="* You can add courses later." label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>
                     </form>
                     <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />
+
+                    {error && <ErrorText text={error}/>}
                 </ModalBody>
 
                 <ModalFooter>
