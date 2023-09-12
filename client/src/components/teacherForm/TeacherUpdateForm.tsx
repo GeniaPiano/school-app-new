@@ -1,4 +1,12 @@
-import {Box} from "@chakra-ui/react";
+import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogCloseButton,
+    AlertDialogContent,
+    AlertDialogOverlay,
+    Box,
+    Flex, useDisclosure
+} from "@chakra-ui/react";
 
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import {TeacherEntity, TeacherBasicData} from "../../types/teacher";
@@ -12,12 +20,14 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {useError} from "../../providers/ErrorProvider";
 import {useCounter} from "../../providers/CounterPovider";
 import {ErrorText} from "../common/ErrorText";
-import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 import {TeacherUpdateFooterBtns} from "./TeacherUpdateFooterBtns";
 import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
-import {usePostingData} from "../../providers/PostingDataProvider";
 import {useFormState} from "../../providers/FormStateProvider";
+import {ConfirmTextAndIcon} from "../common/ConfirmTextAndIcon";
+import {Loader} from "../common/Loader";
+import {CheckIcon} from "@chakra-ui/icons";
+import {usePostingData} from "../../providers/PostingDataProvider";
 
 
 interface Props {
@@ -35,8 +45,8 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
     const {getAvailableCourses, updateTeacher} = useTeachers();
     const {dispatchError, error} = useError();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
-    const {dispatchText, changeIsPostedData} = usePostingData();
     const {changeIsEditing} = useFormState();
+    const {isPostedData, isLoadingData,changeIsPostedData, changeIsLoadingData} = usePostingData()
 
 
     useEffect(()=> {
@@ -44,7 +54,7 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
             const data = await getAvailableCourses();
             setAvailableCourses(data)
         })();
-    }, [teacher, counterTeacher ])
+    }, [isPostedData, counterTeacher])
 
     const handleInputChange = (  e: ChangeEvent<HTMLInputElement>) => {
         setInputValues((prev) => {
@@ -75,10 +85,17 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
         try {
             const res = await updateTeacher(teacher.id, inputValues, coursesReadyToUpdate)
             if (res.success) {
-                incrementTeacherCounter();
-                dispatchText('Teacher has been updated.')
+
                 setInputValues(initialStateValues(teacher));
                 changeIsEditing(false)
+                changeIsPostedData(true);
+                incrementTeacherCounter();
+
+                setTimeout(()=> {
+                   changeIsPostedData(false)
+
+                }, 3500)
+
 
 
 
@@ -109,9 +126,13 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
                         <SelectForm handleChange={handleSelect} label="Courses" data={availableCourses} placeholder={"Select course/courses"}/>
                         <ChosenCourses data={coursesReadyToUpdate} handleRemove={handleRemoveCourse}/>
                      </form>
-                     </Box>
+                       { isPostedData && <ConfirmTextAndIcon  text="Teacher updated" withLayer={true}/> }
+                   </Box>
                      <TeacherUpdateFooterBtns   handleSubmit={handleSubmit}  />
-                     <ConfirmationBeforeClosing forAdding={false}/>
+
+
+
+
            </>
     )
 }

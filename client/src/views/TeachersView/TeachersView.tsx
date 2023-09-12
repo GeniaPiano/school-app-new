@@ -17,11 +17,12 @@ import {FormStateProvider} from "../../providers/FormStateProvider";
 export const TeachersView = () =>  {
 
     const {onOpen, onClose, isOpen} = useDisclosure();
-    const {isPostedData, text} = usePostingData();
+    const {isPostedData, text } = usePostingData();
 
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
-            <Box>
+
+                <Box>
                 <Header title="teachers" buttonText="+ add new teacher" onOpen={onOpen} onClick={onOpen}/>
                      { isPostedData
                         ? <Modal isOpen={isOpen} onClose={onClose}>
@@ -34,8 +35,8 @@ export const TeachersView = () =>  {
                                 <TeacherAddForm  onClose={onClose} isOpen={isOpen}/>
                             </FormStateProvider> )
                         }
+                </Box>
 
-            </Box>
             <Divider  border="3px gray.500 solid" mx={0}/>
             <FormStateProvider forAdding={false}>
                 <TeacherList/>

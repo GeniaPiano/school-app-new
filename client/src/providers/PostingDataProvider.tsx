@@ -43,7 +43,7 @@ export const PostingDataProvider = ({ children }: PostingDataProviderProps) => {
                 changeIsLoadingData,
                 text,
                 dispatchText,
-        }}>
+            } as PostingDataContextType}>
             {children}
         </PostingDataContext.Provider>
     );

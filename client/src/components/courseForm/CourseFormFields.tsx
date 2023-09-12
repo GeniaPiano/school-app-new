@@ -32,7 +32,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
     const [selectTeacherId, setSelectTeacherId] = useState<string>('')
     const {addCourse} = useCourses();
     const {incrementCourseCounter, incrementTeacherCounter} = useCounter();
-    const {changeIsPostedData} = usePostingData()
+    const {changeIsPostedData, dispatchText} = usePostingData()
 
 
 
@@ -71,6 +71,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
             setInputTouchedCount(0)
             if (res.success) {
                 changeIsPostedData(true);
+                dispatchText('Course has benn added.')
                 setTimeout(()=> {
                     onClose();
                     changeIsPostedData(false)

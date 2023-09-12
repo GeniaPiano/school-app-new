@@ -23,6 +23,7 @@ export const StudentsView = () =>  {
         return (
 
             <Flex  color="gray.500" h="95vh" mt="2.5vh" flexDirection="column"  >
+
                 <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
                 { isPostedData
                     ? <Modal isOpen={isOpen} onClose={onClose}>
@@ -35,12 +36,14 @@ export const StudentsView = () =>  {
                         <StudentAddForm isOpen={isOpen} onClose={onClose}/>
                     </FormStateProvider>) }
 
+
                    <Flex my={5}>
                        <StudentsList mainList={true}/>
                    </Flex>
 
 
             </Flex>
+
         )
 
 }

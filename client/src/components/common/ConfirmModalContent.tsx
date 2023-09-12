@@ -12,7 +12,7 @@ export const ConfirmModalContent = ({text, onClose}: Props) => {
     return (
         <ModalBody>
             <ModalCloseButton onClick={onClose}/>
-            <ConfirmTextAndIcon text={text}/>
+            <ConfirmTextAndIcon  text={text}/>
         </ModalBody>
     )
 }

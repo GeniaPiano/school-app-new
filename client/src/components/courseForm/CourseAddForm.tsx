@@ -25,6 +25,7 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
     const {isPostedData } = usePostingData();
     const [inputTouched, setInputTouched] = useState<boolean>(false)
+    const {text} = usePostingData();
 
     const changeInputTouched = (bool: boolean) => setInputTouched(bool)
     const handleCloseConfirmModal = () => {
@@ -47,7 +48,7 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
             <ModalOverlay />
             <ModalContent  color="gray.500">
                 <> {isPostedData
-                ? <ConfirmModalContent text="Course has been added."   onClose={onClose}/>
+                ? <ConfirmModalContent text={text}  onClose={onClose}/>
                 : <>
                         <ModalHeader>Add new course </ModalHeader>
                         <ModalCloseButton/>

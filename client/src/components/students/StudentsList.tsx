@@ -12,6 +12,7 @@ import {FiInfo} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
 import {useCounter} from "../../providers/CounterPovider";
 import {FormStateProvider} from "../../providers/FormStateProvider";
+import {PostingDataProvider} from "../../providers/PostingDataProvider";
 
 
 interface Props {
@@ -57,18 +58,18 @@ export const StudentsList = ({courseName, mainList}: Props) => {
 
                 <List>
                     <FormStateProvider forAdding={false}>
-                    <>  {loading? <Spinner/> : (
-                       <> {students.length !== 0
-                           ? students.map((student) =>
-                                <StudentsListItem
-                                key={student.student.id}
-                                studentData={student}
-                                studentId={student.student.id}
-                                mainList={mainList} />
-                              )
-                            : <span> No students. </span>}
-                         </>
-                        )} </>
+                            <>  {loading? <Spinner/> : (
+                               <> {students.length !== 0
+                                   ? students.map((student) =>
+                                        <StudentsListItem
+                                        key={student.student.id}
+                                        studentData={student}
+                                        studentId={student.student.id}
+                                        mainList={mainList} />
+                                      )
+                                    : <span> No students. </span>}
+                                 </>
+                                )} </>
                  </FormStateProvider>
                  </List>
 

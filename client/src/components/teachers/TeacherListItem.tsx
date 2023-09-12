@@ -19,11 +19,8 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {InfoTeacher} from "./InfoTeacher";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
-import {FormStateProvider, useFormState} from "../../providers/FormStateProvider";
+import { useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
-import {ConfirmModalContent} from "../common/ConfirmModalContent";
-import {TeacherAddForm} from "../teacherForm/TeacherAddForm";
-import {usePostingData} from "../../providers/PostingDataProvider";
 
 interface Props {
     teacher: TeacherEntity;
@@ -68,18 +65,18 @@ export const TeacherListItem = ({teacher}: Props) => {
                     <>
                         <ModalCloseButton />
                         {isEditing
-                        ? <> <ModalHeader>Edit teacher data</ModalHeader>
+                            ? <> <ModalHeader>Edit teacher data</ModalHeader>
                                 <ModalBody>
-                                 <TeacherUpdateForm teacher={teacher}
-                                                    selectedCourses={selectedCourses}/>
-                            </ModalBody>  </>
+                                    <TeacherUpdateForm teacher={teacher}
+                                                       selectedCourses={selectedCourses}/>
+                                </ModalBody>  </>
 
-                        : <InfoTeacher selectedCourses={selectedCourses}
-                                       teacher={teacher}/>
+                            : <InfoTeacher selectedCourses={selectedCourses}
+                                           teacher={teacher}/>
                         } </>
 
                 </ModalContent>
-                </Modal>
+            </Modal>
 
         </ListItem>
     )

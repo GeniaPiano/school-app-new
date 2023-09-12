@@ -27,10 +27,11 @@ import {ErrorText} from "../common/ErrorText";
 export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const {dispatchError,error} = useError();
-    const {changeIsPostedData, dispatchText} = usePostingData();
+    const {changeIsPostedData,  dispatchText} = usePostingData();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
     const [inputValues, setInputValues] = useState(initialStateUser)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
+
 
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
