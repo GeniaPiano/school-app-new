@@ -11,6 +11,7 @@ const [teachers, setTeachers] = useState<TeacherEntity[]>(null);
 const [loading, setLoading] = useState<boolean>(true)
 const {counterTeacher} = useCounter();
 
+
 const {getAllTeachers} = useTeachers();
     useEffect(() => {
         (async () => {
@@ -42,7 +43,7 @@ const {getAllTeachers} = useTeachers();
                 )}</>
 
             </List>
-        </ViewWrapper>
+           </ViewWrapper>
     )
 
 }

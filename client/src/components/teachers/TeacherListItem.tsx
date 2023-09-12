@@ -14,12 +14,16 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {ConfirmDeleteTeacher} from "../ConfirmDeleteTeacher/ConfirmDeleteTeacher";
 import {UserItem} from "../common/UserItem";
 import {TeacherEntity} from "../../types/teacher";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {InfoTeacher} from "./InfoTeacher";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
-import {useFormState} from "../../providers/FormStateProvider";
+import {FormStateProvider, useFormState} from "../../providers/FormStateProvider";
+import {useCounter} from "../../providers/CounterPovider";
+import {ConfirmModalContent} from "../common/ConfirmModalContent";
+import {TeacherAddForm} from "../teacherForm/TeacherAddForm";
+import {usePostingData} from "../../providers/PostingDataProvider";
 
 interface Props {
     teacher: TeacherEntity;
@@ -30,10 +34,18 @@ export const TeacherListItem = ({teacher}: Props) => {
     const {getOneTeacher} = useTeachers();
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity [] | []>([])
     const {isEditing,  openConfirmation} = useFormState();
+    const {counterTeacher} = useCounter()
+
+
+    useEffect(()=> {
+        (async ()=> {
+            const res = await getOneTeacher(teacher.id)
+            setSelectedCourses(res.selectedCourses)
+        })()
+    }, [counterTeacher])
     const handleOpenTeacherInfo = async() => {
         onOpen();
-        const res = await getOneTeacher(teacher.id)
-        setSelectedCourses(res.selectedCourses)
+
     }
 
     return (
@@ -68,6 +80,7 @@ export const TeacherListItem = ({teacher}: Props) => {
 
                 </ModalContent>
                 </Modal>
+
         </ListItem>
     )
 }

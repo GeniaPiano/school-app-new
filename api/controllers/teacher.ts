@@ -91,11 +91,12 @@ export const updateTeacher = async (req: Request, res: Response, next: NextFunct
     await teacher.removeAllCoursesFromTeacher();
 
     const {selectedCourses} = req.body as TeacherReqSelectedCourses
-    if (selectedCourses)
+    if (selectedCourses.length !== 0)
         for (const oneCourse of selectedCourses) {
             const id = oneCourse.id
             await teacher.assignCourseToTeacher(id)
         }
+
     res.json({
         teacher: userWithoutPassword(teacher),
         selectedCourses: await TeacherRecord._getCoursesOfThisTeacher(teacher.id)

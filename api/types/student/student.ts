@@ -16,11 +16,7 @@ export interface StudentBasicData {
     email: string;
 }
 
-export interface StudentPostInt {
+export type StudentReqPost = {
     student: StudentBasicData;
-    selectedCourses: string[]
-}
-
-export interface StudentAssignCourseReq {
-    courseId: string;
+    selectedCourses: string[];
 }

@@ -8,7 +8,7 @@ import {
     ModalOverlay,
 } from "@chakra-ui/react";
 import { useEffect, useState} from "react";
-import {TeacherFormInputFields} from "./TeacherFormInputFields";
+import {TeacherFormFields} from "./TeacherFormFields";
 import {useTeachers} from "../../hooks/useTeachers";
 import {CourseEntity} from "../../types/course";
 import {initialStateUser, initialStateTouchCount} from "../../utils/initialState";
@@ -26,7 +26,7 @@ import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const {dispatchError} = useError();
-    const {changeIsPostedData} = usePostingData();
+    const {changeIsPostedData, dispatchText} = usePostingData();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
     const [inputValues, setInputValues] = useState(initialStateUser)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
@@ -99,6 +99,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
             const res = await addNewTeacher(inputValues, selectedCourses)
             if (res.success) {
                 changeIsPostedData(true);
+                dispatchText('Teacher has been added.')
                 setTimeout(()=> {
                     onClose();
                     changeIsPostedData(false)
@@ -147,7 +148,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                     <ModalCloseButton onClick={handleCloseMainModal}/>
                     <ModalBody>
                         <form >
-                            <TeacherFormInputFields
+                            <TeacherFormFields
                                 inputValues={inputValues}
                                 isError={isError}
                                 handleChangeInputValue={handleChangeInputValue}

@@ -13,7 +13,7 @@ import {FormField} from "../FormField/FormField";
 import {ChangeEvent, useEffect, useState} from "react";
 import {initialStateTouchCount, initialStateUser} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
-import {CourseEntity, CourseId} from "../../types/course";
+import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 import {SelectForm} from "../FormSelect/SelectForm";
@@ -23,6 +23,7 @@ import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/Confirmati
 import {useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
 import {useStudents} from "../../hooks/useStudents";
+import {ErrorText} from "../common/ErrorText";
 
 interface Props {
     isOpen: boolean;
@@ -32,8 +33,8 @@ interface Props {
 export const StudentAddForm = ({isOpen, onClose}: Props) => {
 
     const {getAllCourses} = useCourses()
-    const {dispatchError} = useError();
-    const {changeIsPostedData} = usePostingData();
+    const {dispatchError, error} = useError();
+    const {changeIsPostedData, dispatchText} = usePostingData();
     const {addStudent} = useStudents();
     const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
 
@@ -101,14 +102,20 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             setTouchedCount('email', 4);
         }
         try {
-            const response = await addStudent(inputValues, selectedCourses)
-            console.log(response)
+            const res = await addStudent(inputValues, selectedCourses)
+            if (res.success) {
+                changeIsPostedData(true);
+                dispatchText("Student has been added.")
+                setTimeout(()=> {
+                    onClose();
+                    changeIsPostedData(false)
+                    incrementStudentCounter();
+                }, 3000)
+            }
+
         } catch (err) {
-            console.log(err)
+            dispatchError(err.response.data.message)
         }
-
-
-
     }
 
 
@@ -159,6 +166,7 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
                                 error={isError[oneForm.name]}
                             />
                         ))}
+                        {error && <ErrorText text={error}/>}
                         <SelectForm label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>
                     </form>
                     <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />

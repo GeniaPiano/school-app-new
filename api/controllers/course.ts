@@ -36,7 +36,7 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
     const teacher = !course.teacher_id
         ? null
         : await TeacherRecord.getOne(course.teacher_id) as TeacherEntity;
-    // const teacherCleaned = userWithoutPassword(teacher)
+
 
     res.json({
         course,

@@ -1,4 +1,4 @@
-import {Box, SimpleGrid} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import {TeacherEntity, TeacherBasicData} from "../../types/teacher";
@@ -8,7 +8,6 @@ import {initialStateValues} from "../../utils/initialState";
 import {errors} from "../../utils/errorsForm";
 import {FormField} from "../FormField/FormField";
 import {CourseEntity} from "../../types/course";
-import {CourseItem} from "../common/CourseItem";
 import {useTeachers} from "../../hooks/useTeachers";
 import {useError} from "../../providers/ErrorProvider";
 import {useCounter} from "../../providers/CounterPovider";
@@ -17,6 +16,8 @@ import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/Confirmati
 import {TeacherUpdateFooterBtns} from "./TeacherUpdateFooterBtns";
 import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
+import {usePostingData} from "../../providers/PostingDataProvider";
+import {useFormState} from "../../providers/FormStateProvider";
 
 
 interface Props {
@@ -33,7 +34,9 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const {getAvailableCourses, updateTeacher} = useTeachers();
     const {dispatchError, error} = useError();
-    const {incrementTeacherCounter} = useCounter();
+    const {incrementTeacherCounter, counterTeacher} = useCounter();
+    const {dispatchText, changeIsPostedData} = usePostingData();
+    const {changeIsEditing} = useFormState();
 
 
     useEffect(()=> {
@@ -41,7 +44,7 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
             const data = await getAvailableCourses();
             setAvailableCourses(data)
         })();
-    }, [teacher])
+    }, [teacher, counterTeacher ])
 
     const handleInputChange = (  e: ChangeEvent<HTMLInputElement>) => {
         setInputValues((prev) => {
@@ -71,9 +74,14 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
         e.preventDefault();
         try {
             const res = await updateTeacher(teacher.id, inputValues, coursesReadyToUpdate)
-            console.log(res)
             if (res.success) {
                 incrementTeacherCounter();
+                dispatchText('Teacher has been updated.')
+                setInputValues(initialStateValues(teacher));
+                changeIsEditing(false)
+
+
+
             }
         } catch (err) {
             dispatchError(err.response.data.message)
