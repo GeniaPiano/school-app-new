@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import axios from "axios";
-import {COURSE_URL, STUDENT_URL} from "../utils/url";
+import {COURSE_URL} from "../utils/url";
 import {CourseEntity} from "../types/course";
 import {GetSingleCourseRes} from "../types/course"
 
@@ -52,11 +52,31 @@ export const useCourses = () => {
         }
     }
 
+    const updateCourse = async (courseId: string | null, name: string, teacher_id: string | null) => {
+        if (courseId !== null) {
+            try {
+                const res = await axios.patch(`${COURSE_URL}/${courseId}`, {
+                    name,
+                    teacher_id,
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                return {success: true, data: res.data}
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+    }
+
 
 return {
     getAllCourses,
     getCourseById,
     addCourse,
+    updateCourse,
 }
 
 }

@@ -2,7 +2,7 @@ import {
     Box,
     Flex,
     useDisclosure,
-    SimpleGrid,
+    SimpleGrid, Menu, MenuList, Button, MenuButton, MenuItem, MenuGroup,
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
@@ -14,6 +14,9 @@ import {CourseAddForm} from "../../components/courseForm/CourseAddForm";
 import {useCounter} from "../../providers/CounterPovider";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {Header} from "../../components/Header/Header";
+import {ChevronDownIcon} from "@chakra-ui/icons";
+import {FormStateProvider} from "../../providers/FormStateProvider";
+import {useCourseInfo} from "../../providers/CourseProvider";
 
 
 export const CoursesView = () => {
@@ -26,6 +29,7 @@ export const CoursesView = () => {
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
     const {counterCourse} = useCounter();
+    const {openModal} = useCourseInfo();
 
 
     useEffect(() => {
@@ -54,7 +58,7 @@ export const CoursesView = () => {
     )
 
     return (
-        <>
+        <FormStateProvider>
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box>
                 <Flex w="95%" alignItems="center"  gap={50}>
@@ -65,27 +69,42 @@ export const CoursesView = () => {
             <SimpleGrid spacing={4} columns={[1, 2, 3, 6, 7, 8]}>
                <> {
                     courses && courses.map((oneCourse) => {
-                        return <Flex
+                        return(
+                       <Flex
                             key={oneCourse.id}
                             alignItems="center"
                             textAlign="center"
-                            justifyContent="center"
+                            justifyContent="space-between"
                             width={navSize === "large"?  {base: "80%", md: "100%"} : {base: "90%", md: "100%"}}
-                             p={{base: "5px 8px", md: "8px", lg: "10px"}}
-                            _hover={{color:"white"}}
+                            p={{base: "5px 8px", md: "8px", lg: "10px"}}
                             borderRadius="8px"
                             fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
                             bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
                             color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
 
                         >
-                            <NavLink
-                            to={`/courses/${oneCourse.id}`}
-                            >
-                                {firstLetterToUpper(oneCourse.name)} </NavLink>
-                        </Flex>
-                    })
-                } </>
+                            <Box _hover={{color:"white"}}>
+                                <NavLink to={`/courses/${oneCourse.id}`}>
+                                    {firstLetterToUpper(oneCourse.name)}
+                                </NavLink>
+                            </Box>
+
+
+                            <Menu _hover={{color:"white"}} >
+                                <MenuButton >
+                                    <ChevronDownIcon />
+                                 </MenuButton>
+                                 <MenuList>
+                                     <MenuGroup >
+                                         <MenuItem color="teal" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
+                                         <MenuItem color="teal" >edit</MenuItem>
+                                         <MenuItem color="teal">delete </MenuItem>
+                                     </MenuGroup>
+                                 </MenuList>
+                             </Menu>
+
+                        </Flex>)})
+                   } </>
             </SimpleGrid>
             </Box>
 
@@ -93,6 +112,6 @@ export const CoursesView = () => {
 
 
         </Flex>
-        </>
+        </FormStateProvider>
     )
 }
