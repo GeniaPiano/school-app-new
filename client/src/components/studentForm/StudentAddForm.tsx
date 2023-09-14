@@ -51,7 +51,6 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
         (async() => {
             const res = await getAllCourses();
             setAvailableCourses(res)
-            console.log(res)
         })()
     }, [])
 

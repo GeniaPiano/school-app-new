@@ -23,7 +23,7 @@ export const FormField:FC<FormFieldProps> = ({   label,
 
     return (
         <FormControl mb={5} isInvalid={error}>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel color="gray">{label}</FormLabel>
             <Input
                 name={name}
                 value={value}

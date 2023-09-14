@@ -155,7 +155,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
                                 isError={isError}
                                 handleChangeInputValue={handleChangeInputValue}
                             />
-                            <SelectForm data={availableCourses} handleChange={handleSelectCourse} placeholder="Select course/courses." label="Courses"/>
+                            <SelectForm comment="You can add courses later." data={availableCourses} handleChange={handleSelectCourse} placeholder="Select course/courses." label="Courses"/>
                         </form>
                         <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse}/>
                         {error && <ErrorText text={error}/>}
