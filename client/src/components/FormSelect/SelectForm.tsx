@@ -1,6 +1,7 @@
 import {FormControl, FormLabel, Select, Text} from "@chakra-ui/react";
 import {CourseEntity} from "../../types/course";
 import {TeacherEntity} from "../../types/teacher";
+import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 interface Props {
     data: CourseEntity[] | TeacherEntity | [];
@@ -27,9 +28,10 @@ export const SelectForm = ({data, comment, handleChange, placeholder, label}:Pro
                 >
                     {
                       data.length !== 0
-                        ?  data.map(course=> (
-                                 <option key={course.id} value={course.id}>
-                                     {course.name}</option>
+                        ?  data.map(item=> (
+                                 <option key={item.id} value={item.id}>
+                                     {`${firstLetterToUpper(item.name)} ${item.last_name && firstLetterToUpper(item.last_name)}`}
+                                 </option>
                              ))
                         :    'No data to select at this moment.'
                     }
