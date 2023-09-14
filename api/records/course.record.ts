@@ -92,12 +92,20 @@ export class CourseRecord implements CourseEntity {
             teacher_id: this.teacher_id
         });
 
-        // AKTUALIZACJA tabeli courses_teaches
-        await pool.execute("UPDATE `courses_teachers` SET  `teacher_id` = :teacher_id WHERE `course_id` = :course_id", {
-            course_id: this.id,
-            teacher_id: this.teacher_id,
-        });
+        await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :course_id", {
+            course_id: this.id
+        })
+
+        if (this.teacher_id !== null) {
+            await pool.execute("UPDATE `courses_teachers` SET  `teacher_id` = :teacher_id WHERE `course_id` = :course_id", {
+                course_id: this.id,
+                teacher_id: this.teacher_id,
+            });
+        }
+
     }
+
+
 
 
     //POBRANIE LICZBY STUDENTÓW DANEGO KURSU
