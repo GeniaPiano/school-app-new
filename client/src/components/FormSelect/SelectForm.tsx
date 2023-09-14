@@ -9,12 +9,14 @@ interface Props {
     placeholder: string;
     label: string;
     comment?: string;
+    isTeacher?: boolean;
+    value?: string;
 }
 
 
 
 
-export const SelectForm = ({data, comment, handleChange, placeholder, label}:Props) => {
+export const SelectForm = ({data, comment, handleChange, placeholder, label, isTeacher, value}:Props) => {
 
     return (
             <FormControl mb={10}>
@@ -25,12 +27,13 @@ export const SelectForm = ({data, comment, handleChange, placeholder, label}:Pro
                         focusBorderColor="brand.600"
                         onChange={handleChange}
                         comment={comment}
+                        value={isTeacher && value  ? value : ''}
                 >
                     {
                       data.length !== 0
                         ?  data.map(item=> (
                                  <option key={item.id} value={item.id}>
-                                     {`${firstLetterToUpper(item.name)} ${item.last_name && firstLetterToUpper(item.last_name)}`}
+                                     {firstLetterToUpper(item.name)} {isTeacher && firstLetterToUpper(item.last_name)}
                                  </option>
                              ))
                         :    'No data to select at this moment.'

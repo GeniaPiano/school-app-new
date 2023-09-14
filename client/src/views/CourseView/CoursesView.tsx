@@ -29,7 +29,7 @@ export const CoursesView = () => {
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
     const {counterCourse} = useCounter();
-    const {openModal} = useCourseInfo();
+    const {openModal, openEditModal} = useCourseInfo();
 
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export const CoursesView = () => {
     )
 
     return (
-        <FormStateProvider>
+        <FormStateProvider forAdding={true}>
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
             <Box>
                 <Flex w="95%" alignItems="center"  gap={50}>
@@ -70,41 +70,43 @@ export const CoursesView = () => {
                <> {
                     courses && courses.map((oneCourse) => {
                         return(
-                       <Flex
-                            key={oneCourse.id}
-                            alignItems="center"
-                            textAlign="center"
-                            justifyContent="space-between"
-                            width={navSize === "large"?  {base: "80%", md: "100%"} : {base: "90%", md: "100%"}}
-                            p={{base: "5px 8px", md: "8px", lg: "10px"}}
-                            borderRadius="8px"
-                            fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
-                            bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
-                            color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
+                           <NavLink to={`/courses/${oneCourse.id}`}>
+                               <Flex
+                                   key={oneCourse.id}
+                                   alignItems="center"
+                                   textAlign="center"
+                                   justifyContent="space-between"
+                                   width={navSize === "large"?  {base: "80%", md: "100%"} : {base: "90%", md: "100%"}}
+                                   p={{base: "5px 8px", md: "8px", lg: "10px"}}
+                                   borderRadius="8px"
+                                   fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
+                                   bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
+                                   color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
 
-                        >
-                            <Box _hover={{color:"white"}}>
-                                <NavLink to={`/courses/${oneCourse.id}`}>
+                               >
+                                <Box   _hover={{color:"white"}}>
                                     {firstLetterToUpper(oneCourse.name)}
-                                </NavLink>
-                            </Box>
+                                </Box>
 
 
-                            <Menu _hover={{color:"white"}} >
-                                <MenuButton >
-                                    <ChevronDownIcon />
-                                 </MenuButton>
-                                 <MenuList>
-                                     <MenuGroup >
-                                         <MenuItem color="teal" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
-                                         <MenuItem color="teal" >edit</MenuItem>
-                                         <MenuItem color="teal">delete </MenuItem>
-                                     </MenuGroup>
-                                 </MenuList>
-                             </Menu>
 
-                        </Flex>)})
-                   } </>
+                                   <Menu _hover={{color:"white"}} >
+                                       <MenuButton >
+                                           <ChevronDownIcon size="l" />
+                                       </MenuButton>
+                                       <MenuList>
+                                           <MenuGroup >
+                                               <MenuItem color="teal" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
+                                               <MenuItem color="teal" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
+                                               <MenuItem color="teal">delete </MenuItem>
+                                           </MenuGroup>
+                                       </MenuList>
+                                   </Menu>
+
+                               </Flex>
+                           </NavLink>)})
+                               } </>
+
             </SimpleGrid>
             </Box>
 

@@ -1,8 +1,6 @@
 import {createContext, FC, ReactNode, useContext, useState} from "react";
 
-interface CourseContextType {
-    isEditing: boolean;
-    changeIsEditing: (bool: boolean) => void
+interface CourseDeleteContextType {
     courseId: string | null;
     isOpen:boolean;
     openModal: (courseId: string) => void
@@ -13,13 +11,13 @@ interface CourseContextType {
     toggleIsConfirmed: ()=> void;
     openEditModal: (courseId: string) => void;
 }
-export const CourseContext = createContext<CourseContextType | undefined>(undefined)
+export const CourseDeleteContext = createContext<CourseDeleteContextType | undefined>(undefined)
 
 interface CourseProviderProps {
     children: ReactNode;
 }
 
-export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
+export const CourseDeleteProvider: FC<CourseProviderProps> = ({children}) => {
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const [isPosted, setIsPosted] = useState<boolean>(false)
     const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
@@ -46,7 +44,7 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
 
 
 
-    return <CourseContext.Provider
+    return <CourseDeleteContext.Provider
         value={{
             isEditing,
             isPosted,
@@ -64,13 +62,13 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
         }}
     >
         {children}
-    </CourseContext.Provider>
+    </CourseDeleteContext.Provider>
 }
 
-export const useCourseInfo = (): CourseContextType => {
-    const context = useContext(CourseContext);
+export const useCourseDelete = (): CourseDeleteContextType => {
+    const context = useContext(CourseDeleteContext);
     if (context === undefined) {
-        throw new Error("useCourseInfo must be used within a PostingDataProvider");
+        throw new Error("useCourseDelete must be used within a PostingDataProvider");
     }
     return context;
 };

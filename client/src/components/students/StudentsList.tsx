@@ -1,6 +1,6 @@
 
 
-import {Heading, HStack, IconButton, List, Spinner, useDisclosure} from "@chakra-ui/react";
+import {Heading, HStack, IconButton, List, Spinner, Text} from "@chakra-ui/react";
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
@@ -12,7 +12,6 @@ import {FiEdit, FiInfo, FiTrash2} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
 import {useCounter} from "../../providers/CounterPovider";
 import {FormStateProvider} from "../../providers/FormStateProvider";
-import {PostingDataProvider} from "../../providers/PostingDataProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
 
 
@@ -25,7 +24,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
 
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
-    const {openModal} = useCourseInfo();
+    const {openModal, openEditModal} = useCourseInfo();
     const {courseId} = useParams();
     const {getStudentsByGroup, getAllStudents} = useStudents();
     const {counterStudent}= useCounter()
@@ -48,17 +47,17 @@ export const StudentsList = ({courseName, mainList}: Props) => {
     return (
         <ViewWrapper>
            <>  {courseName && (
-               <> <HStack >
-                    <Heading  as="h3"  mr={8} fontSize="x-large" color="brand.800"> {courseName} </Heading>
+               <> <HStack mb={50} >
+                    <Heading  as="h3"  mr={20} fontSize="x-large" color="brand.800"> {courseName.toUpperCase()} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={()=> openModal(courseId)} />
-                    {/*<IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={onOpen} />*/}
+                    <IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={()=> openEditModal(courseId)}/>
                     {/*<IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={onOpen} />*/}
                </HStack>
                <CourseInfo />
              </>
 
             )} </>
-
+                <Text fontWeight="700" color="brand.800">students:</Text>
                 <List>
                     <FormStateProvider forAdding={false}>
                             <>  {loading? <Spinner/> : (
