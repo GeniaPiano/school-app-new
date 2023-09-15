@@ -29,7 +29,7 @@ export const CoursesView = () => {
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
     const {counterCourse} = useCounter();
-    const {openModal, openEditModal} = useCourseInfo();
+    const {openModal, openEditModal, openDeleteModal} = useCourseInfo();
 
 
     useEffect(() => {
@@ -70,13 +70,13 @@ export const CoursesView = () => {
                <> {
                     courses && courses.map((oneCourse) => {
                         return(
-                           <NavLink to={`/courses/${oneCourse.id}`}>
+                           <NavLink key={oneCourse.id} to={`/courses/${oneCourse.id}`}>
                                <Flex
                                    key={oneCourse.id}
                                    alignItems="center"
                                    textAlign="center"
                                    justifyContent="space-between"
-                                   width={navSize === "large"?  {base: "80%", md: "100%"} : {base: "90%", md: "100%"}}
+                                   width={navSize === "large"?  {base: "60%", md: "100%"} : {base: "80%", md: "100%"}}
                                    p={{base: "5px 8px", md: "8px", lg: "10px"}}
                                    borderRadius="8px"
                                    fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
@@ -90,15 +90,15 @@ export const CoursesView = () => {
 
 
 
-                                   <Menu _hover={{color:"white"}} >
+                                   <Menu _hover={{color:"white"}} colorScheme="pink" variant="solid" >
                                        <MenuButton >
                                            <ChevronDownIcon size="l" />
                                        </MenuButton>
                                        <MenuList>
                                            <MenuGroup >
-                                               <MenuItem color="teal" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
-                                               <MenuItem color="teal" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
-                                               <MenuItem color="teal">delete </MenuItem>
+                                               <MenuItem onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
+                                               <MenuItem color="pink" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
+                                               <MenuItem color="pink" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
                                            </MenuGroup>
                                        </MenuList>
                                    </Menu>

@@ -4,7 +4,7 @@ import {Heading, HStack, IconButton, List, Spinner, Text} from "@chakra-ui/react
 
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
 import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
@@ -13,6 +13,7 @@ import {CourseInfo} from "../CourseInfo/CourseInfo";
 import {useCounter} from "../../providers/CounterPovider";
 import {FormStateProvider} from "../../providers/FormStateProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
+import {NavSizeContext} from "../../providers/NavSizeProvider";
 
 
 interface Props {
@@ -24,10 +25,11 @@ export const StudentsList = ({courseName, mainList}: Props) => {
 
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
-    const {openModal, openEditModal} = useCourseInfo();
+    const {openModal, openEditModal, openDeleteModal} = useCourseInfo();
     const {courseId} = useParams();
     const {getStudentsByGroup, getAllStudents} = useStudents();
     const {counterStudent}= useCounter()
+    const {navSize} = useContext(NavSizeContext)
 
     useEffect(() => {
         (async () => {
@@ -48,10 +50,13 @@ export const StudentsList = ({courseName, mainList}: Props) => {
         <ViewWrapper>
            <>  {courseName && (
                <> <HStack mb={50} >
-                    <Heading  as="h3"  mr={20} fontSize="x-large" color="brand.800"> {courseName.toUpperCase()} </Heading>
+                    <Heading  as="h3"
+                              mr={navSize === 'small'  ? 6 : 5}
+                              fontSize="x-large"
+                              color="brand.800"> {courseName.toUpperCase()} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={()=> openModal(courseId)} />
                     <IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={()=> openEditModal(courseId)}/>
-                    {/*<IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={onOpen} />*/}
+                    <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={()=> openDeleteModal(courseId)} />
                </HStack>
                <CourseInfo />
              </>

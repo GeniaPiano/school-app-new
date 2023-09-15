@@ -1,6 +1,20 @@
 import {
-     Box, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay } from "@chakra-ui/react";
+    Badge,
+    Box,
+    Button,
+    Flex, HStack,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Text
+} from "@chakra-ui/react";
 import {useCourses} from "../../hooks/useCourses";
+import {NavLink} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {GetSingleCourseRes} from "../../types/course";
 import {useCourseInfo} from "../../providers/CourseProvider";
@@ -8,14 +22,15 @@ import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
 import {useCounter} from "../../providers/CounterPovider";
 import {Loader} from "../common/Loader";
-import {CheckIcon} from "@chakra-ui/icons";
+import {ArrowDownIcon, CheckIcon} from "@chakra-ui/icons";
 import {EditCourse} from "./EditCourse";
 import {BasicInfo} from "./BasicInfo";
 
 export const CourseInfo = () => {
 
     const [courseData, setCourseData] = useState<GetSingleCourseRes | null>(null);
-    const { isOpen, closeModal, courseId, isEditing,changeIsPosted, changeIsEditing, isPosted, isConfirmed, toggleIsConfirmed } = useCourseInfo();
+    const { isOpen, closeModal, courseId, isEditing,changeIsPosted, changeIsEditing,
+        isPosted, isConfirmed, toggleIsConfirmed, isDelete, changeIsDelete} = useCourseInfo();
     const [teachers, setTeachers] = useState<TeacherEntity[] | []>([])
     const [selectTeacher, setSelectTeacher] = useState<string | null>(null)
     const {updateCourse} = useCourses();
@@ -37,10 +52,10 @@ export const CourseInfo = () => {
                     const results = await getCourseById(courseId);
                     setCourseData(results);
                     setName(results.course.name)
-                    setSelectTeacher(results.teacher.id ? results.teacher.id : null)
+                    setSelectTeacher(results.teacher ? results.teacher.id : null)
                     setInitialFormData({
                         name: results.course.name,
-                        teacher: { id: results.teacher.id },
+                        teacher: { id:results.teacher ? results.teacher.id : null},
                     })
                 } catch (error) {
                     console.error(error);
@@ -141,8 +156,36 @@ export const CourseInfo = () => {
                                     <Loader colorScheme="red" loadingText='posting...' />
                                 </ModalBody> )
                             :
+                            <>
+                                {isDelete ?  (courseData.countStudents > 0 ?
+                                        <>
+                                            <ModalBody mb={30}>
 
-                            <BasicInfo courseData={courseData}/>
+                                                <Flex my={10}  fontWeight="500"  >
+                                                    <Text mr={4}> Cannot delete </Text>
+                                                    <Text bg="teal.200" px={2} borderRadius="2px">{courseData.course.name.toUpperCase()}</Text>
+                                                </Flex>
+                                                <Text>Remove students from this course first.</Text>
+
+                                                <Flex mt={37} justifyContent="center">
+                                                    <ArrowDownIcon _hover={{color:"teal.300"}} color="teal.500" boxSize={5} cursor='pointer' onClick={closeModal}/>
+                                                </Flex>
+                                            </ModalBody>
+                                        </> :
+                                    <>
+                                        <ModalHeader color="gray.600">Delete course</ModalHeader>
+                                        <ModalBody>Are you sure you want to delete
+                                            <Badge colorScheme='teal'> {courseData.course.name} </Badge> ? <br/>
+                                            You cannot undo this action.
+                                        </ModalBody>
+                                        <ModalFooter>
+                                            <Button colorScheme='pink'  mr={3}>Yes, delete</Button>
+                                            <Button onClick={()=>changeIsDelete(false)}>No</Button>
+                                        </ModalFooter>
+                                    </>)
+                                    : <BasicInfo courseData={courseData}/> }
+                            </>
+
                     } </>
                 )}
 

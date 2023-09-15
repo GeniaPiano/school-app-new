@@ -9,7 +9,7 @@ interface Props {
 }
 export const BasicInfo = ({courseData }: Props) => {
 
-    const {changeIsEditing} = useCourseInfo();
+    const {changeIsEditing, changeIsDelete} = useCourseInfo();
     return (
         <>
             <ModalHeader mb={8} color="teal">
@@ -29,7 +29,8 @@ export const BasicInfo = ({courseData }: Props) => {
                 </HStack>
             </ModalBody>
             <ModalFooter>
-                <Button color="gray.600" onClick={()=> changeIsEditing(true)}>Edit</Button>
+                <Button color="gray.600" mr={3} onClick={()=> changeIsEditing(true)}>Edit</Button>
+                <Button  color="pink.500" onClick={()=> changeIsDelete(true)}>Delete</Button>
             </ModalFooter>
         </>
     )

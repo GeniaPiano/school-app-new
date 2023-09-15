@@ -2,7 +2,7 @@ import {Button, ModalBody, ModalFooter, ModalHeader, Text} from "@chakra-ui/reac
 import {FormField} from "../FormField/FormField";
 import {SelectForm} from "../FormSelect/SelectForm";
 
-export const EditCourse = ({courseName, name, handelInputChange, handleSelectChange, teachers, selectTeacher, handleSubmit, message, cancelEditing}) => {
+export const EditCourse = ({courseName, name, handleInputChange, handleSelectChange, teachers, selectTeacher, handleSubmit, message, cancelEditing}) => {
     return (
 
         <>
@@ -10,7 +10,7 @@ export const EditCourse = ({courseName, name, handelInputChange, handleSelectCha
             <ModalBody color="Gray">
                 <form>
                     <FormField value={name}
-                               onChange={handelInputChange}
+                               onChange={handleInputChange}
                                name="name"
                                type="text"
                                errorMessage="Name is required and must contain from 2 to 40 chars."

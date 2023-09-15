@@ -12,6 +12,9 @@ interface CourseContextType {
     isConfirmed: boolean;
     toggleIsConfirmed: ()=> void;
     openEditModal: (courseId: string) => void;
+    isDelete: boolean;
+    changeIsDelete: (bool: boolean) => void;
+    openDeleteModal: (courseId: string) => void;
 }
 export const CourseContext = createContext<CourseContextType | undefined>(undefined)
 
@@ -26,22 +29,32 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
     const changeIsEditing = (bool: boolean) => setIsEditing(bool)
     const [isOpen, setIsOpen] = useState(false);
     const [courseId, setCourseId] = useState<string | null>(null);
+    const [isDelete, setIsDelete] = useState<boolean>(false);
+    const changeIsDelete = (bool: boolean) =>  setIsDelete(bool)
 
     const changeIsPosted = (bool: boolean) => setIsPosted(bool)
     const toggleIsConfirmed = () => setIsConfirmed(prev=> !prev)
     const openModal = (courseId: string) => {
         setCourseId(courseId);
         setIsOpen(true);
+        changeIsDelete(false)
     };
 
     const closeModal = () => {
         setIsOpen(false);
         setCourseId(null);
-        setIsEditing(false)
+        setIsEditing(false);
+        setIsConfirmed(false);
+        changeIsDelete(false)
+        setIsPosted(false)
     };
     const openEditModal = (courseId: string) => {
         openModal(courseId);
         changeIsEditing(true)
+    }
+    const openDeleteModal = (courseId: string) => {
+        openModal(courseId)
+        changeIsDelete(true)
     }
 
 
@@ -59,6 +72,9 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
             isConfirmed,
             toggleIsConfirmed,
             openEditModal,
+            isDelete,
+            changeIsDelete,
+            openDeleteModal,
 
 
         }}

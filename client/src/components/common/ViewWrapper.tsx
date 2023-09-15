@@ -8,7 +8,6 @@ interface Props {
 
 export const ViewWrapper:FC<Props> = ({children}) => {
     const {navSize} = useContext(NavSizeContext)
-
     return (
        <Flex
            color="gray.500"
@@ -16,11 +15,10 @@ export const ViewWrapper:FC<Props> = ({children}) => {
            borderRadius='15px'
            p={5}
            mt={10}
-           minWidth={{base: navSize === 'small' ? '35vh' : '40vw',
+           minWidth={{base: navSize === 'small' ? '30%' : '35%',
             md: '60vw',
             lg: '50vw'}}
            flexDirection="column"
-
        >
            {children}
        </Flex>
