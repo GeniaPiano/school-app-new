@@ -91,6 +91,6 @@ export const deleteCourse = async (req: Request, res: Response, next: NextFuncti
         throw new ValidationError('Cannot remove course. ')
     }
     await course.delete();
-    res.end();
+    res.json({message: "ok"})
 }
 

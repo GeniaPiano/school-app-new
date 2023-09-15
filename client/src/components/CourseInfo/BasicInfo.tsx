@@ -2,6 +2,7 @@ import {Badge, Button, HStack, ModalBody, ModalFooter, ModalHeader, Text} from "
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {GetSingleCourseRes} from "../../types/course";
+import {HeaderCourseInfo} from "./HeaderCourseInfo";
 
 
 interface Props {
@@ -12,14 +13,11 @@ export const BasicInfo = ({courseData }: Props) => {
     const {changeIsEditing, changeIsDelete} = useCourseInfo();
     return (
         <>
-            <ModalHeader mb={8} color="teal">
-                <Badge colorScheme="teal" mr={3}  fontSize='0.8em'>course</Badge>
-                {courseData.course.name}
-            </ModalHeader>
+            <HeaderCourseInfo title={courseData?.course.name}/>
             <ModalBody>
                 <HStack mb={2}>
                     <Badge colorScheme="pink" mr={2}>Number of students </Badge>
-                    <Text> {courseData.course.countStudents} </Text>
+                    <Text> {courseData && courseData.countStudents} </Text>
                 </HStack>
                 <HStack mb={2}>
                     <Badge colorScheme="pink" mr={50}>Teacher name </Badge>

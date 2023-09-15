@@ -90,15 +90,15 @@ export const CoursesView = () => {
 
 
 
-                                   <Menu _hover={{color:"white"}} colorScheme="pink" variant="solid" >
+                                   <Menu  >
                                        <MenuButton >
                                            <ChevronDownIcon size="l" />
                                        </MenuButton>
                                        <MenuList>
                                            <MenuGroup >
-                                               <MenuItem onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
-                                               <MenuItem color="pink" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
-                                               <MenuItem color="pink" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
+                                               <MenuItem _hover={{bg:"pink.50"}}  color="pink.400" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
+                                               <MenuItem _hover={{bg:"pink.50"}} color="pink.400" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
+                                               <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
                                            </MenuGroup>
                                        </MenuList>
                                    </Menu>

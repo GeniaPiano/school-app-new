@@ -73,10 +73,13 @@ export class CourseRecord implements CourseEntity {
 
 
     async delete(): Promise<void> {
+        if (await this.countStudents() > 0 ) {
+            throw new ValidationError('Cannot delete the course. Remove students assigned to this course first.')
+        }
+
         await pool.execute("DELETE FROM `courses` WHERE `id` = :id ", {
             id: this.id,
         })
-
         //AKTUALIZCJA TABEL RELACYJNYCH
         if (this.teacher_id !== null) {
             await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :id", {

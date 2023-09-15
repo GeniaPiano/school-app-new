@@ -15,6 +15,8 @@ interface CourseContextType {
     isDelete: boolean;
     changeIsDelete: (bool: boolean) => void;
     openDeleteModal: (courseId: string) => void;
+    confirmClose: boolean;
+    changeConfirmClose: (bool: boolean) => void;
 }
 export const CourseContext = createContext<CourseContextType | undefined>(undefined)
 
@@ -27,21 +29,23 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
     const [isPosted, setIsPosted] = useState<boolean>(false)
     const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
     const changeIsEditing = (bool: boolean) => setIsEditing(bool)
-    const [isOpen, setIsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [courseId, setCourseId] = useState<string | null>(null);
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const changeIsDelete = (bool: boolean) =>  setIsDelete(bool)
+    const [confirmClose, setConfirmClose] = useState<boolean>(false);
+    const changeConfirmClose = (bool: boolean) => setConfirmClose(bool)
 
     const changeIsPosted = (bool: boolean) => setIsPosted(bool)
     const toggleIsConfirmed = () => setIsConfirmed(prev=> !prev)
     const openModal = (courseId: string) => {
         setCourseId(courseId);
-        setIsOpen(true);
+        setIsModalOpen(true);
         changeIsDelete(false)
     };
 
     const closeModal = () => {
-        setIsOpen(false);
+        setIsModalOpen(false);
         setCourseId(null);
         setIsEditing(false);
         setIsConfirmed(false);
@@ -65,7 +69,7 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
             isPosted,
             changeIsPosted,
             changeIsEditing,
-            isOpen,
+            isOpen: isModalOpen,
             openModal,
             closeModal,
             courseId,
@@ -75,8 +79,8 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
             isDelete,
             changeIsDelete,
             openDeleteModal,
-
-
+            confirmClose,
+            changeConfirmClose,
         }}
     >
         {children}

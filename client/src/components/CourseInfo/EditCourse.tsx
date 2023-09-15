@@ -1,12 +1,18 @@
-import {Button, ModalBody, ModalFooter, ModalHeader, Text} from "@chakra-ui/react";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Text, useDisclosure} from "@chakra-ui/react";
 import {FormField} from "../FormField/FormField";
 import {SelectForm} from "../FormSelect/SelectForm";
+import {HeaderCourseInfo} from "./HeaderCourseInfo";
+import {useCourseInfo} from "../../providers/CourseProvider";
 
 export const EditCourse = ({courseName, name, handleInputChange, handleSelectChange, teachers, selectTeacher, handleSubmit, message, cancelEditing}) => {
+
+    const {confirmClose, changeConfirmClose} = useCourseInfo();
+    const {onClose, isOpen, onOpen} = useDisclosure()
+
     return (
 
         <>
-            <ModalHeader color="teal"> {courseName} </ModalHeader>
+          <HeaderCourseInfo title={courseName}/>
             <ModalBody color="Gray">
                 <form>
                     <FormField value={name}
@@ -32,6 +38,9 @@ export const EditCourse = ({courseName, name, handleInputChange, handleSelectCha
                 <Button color="gray.600" mr={3} onClick={cancelEditing}>Cancel</Button>
                 <Button color="gray.600" onClick={handleSubmit}>Save</Button>
             </ModalFooter>
+
+
+
         </>
     )
 }

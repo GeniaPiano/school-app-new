@@ -1,8 +1,9 @@
 import {
+    AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay,
     Badge,
     Box,
     Button,
-    Flex, HStack,
+    Flex,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -10,12 +11,10 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Stack,
-    Text
+    Text, useDisclosure
 } from "@chakra-ui/react";
 import {useCourses} from "../../hooks/useCourses";
-import {NavLink} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {GetSingleCourseRes} from "../../types/course";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {useTeachers} from "../../hooks/useTeachers";
@@ -25,15 +24,18 @@ import {Loader} from "../common/Loader";
 import {ArrowDownIcon, CheckIcon} from "@chakra-ui/icons";
 import {EditCourse} from "./EditCourse";
 import {BasicInfo} from "./BasicInfo";
+import {usePostingData} from "../../providers/PostingDataProvider";
 
 export const CourseInfo = () => {
 
     const [courseData, setCourseData] = useState<GetSingleCourseRes | null>(null);
     const { isOpen, closeModal, courseId, isEditing,changeIsPosted, changeIsEditing,
-        isPosted, isConfirmed, toggleIsConfirmed, isDelete, changeIsDelete} = useCourseInfo();
+        isPosted, isConfirmed, toggleIsConfirmed, isDelete, changeIsDelete, changeConfirmClose, confirmClose} = useCourseInfo();
+
+    const {isPostedData, changeIsPostedData, isLoadingData, changeIsLoadingData} = usePostingData();
     const [teachers, setTeachers] = useState<TeacherEntity[] | []>([])
     const [selectTeacher, setSelectTeacher] = useState<string | null>(null)
-    const {updateCourse} = useCourses();
+    const {updateCourse, deleteCourse} = useCourses();
     const [name, setName] = useState<string>(courseData? courseData.course.name : '')
     const [initialFormData, setInitialFormData] = useState<{
         name: string;
@@ -43,6 +45,8 @@ export const CourseInfo = () => {
     const {incrementCourseCounter, counterCourse} = useCounter()
     const {getCourseById} = useCourses();
     const {getAllTeachers} = useTeachers();
+    const { onClose } = useDisclosure()
+    const cancelRef = useRef()
 
 
     useEffect(() => {
@@ -98,7 +102,6 @@ export const CourseInfo = () => {
         }
         const isNameDifferent = name !== initialFormData.name;
         const isTeacherDifferent = selectTeacher !== initialFormData.teacher.id;
-
         if (isNameDifferent || isTeacherDifferent) {
             return "diff";
         }
@@ -130,8 +133,37 @@ export const CourseInfo = () => {
         }
     }
 
+    const handleCloseModal = () => {
+        if (isEditing) {
+            const diff = checkDifference()
+            if (diff === 'diff') {
+               changeConfirmClose(true)
+            } else {
+                closeModal()
+            }
+        } else {
+            closeModal()
+        }
+    }
+
+    const handleDeleteCourse = async() => {
+        const {id} = courseData?.course
+        if(id) {
+            try {
+                const response = await deleteCourse(id)
+                if (response.success) {
+                    incrementCourseCounter()
+
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+    }
+
     return (
-        <Modal isOpen={isOpen} onClose={closeModal} colorScheme="teal">
+        <Modal isOpen={isOpen} onClose={handleCloseModal} colorScheme="teal">
             <ModalOverlay />
             <ModalContent>
                 <ModalCloseButton color="gray.500" />
@@ -160,7 +192,6 @@ export const CourseInfo = () => {
                                 {isDelete ?  (courseData.countStudents > 0 ?
                                         <>
                                             <ModalBody mb={30}>
-
                                                 <Flex my={10}  fontWeight="500"  >
                                                     <Text mr={4}> Cannot delete </Text>
                                                     <Text bg="teal.200" px={2} borderRadius="2px">{courseData.course.name.toUpperCase()}</Text>
@@ -179,16 +210,45 @@ export const CourseInfo = () => {
                                             You cannot undo this action.
                                         </ModalBody>
                                         <ModalFooter>
-                                            <Button colorScheme='pink'  mr={3}>Yes, delete</Button>
+                                            <Button colorScheme='pink' onClick={handleDeleteCourse} mr={3}>Yes, delete</Button>
                                             <Button onClick={()=>changeIsDelete(false)}>No</Button>
                                         </ModalFooter>
                                     </>)
                                     : <BasicInfo courseData={courseData}/> }
                             </>
-
                     } </>
                 )}
 
+                <AlertDialog
+                    isOpen={confirmClose}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                        <AlertDialogContent>
+                            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                Update course
+                            </AlertDialogHeader>
+
+                            <AlertDialogBody>
+                                Are you sure you want to leave without saving data?
+                            </AlertDialogBody>
+
+                            <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={()=> {
+                                    onClose();
+                                    closeModal();
+                                    changeConfirmClose(false)
+                                }}>
+                                    Yes, leave.
+                                </Button>
+                                <Button colorScheme='pink' onClick={()=> changeConfirmClose(false)} ml={3}>
+                                    No, come back to form.
+                                </Button>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
 
             </ModalContent>
         </Modal>

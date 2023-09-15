@@ -63,7 +63,7 @@ export const useCourses = () => {
                         'Content-Type': 'application/json',
                     }
                 })
-                return {success: true, data: res.data}
+                return {success: true}
             } catch (err) {
                 console.log(err)
             }
@@ -71,12 +71,21 @@ export const useCourses = () => {
 
     }
 
+    const deleteCourse = async (courseId: string) => {
+        try {
+            const res = await axios.delete(`${COURSE_URL}/${courseId}`)
+            return {success: true, data: res.data}
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
 return {
     getAllCourses,
     getCourseById,
     addCourse,
     updateCourse,
+    deleteCourse,
 }
 
 }
