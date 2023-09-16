@@ -13,7 +13,7 @@ export const Root =()=> {
        <Router>
         <AdminLayout>
                <Routes>
-                    <Route exact path='/' element={<Navigate to='/courses' />} />
+                    <Route exact path='/' element={<Navigate to={'/courses'} />} />
                     <Route exact path='/courses/:courseId?' element={<CoursesView />} />
                     <Route exact path='/students' element={<StudentsView/>} />
                     <Route exact path='/teachers' element={<TeachersView/>} />

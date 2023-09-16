@@ -17,7 +17,12 @@ interface CourseContextType {
     openDeleteModal: (courseId: string) => void;
     confirmClose: boolean;
     changeConfirmClose: (bool: boolean) => void;
+    isLoadingEvent: boolean;
+    changeIsLoadingEvent: (bool: boolean) => void;
+    isPostedEvent: boolean;
+    changeIsPostedEvent: (bool: boolean) => void;
 }
+
 export const CourseContext = createContext<CourseContextType | undefined>(undefined)
 
 interface CourseProviderProps {
@@ -35,6 +40,10 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
     const changeIsDelete = (bool: boolean) =>  setIsDelete(bool)
     const [confirmClose, setConfirmClose] = useState<boolean>(false);
     const changeConfirmClose = (bool: boolean) => setConfirmClose(bool)
+    const [isLoadingEvent, setIsLoadingEvent] = useState(false);
+    const changeIsLoadingEvent = (bool: boolean) => setIsLoadingEvent(bool)
+    const [isPostedEvent, setIsPostedEvent] = useState(false);
+    const changeIsPostedEvent = (bool: boolean) => setIsPostedEvent(bool)
 
     const changeIsPosted = (bool: boolean) => setIsPosted(bool)
     const toggleIsConfirmed = () => setIsConfirmed(prev=> !prev)
@@ -81,6 +90,10 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
             openDeleteModal,
             confirmClose,
             changeConfirmClose,
+            isLoadingEvent,
+            changeIsLoadingEvent,
+            isPostedEvent,
+            changeIsPostedEvent
         }}
     >
         {children}

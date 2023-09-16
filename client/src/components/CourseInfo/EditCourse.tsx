@@ -6,7 +6,7 @@ import {useCourseInfo} from "../../providers/CourseProvider";
 
 export const EditCourse = ({courseName, name, handleInputChange, handleSelectChange, teachers, selectTeacher, handleSubmit, message, cancelEditing}) => {
 
-    const {confirmClose, changeConfirmClose} = useCourseInfo();
+
     const {onClose, isOpen, onOpen} = useDisclosure()
 
     return (

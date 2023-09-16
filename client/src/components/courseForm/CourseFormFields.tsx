@@ -58,7 +58,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
     const handleSubmit = async(e) => {
         e.preventDefault();
         if (courseName.length < 4 || courseName.length > 40 || courseName.length === 0) {
-            dispatchError('Cannot add empty Course name.')
+            dispatchError('Course name is required and it should contain from 4 to 40 chars.')
             return
         }
         e.preventDefault();
@@ -75,6 +75,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
                 setTimeout(()=> {
                     onClose();
                     changeIsPostedData(false)
+                    handleGoBackToForm()
                 }, 3000)
                 }
 

@@ -28,7 +28,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
     const {openModal, openEditModal, openDeleteModal} = useCourseInfo();
     const {courseId} = useParams();
     const {getStudentsByGroup, getAllStudents} = useStudents();
-    const {counterStudent}= useCounter()
+    const {counterStudent, counterCourse}= useCounter()
     const {navSize} = useContext(NavSizeContext)
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 setLoading(false)
             }
            })();
-    }, [courseId, counterStudent])
+    }, [courseId, counterStudent, counterCourse])
 
 
     return (
@@ -73,7 +73,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                                         studentData={student}
                                         studentId={student.student.id}
                                         mainList={mainList}
-                                        courseName={courseName}
+                                        courseName={courseName? courseName : ''}
                                         />
                                       )
                                     : <span> No students. </span>}

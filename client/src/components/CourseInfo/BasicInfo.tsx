@@ -1,4 +1,4 @@
-import {Badge, Button, HStack, ModalBody, ModalFooter, ModalHeader, Text} from "@chakra-ui/react";
+import {Badge, Button, HStack, ModalBody, ModalFooter, Text} from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {GetSingleCourseRes} from "../../types/course";
@@ -21,7 +21,7 @@ export const BasicInfo = ({courseData }: Props) => {
                 </HStack>
                 <HStack mb={2}>
                     <Badge colorScheme="pink" mr={50}>Teacher name </Badge>
-                    <Text> {courseData.teacher !== null
+                    <Text> {!(courseData) || courseData.teacher !== null
                         ? `${firstLetterToUpper(courseData.teacher.name)} ${firstLetterToUpper(courseData.teacher.last_name)}`
                         : 'not assigned'} </Text>
                 </HStack>
