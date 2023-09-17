@@ -5,7 +5,7 @@ import {initialStateTouchCount, initialStateUser} from "../utils/initialState";
 
 
 interface AddUserContextType {
-    inputValues,
+    inputValues:  {name: string, last_name: string, email: string},
     handleChangeInputValue: (e:ChangeEvent<HTMLInputElement>) => void;
     handleSelectCourse: (e:ChangeEvent<HTMLInputElement>) => void;
     handleRemoveCourse: (courseId: string) => void;
