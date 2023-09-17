@@ -8,8 +8,6 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/react";
-import {userFormData} from "../../utils/userFormData";
-import {FormField} from "../FormField/FormField";
 import {ChangeEvent, useEffect, useState} from "react";
 import {initialStateTouchCount, initialStateUser} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
@@ -24,6 +22,7 @@ import {useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
 import {useStudents} from "../../hooks/useStudents";
 import {ErrorText} from "../common/ErrorText";
+import {StudentFormFields} from "../students/StudentFormFields";
 
 interface Props {
     isOpen: boolean;
@@ -32,19 +31,18 @@ interface Props {
 
 export const StudentAddForm = ({isOpen, onClose}: Props) => {
     const {getAllCourses} = useCourses()
+    const {addStudent} = useStudents();
     const {dispatchError, error} = useError();
     const {changeIsPostedData, dispatchText} = usePostingData();
-    const {addStudent} = useStudents();
+    const {incrementStudentCounter} = useCounter();
     const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
 
     const [inputValues, setInputValues] = useState(initialStateUser)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
-
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
-    const {incrementStudentCounter} = useCounter();
 
-
+    const isError = errorDataAddUser(inputTouchedCount, inputValues);
 
     useEffect(()=> {
         (async() => {
@@ -68,7 +66,7 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
     }
 
      const handleSelectChange = (e : ChangeEvent<HTMLInputElement>) => {
-        const courseId = e.target.value;
+        const courseId: string = e.target.value;
         const courseToAdd = availableCourses.find(course => course.id === courseId)
         setSelectedCourses(prevState => [...prevState, courseToAdd])
         setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
@@ -117,7 +115,6 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
     }
 
 
-    const isError = errorDataAddUser(inputTouchedCount, inputValues);
     const handleConfirmModalClose = (shouldClose) => {
         closeConfirmation();
         if (shouldClose) {
@@ -152,23 +149,10 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
 
                 <ModalBody>
                     <form>
-                       {userFormData.map(oneForm => (
-                            <FormField
-                                key={oneForm.title}
-                                type={oneForm.type}
-                                name={oneForm.name}
-                                label={oneForm.title}
-                                value={inputValues[oneForm.name]}
-                                onChange={handleInputChange}
-                                errorMessage={oneForm.errorMessage}
-                                error={isError[oneForm.name]}
-                            />
-                        ))}
-
+                        <StudentFormFields inputValues={inputValues} isError={isError} handleChangeInputValue={handleInputChange}/>
                         <SelectForm comment="* You can add courses later." label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>
                     </form>
                     <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />
-
                     {error && <ErrorText text={error}/>}
                 </ModalBody>
 

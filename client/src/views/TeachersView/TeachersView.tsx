@@ -10,6 +10,7 @@ import {TeacherList} from "../../components/teachers/TeacherList";
 import {usePostingData} from "../../providers/PostingDataProvider";
 import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
 import {FormStateProvider} from "../../providers/FormStateProvider";
+import {AddUserProvider} from "../../providers/AddUserProvider";
 
 
 
@@ -31,9 +32,11 @@ export const TeachersView = () =>  {
                                 <ConfirmModalContent text={text}  onClose={onClose} />
                             </ModalContent>
                         </Modal>
-                        : ( <FormStateProvider forAdding={true}>
+                        : (<AddUserProvider>
+                            <FormStateProvider forAdding={true}>
                                 <TeacherAddForm  onClose={onClose} isOpen={isOpen}/>
-                            </FormStateProvider> )
+                            </FormStateProvider>
+                         </AddUserProvider>)
                         }
                 </Box>
 
