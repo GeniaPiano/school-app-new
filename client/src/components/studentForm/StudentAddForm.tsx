@@ -31,7 +31,6 @@ interface Props {
 }
 
 export const StudentAddForm = ({isOpen, onClose}: Props) => {
-
     const {getAllCourses} = useCourses()
     const {dispatchError, error} = useError();
     const {changeIsPostedData, dispatchText} = usePostingData();

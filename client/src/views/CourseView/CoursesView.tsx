@@ -2,7 +2,7 @@ import {
     Box,
     Flex,
     useDisclosure,
-    SimpleGrid, Menu, MenuList, Button, MenuButton, MenuItem, MenuGroup,
+    SimpleGrid, Menu, MenuList, MenuButton, MenuItem, MenuGroup,
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {useParams, NavLink, Navigate} from "react-router-dom";
@@ -98,6 +98,7 @@ export const CoursesView = () => {
                                            <MenuGroup >
                                                <MenuItem _hover={{bg:"pink.50"}}  color="pink.400" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
                                                <MenuItem _hover={{bg:"pink.50"}} color="pink.400" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
+                                               <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400" onClick={()=> {openDeleteModal(courseId)}}>add student </MenuItem>
                                                <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
                                            </MenuGroup>
                                        </MenuList>

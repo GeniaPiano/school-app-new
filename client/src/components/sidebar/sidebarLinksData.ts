@@ -1,5 +1,5 @@
-import {CalendarIcon} from "@chakra-ui/icons";
-import {FiCornerLeftDown, FiGlobe, FiHome, FiMessageSquare, FiUsers} from "react-icons/fi";
+import {FiCornerLeftDown, FiGlobe, FiHome, FiUsers} from "react-icons/fi";
+import {PiChalkboardTeacherDuotone} from "react-icons/pi";
 
 export const sidebarLinksData = [
     {
@@ -13,7 +13,7 @@ export const sidebarLinksData = [
         path: '/students',
     },
     {
-        icon: CalendarIcon,
+        icon: PiChalkboardTeacherDuotone,
         title: 'Teachers',
         path: '/teachers',
     },

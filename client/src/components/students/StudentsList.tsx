@@ -14,6 +14,7 @@ import {useCounter} from "../../providers/CounterPovider";
 import {FormStateProvider} from "../../providers/FormStateProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
+import {IoPersonAddOutline} from "react-icons/io5";
 
 
 interface Props {
@@ -56,6 +57,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                               color="brand.800"> {courseName.toUpperCase()} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={()=> openModal(courseId)} />
                     <IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={()=> openEditModal(courseId)}/>
+                    <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<IoPersonAddOutline/>} onClick={()=> openDeleteModal(courseId)} />
                     <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={()=> openDeleteModal(courseId)} />
                </HStack>
                <CourseInfo />
