@@ -30,18 +30,13 @@ export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding, han
                     <>  {forAdding? (
                         <>
                             <Button
-                                mr={2}
-                                colorScheme="gray"
-                                color="gray.600"
-                                onClick={() => handleConfirmModalCloseForAdding(true)}
-                            >
+                                mr={2} colorScheme="gray" color="gray.600"
+                                onClick={() => handleConfirmModalCloseForAdding(true)}>
                                 Yes, Close
                             </Button>
                             <Button
-                                colorScheme="gray"
-                                color="gray.600"
-                                onClick={() => handleConfirmModalCloseForAdding(false)}
-                            >
+                                colorScheme="gray" color="gray.600"
+                                onClick={() => handleConfirmModalCloseForAdding(false)}>
                                 Go back to edit
                             </Button>
                         </>
