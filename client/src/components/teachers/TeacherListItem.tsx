@@ -31,7 +31,7 @@ export const TeacherListItem = ({teacher}: Props) => {
     const {getOneTeacher} = useTeachers();
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity [] | []>([])
     const {isEditing,  openConfirmation} = useFormState();
-    const {counterTeacher} = useCounter()
+
 
 
     useEffect(()=> {
@@ -39,7 +39,8 @@ export const TeacherListItem = ({teacher}: Props) => {
             const res = await getOneTeacher(teacher.id)
             setSelectedCourses(res.selectedCourses)
         })()
-    }, [counterTeacher])
+    }, [])
+
     const handleOpenTeacherInfo = async() => {
         onOpen();
 

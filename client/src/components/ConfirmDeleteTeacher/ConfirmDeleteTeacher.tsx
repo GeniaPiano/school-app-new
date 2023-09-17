@@ -35,9 +35,9 @@ export const ConfirmDeleteTeacher = ({teacher} :Props) => {
                     changeIsLoadingData(false)
                 }, 1500)
                 setTimeout(() => {
-                    incrementTeacherCounter();
                     onClose();
                     changeIsPostedData(false)
+                    incrementTeacherCounter();
 
                 }, 3000)
             }

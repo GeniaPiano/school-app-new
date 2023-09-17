@@ -22,6 +22,7 @@ import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/Confirmati
 import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 import {ErrorText} from "../common/ErrorText";
+import {useAddUser} from "../../providers/AddUserProvider";
 
 
 export const TeacherAddForm = ({onClose, isOpen})=> {
@@ -29,13 +30,13 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
     const {dispatchError,error} = useError();
     const {changeIsPostedData,  dispatchText} = usePostingData();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
-    const [inputValues, setInputValues] = useState(initialStateUser)
-    const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
-
-
-    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
-    const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
+    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
     const {getAvailableCourses, addNewTeacher } = useTeachers();
+
+    const {setAvailableCourses, inputTouchedCount, inputValues,
+        resetInputAndTouch, checkInputTouchCount, selectedCourses,
+        handleSelectCourse, handleRemoveCourse, handleChangeInputValue,
+        setTouchedCount, availableCourses} = useAddUser();
 
 
 
@@ -49,53 +50,10 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const isError = errorDataAddUser(inputTouchedCount, inputValues);
 
-    const handleChangeInputValue = (e) => {
-        const {name, value} = e.target
-        setInputTouchedCount(prev => ({
-            ...prev,
-            [name]: prev[name] + 1,
-        }));
-        setInputValues( prev => ({
-            ...prev,
-            [name] : value
-        }))
-    };
-
-    const handleSelectCourse = (e) => {
-        const courseId: string = e.target.value;
-        if (availableCourses.length !== 0) {
-            const courseToAdd: CourseEntity = availableCourses.find(course => course.id === courseId)
-            setSelectedCourses(prevState => [...prevState, courseToAdd])
-            setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
-        }
-    }
-
-    const handleRemoveCourse = (courseId) => {
-        const course = selectedCourses.find(one => one.id === courseId)
-        setSelectedCourses(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
-        setAvailableCourses(prev => ([...prev, course]))
-    };
-
-    const setTouchedCount = (field, count) => {
-        setInputTouchedCount(prev => ({
-            ...prev,
-            [field]: count
-        }));
-    };
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        if (inputValues.name === '') {
-            setTouchedCount('name', 3);
-        }
-
-        if (inputValues.last_name === '') {
-            setTouchedCount('last_name', 3);
-        }
-
-        if (inputValues.email === '') {
-            setTouchedCount('email', 4);
-        }
+        checkInputTouchCount()
 
         try {
             const res = await addNewTeacher(inputValues, selectedCourses)
@@ -114,15 +72,13 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
         }
     }
 
-    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
 
 
     const handleConfirmModalClose = (shouldClose) => {
         closeConfirmation();
         if (shouldClose) {
             onClose();
-            setInputValues({name: '', last_name: '', email: ''})
-            setInputTouchedCount(initialStateTouchCount)
+            resetInputAndTouch()
         } else {
             closeConfirmation()
         }
@@ -134,8 +90,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
             openConfirmation()
         }  else {
             closeConfirmation()
-            setInputValues(initialStateUser);
-            setSelectedCourses([])
+            resetInputAndTouch()
             incrementTeacherCounter();
             onClose();
         }
