@@ -78,17 +78,13 @@ export const AddUserProvider= ({ children }: Props) => {
         if (inputValues.name === '') {
             setTouchedCount('name', 3);
         }
-
         if (inputValues.last_name === '') {
             setTouchedCount('last_name', 3);
         }
-
         if (inputValues.email === '') {
             setTouchedCount('email', 4);
         }
     }
-
-
 
 
     return (
