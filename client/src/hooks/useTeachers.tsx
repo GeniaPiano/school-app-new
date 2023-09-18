@@ -13,14 +13,14 @@ interface TeacherRes {
 
 export const useTeachers = () => {
 
-    const getAllTeachers =  useCallback(async() =>{
+    const getAllTeachers = async(phrase: string) =>{
         try {
-            const  results = await axios.get(TEACHER_ULR)
-            return results.data.teachers as TeacherEntity[]
+            const  results = await axios.get(`${TEACHER_ULR}/search/${phrase}`)
+            return results.data.teachers
         } catch (err) {
             console.log(err)
         }
-    }, [])
+    }
 
     const getSearchTeachers = async(phrase: string) => {
         try {

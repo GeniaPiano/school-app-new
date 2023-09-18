@@ -82,7 +82,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                                     courseName={courseName? courseName : ''}
                                 />
                             )
-                            : <span> No students. </span>}
+                            : <Text my={10}> No students. </Text>}
                         </>
                     )} </>
                 </FormStateProvider>

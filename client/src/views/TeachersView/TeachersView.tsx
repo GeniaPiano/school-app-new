@@ -14,9 +14,8 @@ import {AddUserProvider} from "../../providers/AddUserProvider";
 import {SearchBar} from "../../components/SearchBar/SearchBar";
 import {ErrorText} from "../../components/common/ErrorText";
 import {useError} from "../../providers/ErrorProvider";
-import {useState} from "react";
-import {useTeachers} from "../../hooks/useTeachers";
-import {TeacherEntity} from "../../types/teacher";
+import {useSearch} from "../../providers/SearchProvider";
+
 
 
 
@@ -25,20 +24,8 @@ export const TeachersView = () => {
 
 const {onOpen, onClose, isOpen} = useDisclosure();
 const {isPostedData, text } = usePostingData();
-const {error, dispatchError} = useError()
-const [ searchList, setSearchList] = useState<TeacherEntity[] | []>([])
-const {getSearchTeachers} = useTeachers();
+const {error} = useError()
 
-    const handleSearch = async(searchPhrase: string) => {
-        if (searchPhrase !== '') {
-            const res = await getSearchTeachers(searchPhrase)
-            setSearchList(res)
-            console.log(res)
-            //onOpenSearchList();
-        } else {
-            dispatchError('Enter at least 1 char.')
-        }
-    }
 
 
     return (
@@ -46,8 +33,8 @@ const {getSearchTeachers} = useTeachers();
 
                 <Box>
                 <Header title="teachers" buttonText="+ add new teacher" onOpen={onOpen} onClick={onOpen}/>
-                    <SearchBar searchType="teacher" onSearch={handleSearch}/>
-                    {error && <ErrorText text={error} />}
+                    <SearchBar searchType="teacher" />
+                    {error && <ErrorText text={error} color="pink.500" />}
                      { isPostedData
                         ? <Modal isOpen={isOpen} onClose={onClose}>
                             <ModalOverlay />

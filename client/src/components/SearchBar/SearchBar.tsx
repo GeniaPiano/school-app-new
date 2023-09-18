@@ -9,20 +9,39 @@ interface Props {
 }
 
 export const SearchBar = ({searchType}:Props) => {
-    const {setSearchStudent, changeStudentTitle} = useSearch()
+    const {setSearchStudent, changeStudentTitle, setSearchTeacher, changeTeacherTitle} = useSearch()
     const [inputVal, setInputVal] = useState<string>('')
     const {dispatchError} = useError()
 
     const submit = (e) => {
         e.preventDefault();
-        if (inputVal !== '') {
-            setSearchStudent(inputVal)
-            changeStudentTitle(`Search results with "${inputVal}":`)
+        switch (searchType) {
+            case "student":
+                if (inputVal !== '') {
+                    setSearchStudent(inputVal);
+                    changeStudentTitle(`Search results with "${inputVal}":`);
+                } else {
+                    dispatchError('Enter at least one character.');
+                    setSearchStudent('');
+                    changeStudentTitle('All students: ');
+                }
+                break;
+            case "teacher":
+                if (inputVal !== '') {
+                    setSearchTeacher(inputVal);
+                    changeTeacherTitle(`Search results with "${inputVal}":`);
+                } else {
+                    dispatchError('Enter at least one character.');
+                    setSearchStudent('');
+                    changeTeacherTitle('All teachers: ');
+                }
+                break;
+            case "course":
+             //dopisać potem
+                break;
+            default:
 
-        } else {
-            dispatchError('Enter at least one char.')
-            setSearchStudent('')
-            changeStudentTitle('All students: ')
+                break;
         }
     }
 
