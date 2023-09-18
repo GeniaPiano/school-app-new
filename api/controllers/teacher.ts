@@ -13,15 +13,24 @@ import {checkMailAvailable, checkMailAvailableWhenUpdating} from "../utils/check
 import {generatePassword} from "../utils/generatePassword";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 import {NotFoundError, ValidationError} from "../utils/errors";
+import {StudentRecord} from "../records/student.record";
 
 
 
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
     const teachers: TeacherEntity[] = await TeacherRecord.listAll();
     res.json( {
-        teachers,
+        teachers: teachers.map(one => userWithoutPassword(one))
     });
 }
+
+export const searchTeachers = async (req: Request, res: Response, next: NextFunction) => {
+    const searchedTeachers = await TeacherRecord.search(req.params.name ?? '')
+    res.json({
+        teachers:  searchedTeachers.map(one => userWithoutPassword(one))
+    })
+}
+
 
 export const getOneTeacher = async (req: Request, res: Response, next: NextFunction) => {
     const teacher = await TeacherRecord.getOne(req.params.id) as TeacherEntity;

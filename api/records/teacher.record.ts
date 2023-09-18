@@ -51,6 +51,13 @@ export class TeacherRecord implements TeacherEntity {
         return results.map(obj => new TeacherRecord(obj));
     }
 
+    static async search(name: string): Promise <TeacherRecord[]> {
+        const [results] = await pool.execute("SELECT * FROM `teachers` WHERE `name` LIKE :search", {
+            search: `%${name}%`,
+        }) as TeacherRecordResults;
+        return results.map(obj => new TeacherRecord(obj));
+    }
+
     static async getOne(id: string): Promise<TeacherRecord | null> {
         const [results] = (await pool.execute("SELECT * FROM `teachers` WHERE `id` = :id", {
             id,

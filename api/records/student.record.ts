@@ -80,8 +80,6 @@ export class StudentRecord implements StudentEntity {
         ) as StudentRecordResults;
 
         return results.map(obj => new StudentRecord(obj));
-
-
     }
 
 
