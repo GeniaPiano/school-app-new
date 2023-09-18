@@ -46,12 +46,12 @@ export class TeacherRecord implements TeacherEntity {
         return this.id;
     }
 
-    static async listAll(): Promise <TeacherRecord[]> {
-        const [results] = await pool.execute("SELECT * FROM `teachers`") as TeacherRecordResults;
-        return results.map(obj => new TeacherRecord(obj));
-    }
+    // static async listAll(): Promise <TeacherRecord[]> {
+    //     const [results] = await pool.execute("SELECT * FROM `teachers`") as TeacherRecordResults;
+    //     return results.map(obj => new TeacherRecord(obj));
+    // }
 
-    static async search(name: string): Promise <TeacherRecord[]> {
+    static async listAll(name: string): Promise <TeacherRecord[]> {
         const [results] = await pool.execute("SELECT * FROM `teachers` WHERE `name` LIKE :search", {
             search: `%${name}%`,
         }) as TeacherRecordResults;
