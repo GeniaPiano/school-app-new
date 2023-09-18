@@ -32,12 +32,9 @@ export const SearchBar = ({searchType}:Props) => {
                     changeTeacherTitle(`Search results with "${inputVal}":`);
                 } else {
                     dispatchError('Enter at least one character.');
-                    setSearchStudent('');
+                    setSearchTeacher('');
                     changeTeacherTitle('All teachers: ');
                 }
-                break;
-            case "course":
-             //dopisać potem
                 break;
             default:
 

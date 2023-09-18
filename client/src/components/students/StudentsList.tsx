@@ -68,7 +68,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 </>
 
             )} </>
-            <Text fontWeight="700" color="brand.800">{titleStudents}</Text>
+            {mainList && <Text fontWeight="700" color="brand.800">{titleStudents}</Text>}
             <List>
                 <FormStateProvider forAdding={false}>
                     <>  {loading? <Spinner/> : (
