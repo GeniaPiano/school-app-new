@@ -5,7 +5,7 @@ import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
-import {resourceLimits} from "worker_threads";
+
 
 
 
@@ -58,9 +58,11 @@ export class StudentRecord implements StudentEntity {
         return this.id;
     }
 
-    static async listAll(): Promise <StudentRecord[]> {
-        const [results] = await pool.execute("SELECT * FROM `students`") as StudentRecordResults;
-        return results.map(obj => new StudentRecord(obj));
+        static async listAll(name: string): Promise <StudentRecord[]> {
+            const [results] = await pool.execute("SELECT * FROM `students` WHERE `name` LIKE :search", {
+                search: `%${name}%`,
+            }) as StudentRecordResults;
+            return results.map(obj => new StudentRecord(obj));
     }
 
     static async search(name: string): Promise <StudentRecord[]> {

@@ -1,9 +1,10 @@
 import axios from "axios";
-import {COURSE_URL, TEACHER_ULR} from "../utils/url";
+import {COURSE_URL, STUDENT_URL, TEACHER_ULR} from "../utils/url";
 import {useCallback} from "react";
 import {GetSingleTeacherRes, TeacherEntity, TeacherBasicData} from "../types/teacher";
 import {CourseEntity} from "../types/course";
 import {validateUserBasicData} from "../utils/validateBasicData";
+
 
 interface TeacherRes {
     success: boolean,
@@ -20,6 +21,15 @@ export const useTeachers = () => {
             console.log(err)
         }
     }, [])
+
+    const getSearchTeachers = async(phrase: string) => {
+        try {
+            const res = await axios.get(`${TEACHER_ULR}/search/${phrase}`)
+            return res.data.teachers as TeacherEntity[] | []
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     const getOneTeacher = useCallback(async(studentId) => {
         try {
@@ -88,7 +98,6 @@ export const useTeachers = () => {
     }
 
 
-
     const deleteTeacher = async (teacherId: string) => {
         try {
             const res = await axios.delete(`${TEACHER_ULR}/${teacherId}`)
@@ -105,5 +114,6 @@ export const useTeachers = () => {
         addNewTeacher,
         deleteTeacher,
         updateTeacher,
+        getSearchTeachers,
     }
 }

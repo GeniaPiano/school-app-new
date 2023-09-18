@@ -1,20 +1,27 @@
 import {FormControl, Input, Flex, IconButton} from "@chakra-ui/react";
 import { useState} from "react";
 import {SearchIcon} from "@chakra-ui/icons";
+import {useSearch} from "../../providers/SearchProvider";
+import {useError} from "../../providers/ErrorProvider";
 
 interface Props {
     searchType: "student" | "teacher" | "course";
-    onSearch: (phrase: string) => void
 }
 
-export const SearchBar = ({searchType, onSearch}:Props) => {
-
+export const SearchBar = ({searchType}:Props) => {
+    const {setSearchStudent} = useSearch()
     const [inputVal, setInputVal] = useState<string>('')
+    const {dispatchError} = useError()
 
     const submit = (e) => {
         e.preventDefault();
-        onSearch(inputVal)
-        setInputVal('')
+        if (inputVal !== '') {
+            setSearchStudent(inputVal)
+
+        } else {
+            dispatchError('Enter at least one char.')
+            setSearchStudent('')
+        }
     }
 
 

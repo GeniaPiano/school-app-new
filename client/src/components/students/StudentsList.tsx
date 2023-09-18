@@ -15,6 +15,7 @@ import {FormStateProvider} from "../../providers/FormStateProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
 import {IoPersonAddOutline} from "react-icons/io5";
+import {useSearch} from "../../providers/SearchProvider";
 
 
 
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export const StudentsList = ({courseName, mainList}: Props) => {
+    const {searchStudent} = useSearch()
 
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
@@ -36,7 +38,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
     useEffect(() => {
         (async () => {
             if (courseName === undefined && courseId === undefined)  {
-                const students = await getAllStudents()
+                const students = await getAllStudents(searchStudent)
                 setStudents(students);
                 setLoading(false)
             } else {
@@ -45,7 +47,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 setLoading(false)
             }
         })();
-    }, [courseId, counterStudent, counterCourse])
+    }, [courseId, counterStudent, counterCourse, searchStudent])
 
 
     return (
@@ -58,7 +60,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                               color="brand.800"> {courseName.toUpperCase()} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={()=> openModal(courseId)} />
                     <IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={()=> openEditModal(courseId)}/>
-                    <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<IoPersonAddOutline/>} onClick={()=> openDeleteModal(courseId)} />
+                    <IconButton variant='solid' color="brand.800" aria-label='add student' icon={<IoPersonAddOutline/>}  />
                     <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={()=> openDeleteModal(courseId)} />
                 </HStack>
                     <CourseInfo />

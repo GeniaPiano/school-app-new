@@ -10,9 +10,8 @@ import {
 export const studentRouter = Router();
 
 studentRouter
-    .get('/', getAllStudents)
+    .get('/search/:name?', getAllStudents)
     .get('/:id', getOneStudent)
-    .get('/search/:name?',  searchStudents)
     .get('/course/:courseId', getStudentsByCourseId)
     .post('/', createStudent)
     .patch('/:id/update', updateStudent)

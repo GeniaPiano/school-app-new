@@ -30,10 +30,4 @@ export const SearchProvider: FC = ({children}) => {
     </SearchContext.Provider>
 }
 
-export const useSearch = (): SearchContextType => {
-    const context = useContext(SearchContext);
-    if (context === undefined) {
-        throw new Error("useSearch must be used within a UseSearchProvider");
-    }
-    return context;
-}
+export const useSearch = () => useContext(SearchContext)

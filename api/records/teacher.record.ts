@@ -17,10 +17,10 @@ export class TeacherRecord implements TeacherEntity {
     readonly role: 'teacher';
 
     constructor(obj: TeacherRecord) {
-        if (!obj.name || obj.name.length < 2 || obj.name.length > 40 || !obj.last_name || obj.last_name.length < 2 || obj.last_name.length > 40 || !obj.email || obj.email.length < 4 || obj.email.length > 40) {
+        if (!obj.name || obj.name.length < 2 || obj.name.length > 40 || !obj.last_name || obj.last_name.length < 2
+            || obj.last_name.length > 40 || !obj.email || obj.email.length < 4 || obj.email.length > 40) {
             throw new ValidationError('Missing data or data not correct.');
         }
-
 
         this.id = obj.id;
         this.name = obj.name;

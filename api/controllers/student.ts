@@ -12,24 +12,6 @@ import {checkMailAvailable} from "../utils/checkMailAvailable";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 
 
-export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const students: StudentRecord[] = await StudentRecord.listAll();
-        const studentsWithSelectedCourses = await Promise.all(students.map(async (oneStudent) => {
-            const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(oneStudent.id);
-            return {
-                student: userWithoutPassword(oneStudent),
-                selectedCourses,
-            };
-        }));
-
-       res.json({ students: studentsWithSelectedCourses });
-
-    } catch(err) {
-        next(err)
-    }
-}
-
 export const getOneStudent = async (req: Request, res: Response) => {
         const student = await StudentRecord.getOne(req.params.id);
         if (!student) throw new ValidationError('Student not found.');
@@ -150,13 +132,24 @@ export const removeCourseFromStudent = async (req: Request, res: Response, next:
     res.end();
 }
 
-export const searchStudents = async (req: Request, res: Response, next: NextFunction) => {
-    const searchedStudents = await StudentRecord.search(req.params.name ?? '')
-    res.json({
-        students:  searchedStudents.map(one => userWithoutPassword(one))
-    })
-}
 
+export const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const students: StudentRecord[] = await StudentRecord.listAll(req.params.name ?? '');
+        const studentsWithSelectedCourses = await Promise.all(students.map(async (oneStudent) => {
+            const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(oneStudent.id);
+            return {
+                student: userWithoutPassword(oneStudent),
+                selectedCourses,
+            };
+        }));
+
+        res.json({ students: studentsWithSelectedCourses });
+
+    } catch(err) {
+        next(err)
+    }
+}
 
 
 
