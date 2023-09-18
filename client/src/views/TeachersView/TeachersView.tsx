@@ -40,7 +40,7 @@ export const TeachersView = () =>  {
                         }
                 </Box>
 
-            <Divider  border="3px gray.500 solid" mx={0}/>
+
             <FormStateProvider forAdding={false}>
                 <TeacherList/>
             </FormStateProvider>

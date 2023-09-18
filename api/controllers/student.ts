@@ -150,6 +150,17 @@ export const removeCourseFromStudent = async (req: Request, res: Response, next:
     res.end();
 }
 
+export const searchStudents = async (req: Request, res: Response, next: NextFunction) => {
+    const searchedStudents = await StudentRecord.search(req.params.name ?? '')
+    res.json({
+        students:  searchedStudents.map(one => userWithoutPassword(one))
+    })
+}
+
+
+
+
+
 
 
 

@@ -6,6 +6,7 @@ import {CounterProvider} from "./CounterPovider";
 import {NavSizeProvider} from "./NavSizeProvider";
 import {PostingDataProvider} from "./PostingDataProvider";
 import {CourseInfoProvider} from "./CourseProvider";
+import {SearchProvider} from "./SearchProvider";
 
 
 const theme = extendTheme({colors, components})
@@ -15,6 +16,7 @@ export const AllProviders: FC = ({ children }) => {
     return (
         <ChakraProvider theme={theme}>
             <ErrorProvider>
+                <SearchProvider>
                 <CourseInfoProvider>
                     <CounterProvider>
                         <NavSizeProvider>
@@ -23,7 +25,8 @@ export const AllProviders: FC = ({ children }) => {
                             </PostingDataProvider>
                         </NavSizeProvider>
                     </CounterProvider>
-                    </CourseInfoProvider>
+                </CourseInfoProvider>
+                </SearchProvider>
               </ErrorProvider>
         </ChakraProvider>
     );

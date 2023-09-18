@@ -63,6 +63,13 @@ export class StudentRecord implements StudentEntity {
         return results.map(obj => new StudentRecord(obj));
     }
 
+    static async search(name: string): Promise <StudentRecord[]> {
+        const [results] = await pool.execute("SELECT * FROM `students` WHERE `name` LIKE :search", {
+            search: `%${name}%`,
+        }) as StudentRecordResults;
+        return results.map(obj => new StudentRecord(obj));
+    }
+
 
     static async getAllStudentsByCourseId(courseId: string): Promise<StudentRecord[]> {
         const [results] = await pool.execute(

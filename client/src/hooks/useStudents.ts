@@ -7,10 +7,6 @@ import {useCounter} from "../providers/CounterPovider";
 import {CourseEntity} from "../types/course";
 import {validateUserBasicData} from "../utils/validateBasicData";
 
-interface StudentReqPost {
-    student: StudentEntity;
-    selectedCourses: CourseEntity[]
-}
 
 //const studentApi = axios.create({})
 // studentApi.interceptors.request.use( (config) => {
@@ -122,6 +118,15 @@ export const useStudents = () => {
         }
     }
 
+    const getSearchStudents = async (phrase: string) => {
+        try {
+            const res = await axios.get(`${STUDENT_URL}/search/${phrase}`)
+            return res.data.students as StudentEntity[] | []
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
 
     return {
         getStudentsByGroup,
@@ -131,6 +136,7 @@ export const useStudents = () => {
         deleteStudent,
         deleteCourseFromStudent,
         addStudent,
+        getSearchStudents,
 
     }
 
