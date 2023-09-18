@@ -7,6 +7,8 @@ interface SearchContextType {
     setSearchTeacher: (phrase: string) => void
     searchCourse: string;
     setSearchCourse: (phrase: string) => void
+    titleStudents: string;
+    changeStudentTitle: (text: string) => void;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined)
@@ -16,7 +18,9 @@ export const SearchProvider: FC = ({children}) => {
     const [searchStudent, setSearchStudent] = useState('');
     const [searchTeacher, setSearchTeacher] = useState('');
     const [searchCourse, setSearchCourse] = useState('');
+    const [titleStudents, setTitleStudents] = useState('All students:')
 
+    const  changeStudentTitle =(text: string) => setTitleStudents(text)
 
     return <SearchContext.Provider value={{
         searchStudent,
@@ -24,7 +28,9 @@ export const SearchProvider: FC = ({children}) => {
         searchTeacher,
         setSearchTeacher,
         searchCourse,
-        setSearchCourse
+        setSearchCourse,
+        titleStudents,
+        changeStudentTitle
     }}>
         {children}
     </SearchContext.Provider>

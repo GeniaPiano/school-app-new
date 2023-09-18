@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const SearchBar = ({searchType}:Props) => {
-    const {setSearchStudent} = useSearch()
+    const {setSearchStudent, changeStudentTitle} = useSearch()
     const [inputVal, setInputVal] = useState<string>('')
     const {dispatchError} = useError()
 
@@ -17,10 +17,12 @@ export const SearchBar = ({searchType}:Props) => {
         e.preventDefault();
         if (inputVal !== '') {
             setSearchStudent(inputVal)
+            changeStudentTitle(`Search results with "${inputVal}":`)
 
         } else {
             dispatchError('Enter at least one char.')
             setSearchStudent('')
+            changeStudentTitle('All students: ')
         }
     }
 

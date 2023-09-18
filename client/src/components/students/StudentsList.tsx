@@ -34,6 +34,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
     const {getStudentsByGroup, getAllStudents} = useStudents();
     const {counterStudent, counterCourse}= useCounter()
     const {navSize} = useContext(NavSizeContext)
+    const {titleStudents} = useSearch()
 
     useEffect(() => {
         (async () => {
@@ -67,7 +68,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 </>
 
             )} </>
-            <Text fontWeight="700" color="brand.800">students:</Text>
+            <Text fontWeight="700" color="brand.800">{titleStudents}</Text>
             <List>
                 <FormStateProvider forAdding={false}>
                     <>  {loading? <Spinner/> : (

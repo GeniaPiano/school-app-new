@@ -3,7 +3,7 @@ import {
     createTeacher,
     deleteTeacher,
     getAllTeachers,
-    getOneTeacher, searchTeachers,
+    getOneTeacher,
     updateTeacher
 } from "../controllers/teacher";
 
@@ -11,8 +11,8 @@ import {
 export const teacherRouter = Router();
 
 teacherRouter
-    .get('/', getAllTeachers)
-    .get('/search/:name?', searchTeachers)
+
+    .get('/search/:name?', getAllTeachers)
     .get('/:id', getOneTeacher)
     .patch('/:id', updateTeacher)
     .post('/', createTeacher)
