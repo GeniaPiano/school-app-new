@@ -3,7 +3,7 @@ import {
     createStudent,
     deleteStudent,
     getAllStudents,
-    getOneStudent, getStudentsByCourseId, removeCourseFromStudent, searchStudents, updateStudent,
+    getOneStudent, getStudentsByCourseId, removeCourseFromStudent,  updateStudent,
 } from "../controllers/student";
 
 
