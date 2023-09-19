@@ -1,5 +1,5 @@
 import {
-    Box, Divider,
+    Box,
     Flex,
     Modal, ModalOverlay, ModalContent,
     useDisclosure,
@@ -14,7 +14,7 @@ import {AddUserProvider} from "../../providers/AddUserProvider";
 import {SearchBar} from "../../components/SearchBar/SearchBar";
 import {ErrorText} from "../../components/common/ErrorText";
 import {useError} from "../../providers/ErrorProvider";
-import {useSearch} from "../../providers/SearchProvider";
+
 
 
 

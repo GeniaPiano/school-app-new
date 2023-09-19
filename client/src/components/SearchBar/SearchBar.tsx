@@ -20,6 +20,9 @@ export const SearchBar = ({searchType}:Props) => {
                 if (inputVal !== '') {
                     setSearchStudent(inputVal);
                     changeStudentTitle(`Search results with "${inputVal}":`);
+                    setTimeout(()=> {
+                        setInputVal('')
+                    }, 300)
                 } else {
                     dispatchError('Enter at least one character.');
                     setSearchStudent('');
@@ -30,6 +33,9 @@ export const SearchBar = ({searchType}:Props) => {
                 if (inputVal !== '') {
                     setSearchTeacher(inputVal);
                     changeTeacherTitle(`Search results with "${inputVal}":`);
+                    setTimeout(()=> {
+                        setInputVal('')
+                    }, 300)
                 } else {
                     dispatchError('Enter at least one character.');
                     setSearchTeacher('');
