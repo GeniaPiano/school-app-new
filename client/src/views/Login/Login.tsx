@@ -33,7 +33,7 @@ export const LoginView = () => {
     const isErrorPassword = touchCount.password > 4 && (inputValues.password.length < 4 || inputValues.login.length > 40)
     const handleSubmit = async(e) => {
         e.preventDefault();
-        await signIn()
+        await signIn(inputValues.login, inputValues.password)
     }
 
 
