@@ -1,5 +1,4 @@
 import {pool} from "../utils/db";
-import {ValidationError} from "../utils/errors";
 import {FieldPacket} from "mysql2";
 
 
@@ -34,5 +33,11 @@ export class AdminRecord {
     }
 
 
+    static async getOne(id: string): Promise <AdminRecord | null> {
+        const [results] = (await pool.execute("SELECT * FROM `admin` WHERE `id` = :id", {
+            id,
+        })) as AdminRecordResults;
+        return results.length === 0 ? null : new AdminRecord(results[0]);
+    }
 }
 
