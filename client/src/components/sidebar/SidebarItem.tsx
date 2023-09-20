@@ -1,6 +1,7 @@
 import {Box, Flex, Icon, Menu, MenuButton, MenuItem, Text} from "@chakra-ui/react";
 import {useState} from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useAuth} from "../../hooks/useAuth";
 
 interface Props {
     navSize: string;
@@ -8,12 +9,20 @@ interface Props {
     icon: any, //@todo zmienić typ!!;
     active: boolean;
     path: string;
-    isHoverLink:boolean;
-    changeHoveLink: ()=> void;
+
 }
 
 
 export const SidebarItem = (props: Props) => {
+    const {signOut} = useAuth()
+
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        navigate('/')
+        signOut();
+
+
+    }
 
     const {navSize, title, icon, active, path} = props
     const [isHovered, setIsHovered] = useState(false);
@@ -30,12 +39,23 @@ export const SidebarItem = (props: Props) => {
             onMouseLeave={()=> setIsHovered(false)}
         >
         <Menu placement="right">
+            {title === 'Logout' ? (
+                    <MenuButton onClick={handleLogout}
+                                position="relative"
+                                w={navSize === "large" ? "100%" : "auto"}>
+                        <Flex alignItems="center" >
+                            <Icon as={icon} fontSize="xl" color={active ? "#AEC8CA": "gray.500"} />
+                            <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
+                        </Flex>
+                    </MenuButton>
+            )
+                : (
                 <NavLink
                     to={path}
                     background={active && "#AEC8CA"}
                     position="relative"
                     w={navSize === "large" ? "100%" : "auto"}
-                   >
+                >
                     <MenuButton>
                         <Flex alignItems="center" >
                             <Icon as={icon} fontSize="xl" color={active ? "#AEC8CA": "gray.500"} />
@@ -43,6 +63,7 @@ export const SidebarItem = (props: Props) => {
                         </Flex>
                     </MenuButton>
                 </NavLink>
+            ) }
 
             <>{navSize === 'small' && (
                 <Box

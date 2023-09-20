@@ -1,5 +1,6 @@
-import {FiCornerLeftDown, FiGlobe, FiHome, FiUsers} from "react-icons/fi";
+import { FiGlobe, FiHome, FiUsers} from "react-icons/fi";
 import {PiChalkboardTeacherDuotone} from "react-icons/pi";
+import {BiLogOut} from "react-icons/bi";
 
 export const sidebarLinksData = [
     {
@@ -23,9 +24,9 @@ export const sidebarLinksData = [
         path: '/news',
     },
     {
-        icon: FiCornerLeftDown,
+        icon: BiLogOut,
         title: 'Logout',
-        path: '/logout'
+        path: '/'
     },
 
 ]

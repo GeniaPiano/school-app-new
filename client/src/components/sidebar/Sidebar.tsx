@@ -37,6 +37,7 @@ export const Sidebar = () => {
                 <Flex  alignItems="center"  >
 
                         <IconButton
+                            aria-label="navigation icons"
                             background="none"
                             mt={5}
                             _hover={{background: 'none'}}
@@ -51,8 +52,7 @@ export const Sidebar = () => {
                         <>{
                             sidebarLinksData.map(oneLink => (
 
-                                  <SidebarItem  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
-
+                                  <SidebarItem active  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
                             ))
                         }</>
                     </Flex>
