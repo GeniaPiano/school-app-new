@@ -44,7 +44,7 @@ export const SidebarItem = (props: Props) => {
                                 position="relative"
                                 w={navSize === "large" ? "100%" : "auto"}>
                         <Flex alignItems="center" >
-                            <Icon as={icon} fontSize="xl" color={active ? "#AEC8CA": "gray.500"} />
+                            <Icon as={icon} fontSize="xl" color={active ? "teal": "gray.500"} />
                             <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
                         </Flex>
                     </MenuButton>
@@ -58,7 +58,7 @@ export const SidebarItem = (props: Props) => {
                 >
                     <MenuButton>
                         <Flex alignItems="center" >
-                            <Icon as={icon} fontSize="xl" color={active ? "#AEC8CA": "gray.500"} />
+                            <Icon as={icon} fontSize="xl" color={active ? "teal": "gray.500"} />
                             <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
                         </Flex>
                     </MenuButton>
