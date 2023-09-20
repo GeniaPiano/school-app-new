@@ -17,31 +17,31 @@ interface Props {
 export const AuthProvider = ({ children }: Props) => {
     const [user, setUser] = useState<User>(null);
     const { dispatchError } = useError();
+    //
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token')
+    //     if (token) {
+    //         (async () => {
+    //             try {
+    //                 const response = await axios.get(`${AUTH_URL}/me`, {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`
+    //                     }
+    //                 } as AxiosRequestConfig)
+    //                 setUser(response.data);
+    //                 console.log(response.data)
+    //             } catch (err) {
+    //                 console.log('Error:', err);
+    //             }
+    //         })()
+    //     }
+    // }, [])
 
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token) {
-            (async () => {
-                try {
-                    const response = await axios.get(`${AUTH_URL}/me`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    } as AxiosRequestConfig)
-                    setUser(response.data);
-                    console.log(response.data)
-                } catch (err) {
-                    console.log('Error:', err);
-                }
-            })()
-        }
-    }, [])
-
-    const signIn = async (login: string, password: string): Promise<object> => {
+    const signIn = async (email: string, password: string): Promise<object> => {
         try {
             const response = await axios.post(`${AUTH_URL}/login`, {
-                login,
-                password,
+                email: email,
+                password: password,
             });
             setUser(response.data.user);
             localStorage.setItem('token', response.data.token)

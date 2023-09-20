@@ -1,44 +1,34 @@
 import {useState} from "react";
-import {Box, Button, Center, Flex, Text} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, HStack, Text} from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
 import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../../components/common/ErrorText";
+import {handleInputChange, initialLoginInputTouch, initialLoginValues} from "./helper";
 
-export const LoginView = () => {
+interface Props {
+    toggleRegister: ()=> void;
+}
+
+
+
+export const Login = ({ toggleRegister}:Props) => {
 
     const {signIn} = useAuth()
     const {error} = useError()
-    const [inputValues, setInputValues] = useState ({
-        login: "admin@admin.com",
-        password: 'adminadmin74337'
-    })
-    const [touchCount, setTouchCount] = useState({
-        login: 0,
-        password: 0,
-    })
+    const [inputValues, setInputValues] = useState (initialLoginValues)
+    const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
 
 
-    const handleInputChange = (e) => {
-        const {name, value} = e.target;
-        setInputValues(prev => ({
-            ...prev,
-            [name]: value,
-        }))
-        setTouchCount(prev => ({
-            ...prev,
-            [e.target.name]: prev[name] + 1
-        }))
 
-    }
-
-    const isErrorLogin = touchCount.login > 4 && (inputValues.login.length < 4 || inputValues.login.length > 40 || !inputValues.login.includes('@'))
-    const isErrorPassword = touchCount.password > 4 && (inputValues.password.length < 4 || inputValues.login.length > 40)
+    const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
+    const isErrorPassword = touchCount.password > 4 && (inputValues.password.length < 4 || inputValues.password.length > 40)
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        await signIn(inputValues.login, inputValues.password)
-
+        await signIn(inputValues.email, inputValues.password)
+        setTouchCount(initialLoginInputTouch)
+        setInputValues(initialLoginValues)
     }
 
 
@@ -59,37 +49,45 @@ export const LoginView = () => {
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
                     borderRadius='15px' p={{base:"80px 50px", md: "100px 70px", lg: "120px 100px"}} bg="gray.50"
                     flexDirection="column"
-                    maxWidth="400px"  >
+                    maxWidth="600px"  >
 
-                    <FormField name="login"
+                    <FormField name="email"
                                errorMessage='Login is required and must contain from 4 to 40 characters.'
-                               label="Login"
-                               value={inputValues.login}
-                               type='email'
-                               onChange={handleInputChange}
+                               label= "Login"
+                               value={inputValues.email}
+                               type="email"
+                               onChange={e=> handleInputChange(e, setInputValues, setTouchCount)}
                                error={isErrorLogin}
                     />
+
                     <FormField name="password"
                                errorMessage='Password is required must contain from 4 to 40 characters.'
                                label="Password"
                                type="password"
                                value={inputValues.password}
-                               onChange={handleInputChange}
+                               onChange={e=> handleInputChange(e, setInputValues, setTouchCount)}
                                error={isErrorPassword}
                     />
+
                     {error && <ErrorText text={error}/>}
 
                     <Button type="submit"
+                            px={20}
                             bg="brand.800"
                             color="whitesmoke"
                             _hover={{bg: "teal.600"}}
-                            mt={5} px={10}>sign in</Button>
-
+                            mt={5} > sign in </Button>
+                    <HStack mt={2}>
+                        <Text color="gray.500"> need an account? </Text>
+                        <Text onClick={toggleRegister} color="pink.400" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
+                            register
+                        </Text>
+                    </HStack>
 
                     <Text  color="teal.600"
                            fontSize="s"
-                           mt={10}
-                    >
+                           mt={10}>
+
                         Click sign-in button and try <br/>DEMO VERSION as Admin.
                     </Text>
                 </Center>

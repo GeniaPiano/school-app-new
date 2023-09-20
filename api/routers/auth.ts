@@ -3,10 +3,10 @@ import {NextFunction, Request, Response, Router} from "express";
 import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
 import {getUserById, getUserWithRoleByEmail} from "../utils/getUser";
-import {TeacherRecord} from "../records/teacher.record";
-import {AdminRecord} from "../records/admin.record";
-import {StudentRecord} from "../records/student.record";
-import {NotFoundError, ValidationError} from "../utils/errors";
+// import {TeacherRecord} from "../records/teacher.record";
+// import {AdminRecord} from "../records/admin.record";
+// import {StudentRecord} from "../records/student.record";
+// import {NotFoundError, ValidationError} from "../utils/errors";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 import {JwtPayload} from "jsonwebtoken";
 
@@ -14,16 +14,19 @@ export const authRouter = Router();
 
 
 authRouter.post('/login', async (req, res) => {
-    const { login, password} = req.body;
-    const user = await getUserWithRoleByEmail(login)
+    const { email, password} = req.body;
+    const user = await getUserWithRoleByEmail(email)
+
     if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
+
     if (user) {
          const passwordMatch = await bcrypt.compare(password, user.password);
          if (passwordMatch) {
             const token = jwt.sign({ userId: user.id }, 'easy-secret-key', { expiresIn: '1h' });
-             res.json({
+             console.log(token)
+            res.json({
                  user: userWithoutPassword(user),
                  token,
              })
