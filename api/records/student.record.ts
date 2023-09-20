@@ -86,7 +86,7 @@ export class StudentRecord implements StudentEntity {
 
 
     static async getByEmail(email: string) :Promise <StudentRecord> | null {
-        const [results] = (await pool.execute("SELECT * FROM `courses_students` WHERE `email` = :email", {
+        const [results] = (await pool.execute("SELECT * FROM `students` WHERE `email` = :email", {
             email,
         })) as StudentRecordResults;
         return results.length === 0 ? null : new StudentRecord(results[0]);

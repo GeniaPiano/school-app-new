@@ -42,7 +42,7 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
         const hashedPassword = await bcrypt.hash(rawPassword, 10);
         const {selectedCourses} = req.body
 
-
+        console.log(rawPassword)
         const studentData = {
             ...req.body.student,
             password: hashedPassword,
