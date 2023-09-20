@@ -1,63 +1,83 @@
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {useError} from "../providers/ErrorProvider";
-import axios, { AxiosRequestConfig }  from "axios";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useError } from "../providers/ErrorProvider";
+import axios, { AxiosRequestConfig } from "axios";
+import { TeacherEntity } from "../types/teacher";
+import { StudentEntity } from "../types/student";
+import { AdminEntity } from "../types/admin";
+import {AUTH_URL} from "../utils/url";
+
+type User = null | TeacherEntity | StudentEntity | AdminEntity
 
 const AuthContext = createContext({});
 
 interface Props {
     children: ReactNode;
 }
-export const AuthProvider = ({children}: Props) => {
-    const [user, setUser] = useState(null);
+
+export const AuthProvider = ({ children }: Props) => {
+    const [user, setUser] = useState<User>(null);
     const { dispatchError } = useError();
 
     useEffect(() => {
         const token = localStorage.getItem('token')
         if (token) {
-            (async ()=> {
+            (async () => {
                 try {
-                    const response = await axios.get('/me', {
+                    const response = await axios.get(`${AUTH_URL}/me`, {
                         headers: {
-                            authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token}`
                         }
                     } as AxiosRequestConfig)
-                    setUser(response.data)
-                } catch(err) {
-                    console.log(err)}
+                    setUser(response.data);
+                    console.log(response.data)
+                } catch (err) {
+                    console.log('Error:', err);
+                }
             })()
         }
     }, [])
 
-    const signIn = async({login, password}) => {
+    const signIn = async (login: string, password: string): Promise<void> => {
         try {
-            const response = await axios.post('/login', {
+            const response = await axios.post(`${AUTH_URL}/login`, {
                 login,
                 password,
-            })
-            setUser(response.data);
+            });
+
+            setUser(response.data.user);
             localStorage.setItem('token', response.data.token)
-        } catch(err) {
+
+        } catch (err) {
             dispatchError('Invalid login data.')
+            console.log(err.response.data.message)
+
+
         }
     }
 
-    const signOut = () => {
-        setUser(null);
-        localStorage.removeItem('token')
+    const signOut = async() => {
+        try {
+            const res = await axios.post(`${AUTH_URL}/logout`)
+            if (res.status === 200) {
+                setUser(null);
+                localStorage.removeItem('token')
+            }
+        } catch (err) {
+            console.log(err)
+        }
+
+
     }
 
-
-
-    return <AuthContext value={{user, signIn, signOut}}>
+    return <AuthContext.Provider value={{ user, signIn, signOut }}>
         {children}
-    </AuthContext>
+    </AuthContext.Provider>
 }
 
 export const useAuth = () => {
     const auth = useContext(AuthContext);
-    if(!auth) {
+    if (!auth) {
         throw Error('useAuth needs to be used inside AuthContext')
     }
     return auth;
-
 }
