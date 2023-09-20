@@ -4,11 +4,13 @@ import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {sidebarLinksData} from "./sidebarLinksData";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
+import {useAuth} from "../../hooks/useAuth";
 
 
 export const Sidebar = () => {
+    const {user} = useAuth()
+    const {navSize, changeNavSize} = useContext(NavSizeContext)
 
-     const {navSize, changeNavSize} = useContext(NavSizeContext)
 
         return (
         <Flex
@@ -38,7 +40,7 @@ export const Sidebar = () => {
 
                         <IconButton
                             aria-label="navigation icons"
-                            background="none"
+
                             mt={5}
                             _hover={{background: 'none'}}
                             icon={navSize === "small"
@@ -68,8 +70,8 @@ export const Sidebar = () => {
                    <Avatar size="sm" name="admin" bg="gray.400"/>
                    <Flex flexDir="column"
                          display={navSize === "small" ? "none" : "flex"}>
-                       <Heading as="h3" fontSize="12px" fontWeight="500">admin@adin.com</Heading>
-                       <Text fontSize="xs">admin</Text>
+                       <Heading as="h3" fontSize="12px" fontWeight="500">{user.email}</Heading>
+                       <Text fontSize="xs">{user.role}</Text>
                    </Flex>
                </Flex>
             </Flex>

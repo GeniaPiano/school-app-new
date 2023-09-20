@@ -2,10 +2,13 @@ import {useState} from "react";
 import {Box, Button, Center, Flex, Text} from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
+import {useError} from "../../providers/ErrorProvider";
+import {ErrorText} from "../../components/common/ErrorText";
 
 export const LoginView = () => {
 
     const {signIn} = useAuth()
+    const {error} = useError()
     const [inputValues, setInputValues] = useState ({
         login: "admin@admin.com",
         password: 'adminadmin74337'
@@ -31,9 +34,11 @@ export const LoginView = () => {
 
     const isErrorLogin = touchCount.login > 4 && (inputValues.login.length < 4 || inputValues.login.length > 40 || !inputValues.login.includes('@'))
     const isErrorPassword = touchCount.password > 4 && (inputValues.password.length < 4 || inputValues.login.length > 40)
+
     const handleSubmit = async(e) => {
         e.preventDefault();
         await signIn(inputValues.login, inputValues.password)
+
     }
 
 
@@ -72,15 +77,18 @@ export const LoginView = () => {
                                onChange={handleInputChange}
                                error={isErrorPassword}
                     />
+                    {error && <ErrorText text={error}/>}
+
                     <Button type="submit"
                             bg="brand.800"
                             color="whitesmoke"
                             _hover={{bg: "teal.600"}}
                             mt={5} px={10}>sign in</Button>
+
+
                     <Text  color="teal.600"
                            fontSize="s"
-                           mt={8}
-
+                           mt={10}
                     >
                         Click sign-in button and try <br/>DEMO VERSION as Admin.
                     </Text>

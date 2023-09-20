@@ -37,15 +37,15 @@ export const AuthProvider = ({ children }: Props) => {
         }
     }, [])
 
-    const signIn = async (login: string, password: string): Promise<void> => {
+    const signIn = async (login: string, password: string): Promise<object> => {
         try {
             const response = await axios.post(`${AUTH_URL}/login`, {
                 login,
                 password,
             });
-
             setUser(response.data.user);
             localStorage.setItem('token', response.data.token)
+            return ({success: true})
 
         } catch (err) {
             dispatchError('Invalid login data.')
