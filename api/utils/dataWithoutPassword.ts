@@ -1,18 +1,19 @@
-import {StudentRecord} from "../records/student.record";
-import {TeacherRecord} from "../records/teacher.record";
-import {UserWithoutPassword} from "../types/common";
-import {StudentEntity, TeacherEntity} from "../types";
+
+import {StudentEntity, TeacherEntity, AdminEntity} from "../types";
 
 
 
 
 
-export const userWithoutPassword = (userObj: StudentEntity | TeacherEntity) => {
+export const userWithoutPassword = (userObj: StudentEntity | TeacherEntity | AdminEntity) => {
     const {password, ...rest} = userObj
     return {
         ...rest
     }
 }
+
+
+
 
 
 

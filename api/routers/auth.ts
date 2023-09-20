@@ -2,48 +2,73 @@ import {NextFunction, Request, Response, Router} from "express";
 
 import * as bcrypt from "bcryptjs";
 import * as jwt from 'jsonwebtoken';
-import { getUserWithRoleByEmail} from "../utils/checkRoleByEmail";
+import {getUserById, getUserWithRoleByEmail} from "../utils/getUser";
 import {TeacherRecord} from "../records/teacher.record";
 import {AdminRecord} from "../records/admin.record";
 import {StudentRecord} from "../records/student.record";
+import {NotFoundError, ValidationError} from "../utils/errors";
+import {userWithoutPassword} from "../utils/dataWithoutPassword";
+import {JwtPayload} from "jsonwebtoken";
 
 export const authRouter = Router();
 
 
 authRouter.post('/login', async (req, res) => {
-    const { email, password} = req.body;
-    const user = await getUserWithRoleByEmail(email)
+    const { login, password} = req.body;
+    const user = await getUserWithRoleByEmail(login)
     if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
-
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log('Wynik porównania hasła:', passwordMatch);
-
-    if (!passwordMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+    if (user) {
+         const passwordMatch = await bcrypt.compare(password, user.password);
+         if (passwordMatch) {
+            const token = jwt.sign({ userId: user.id }, 'easy-secret-key', { expiresIn: '1h' });
+             res.json({
+                 user: userWithoutPassword(user),
+                 token,
+             })
+         } else {
+             return res.status(401).json({ message: 'Invalid credentials' })
+         }
     }
-
-
-   const cleared = (userObj: TeacherRecord | AdminRecord | StudentRecord) => {
-        const {password, ...rest} = userObj
-        return {
-            ...rest
-        }
-    }
-
-
-    const token = jwt.sign({ userId: user.id, role: user.role }, 'your-secret-key', { expiresIn: '1h' });
-    res.json({
-        user: cleared(user),
-        token,
-    });
 })
 
 
-    // .post ('/logout', (req, res) => {
-    //
-    // })
+
+ .get('/me', async(req, res) => {
+
+    const token = req.header('Authorization');
+
+        if (token) {
+            console.log(token)
+            try {
+
+                const decoded = jwt.verify(token, 'easy-secret-key');
+
+                if (typeof decoded === 'object' && 'userId' in decoded) {
+                    const userId = (decoded as JwtPayload).userId; // Ręczne rzutowanie do JwtPayload
+                    const user = await getUserById(userId)
+                    if (user) {
+                        const clearedUser = userWithoutPassword(user);
+                        return res.status(200).json(clearedUser);
+                    }
+                } else {
+                    console.error('Invalid token format');
+                }
+            } catch (err) {
+                console.error('Token verification failed:', err);
+            }
+        }
+
+
+    return res.status(401).json({ error: 'Unauthorized' });
+})
+
+
+
+    .post ('/logout', (req, res) => {
+        res.status(200).json({ message: 'Logged out successfully' })
+    })
 
 
 // interface User {

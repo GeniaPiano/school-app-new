@@ -17,3 +17,16 @@ export const  getUserWithRoleByEmail = async(email: string): Promise<GetUserRetu
     return user
 
 }
+
+export const getUserById = async(id: string): Promise<GetUserReturnType> => {
+    let user: GetUserReturnType = null;
+    user = await StudentRecord.getOne(id);
+    if (!user) {
+        await TeacherRecord.getOne(id);
+    }
+    if(!user) {
+        await  AdminRecord.getOne(id)
+    }
+    return user
+
+}
