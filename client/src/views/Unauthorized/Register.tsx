@@ -5,7 +5,6 @@ import {useError} from "../../providers/ErrorProvider";
 import {useState} from "react";
 import {
     handleInputChange,
-    initialLoginInputTouch,
     initialRegisterInputTouchCount,
     initialRegisterInputValues
 } from "./helper";
@@ -74,7 +73,7 @@ export const Register = ({toggleRegister}: Props) => {
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
                     borderRadius='15px' p={{base:"80px 50px", md: "100px 70px", lg: "120px 100px"}} bg="gray.50"
                     flexDirection="column"
-                    maxWidth="600px"  >
+                    maxWidth="500px"  >
 
                     <FormField name="email"
                                errorMessage='Login is required and must contain from 4 to 40 characters.'
