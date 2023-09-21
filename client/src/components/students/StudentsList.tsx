@@ -61,7 +61,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                               color="brand.800"> {courseName.toUpperCase()} </Heading>
                     <IconButton variant='solid' color="brand.800" aria-label='course info' icon={<FiInfo/>} onClick={()=> openModal(courseId)} />
                     <IconButton variant='solid' color="brand.800" aria-label='course edit' icon={<FiEdit/>} onClick={()=> openEditModal(courseId)}/>
-                    <IconButton variant='solid' color="brand.800" aria-label='add student' icon={<IoPersonAddOutline/>}  />
+                    {/*<IconButton variant='solid' color="brand.800" aria-label='add student' icon={<IoPersonAddOutline/>}  />*/}
                     <IconButton variant='solid' color="brand.800" aria-label='course delete' icon={<FiTrash2/>} onClick={()=> openDeleteModal(courseId)} />
                 </HStack>
                     <CourseInfo />

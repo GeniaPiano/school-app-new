@@ -1,11 +1,28 @@
 import {useState} from "react";
-import {Box, Button, Center, Heading, Flex, HStack, Text, Link} from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Center,
+    Heading,
+    Flex,
+    HStack,
+    Text,
+    Icon,
+    Link,
+    ModalOverlay,
+    ModalBody,
+    ModalHeader, ModalContent, ModalFooter, Modal, ModalCloseButton, List, ListItem
+} from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
 import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../../components/common/ErrorText";
 import {handleInputChange, initialLoginInputTouch, initialLoginValues} from "./helper";
 import {AiFillGithub} from "react-icons/ai";
+import {icons} from "./aboutApp";
+import {AppInfo} from "./AppInfo";
+import {AppInfoWindow} from "./AppInfoWindow/AppInfoWindow";
+
 
 interface Props {
     toggleRegister: ()=> void;
@@ -19,6 +36,8 @@ export const Login = ({ toggleRegister}:Props) => {
     const {error} = useError()
     const [inputValues, setInputValues] = useState (initialLoginValues)
     const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
+    const [isOpen, setIsOpen] = useState<boolean>(true)
+    const onClose = () => setIsOpen(false)
 
 
 
@@ -34,6 +53,7 @@ export const Login = ({ toggleRegister}:Props) => {
 
 
     return (
+       <>
         <Box display="flex"
              justifyContent="center"
              alignItems="center"
@@ -54,7 +74,8 @@ export const Login = ({ toggleRegister}:Props) => {
                     as="form"
                     onSubmit={handleSubmit}
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
-                    borderRadius='15px' p={{base:"80px 50px", md: "100px 70px", lg: "120px 100px"}}
+                    borderRadius='15px'
+                    p={{base:"80px 50px", md: "90px 70px", lg: "100px 100px"}}
                     bg="gray.50"
                     flexDirection="column"
                     maxWidth="600px"  >
@@ -110,9 +131,14 @@ export const Login = ({ toggleRegister}:Props) => {
                     isExternal>
                     See the code <AiFillGithub/>
                 </Link>
-
+                <AppInfoWindow isOpen={isOpen} onClose={onClose} />
 
             </Flex>
         </Box>
+
+
+
+
+       </>
     )
 }

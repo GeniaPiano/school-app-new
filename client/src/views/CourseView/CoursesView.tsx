@@ -98,7 +98,7 @@ export const CoursesView = () => {
                                            <MenuGroup >
                                                <MenuItem _hover={{bg:"pink.50"}}  color="pink.400" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
                                                <MenuItem _hover={{bg:"pink.50"}} color="pink.400" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
-                                               <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400">add student </MenuItem>
+                                               {/*<MenuItem _hover={{bg:"pink.5s0"}} color="pink.400">add student </MenuItem>*/}
                                                <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
                                            </MenuGroup>
                                        </MenuList>
