@@ -7,11 +7,8 @@ import {
     Flex,
     HStack,
     Text,
-    Icon,
     Link,
-    ModalOverlay,
-    ModalBody,
-    ModalHeader, ModalContent, ModalFooter, Modal, ModalCloseButton, List, ListItem
+
 } from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
@@ -19,9 +16,8 @@ import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../../components/common/ErrorText";
 import {handleInputChange, initialLoginInputTouch, initialLoginValues} from "./helper";
 import {AiFillGithub} from "react-icons/ai";
-import {icons} from "./aboutApp";
-import {AppInfo} from "./AppInfo";
 import {AppInfoWindow} from "./AppInfoWindow/AppInfoWindow";
+import {InfoOutlineIcon} from "@chakra-ui/icons";
 
 
 interface Props {
@@ -38,7 +34,6 @@ export const Login = ({ toggleRegister}:Props) => {
     const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
     const [isOpen, setIsOpen] = useState<boolean>(true)
     const onClose = () => setIsOpen(false)
-
 
 
     const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
@@ -75,7 +70,7 @@ export const Login = ({ toggleRegister}:Props) => {
                     onSubmit={handleSubmit}
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
                     borderRadius='15px'
-                    p={{base:"80px 50px", md: "90px 70px", lg: "100px 100px"}}
+                    p={{base:"80px 50px", md: "90px 70px"}}
                     bg="gray.50"
                     flexDirection="column"
                     maxWidth="600px"  >
@@ -126,11 +121,16 @@ export const Login = ({ toggleRegister}:Props) => {
 
                 </Center>
 
-                <Link color="gray.800" mt={5} display="flex" justifyContent="center" alignItems="center" gap={2}
-                    href="https://github.com/GeniaPiano/school-app-new"
-                    isExternal>
-                    See the code <AiFillGithub/>
-                </Link>
+                <HStack>
+                    <Button as={Link} colorScheme="gray"  mt={4} display="flex" justifyContent="center" alignItems="center" gap={2}
+                          href="https://github.com/GeniaPiano/school-app-new"
+                          isExternal>
+                        See the code <AiFillGithub/>
+                    </Button>
+                    <Button onClick={()=> setIsOpen(true)} colorScheme="gray" mt={4} display="flex" justifyContent="center" alignItems="center" gap={2}>
+                        Open info <InfoOutlineIcon/>
+                    </Button>
+                </HStack>
                 <AppInfoWindow isOpen={isOpen} onClose={onClose} />
 
             </Flex>

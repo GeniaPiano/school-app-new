@@ -9,8 +9,8 @@ import {
     ModalHeader,
     ModalOverlay, Text
 } from "@chakra-ui/react";
-import {AppInfo} from "../AppInfo";
-import {icons} from "../aboutApp";
+import {AppInfo} from "./AppInfo";
+import {icons} from "./aboutApp";
 
 
 interface Props {
@@ -28,7 +28,7 @@ export const AppInfoWindow = ({isOpen, onClose}: Props) => {
                     <AppInfo/>
 
                     <Flex mt={5} justifyContent="center" >
-                        <Flex gap={3} as={List}> {icons.map(icon => <ListItem><Icon boxSize={7} as={icon}/></ListItem>)}</Flex>
+                        <Flex gap={3} as={List}> {icons.map(icon => <ListItem><Icon boxSize={8} color="pink.700" as={icon}/></ListItem>)}</Flex>
                     </Flex>
                     <Text mt={5}>Close this window and click <strong>sign in</strong> button to see the DEMO Version as an admin.</Text>
 
@@ -36,7 +36,7 @@ export const AppInfoWindow = ({isOpen, onClose}: Props) => {
                 </ModalBody>
 
                 <ModalFooter mb={5}>
-                    <Button ml={5} colorScheme="teal">Close</Button>
+                    <Button ml={5} colorScheme="teal" onClick={onClose}>Close</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
