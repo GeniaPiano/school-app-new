@@ -7,7 +7,7 @@ import {
     Flex,
     HStack,
     Text,
-    Link,
+
 
 } from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
@@ -32,7 +32,7 @@ export const Login = ({ toggleRegister}:Props) => {
     const {error} = useError()
     const [inputValues, setInputValues] = useState (initialLoginValues)
     const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
-    const {isOpen, onClose, onOpen} = useAppInfo();
+    const {isOpen, onClose} = useAppInfo();
 
 
     const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
