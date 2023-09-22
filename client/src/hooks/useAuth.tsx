@@ -58,6 +58,9 @@ export const AuthProvider = ({ children }: Props) => {
             if (err.message === 'Request failed with status code 401') {
                 dispatchError('Invalid email or password')
             }
+            else {
+                dispatchError('Cannot connect to server. Try again later.')
+            }
 
 
 
