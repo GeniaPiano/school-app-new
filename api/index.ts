@@ -37,10 +37,10 @@ app.use(express.json());
 
 
 
-app.use('/api/school-app/course', courseRouter);
-app.use('/api/school-app/teacher', teacherRouter);
-app.use('/api/school-app/student', studentRouter);
-app.use('/api/school-app/auth', authRouter);
+app.use('/school-app/course', courseRouter);
+app.use('/school-app/teacher', teacherRouter);
+app.use('/school-app/student', studentRouter);
+app.use('/school-app/auth', authRouter);
 app.use(handleError);
 
 app.listen(3001, '0.0.0.0', () => {
