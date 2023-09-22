@@ -32,6 +32,14 @@ class AdminRecord {
             return results.length === 0 ? null : new AdminRecord(results[0]);
         });
     }
+    static getOne(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [results] = (yield db_1.pool.execute("SELECT * FROM `admin` WHERE `id` = :id", {
+                id,
+            }));
+            return results.length === 0 ? null : new AdminRecord(results[0]);
+        });
+    }
 }
 exports.AdminRecord = AdminRecord;
 //# sourceMappingURL=admin.record.js.map

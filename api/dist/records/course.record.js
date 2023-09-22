@@ -54,6 +54,14 @@ class CourseRecord {
             return results.map(obj => new CourseRecord(obj));
         });
     }
+    static listCoursesWithoutChosenTeacher() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [results] = yield db_1.pool.execute("SELECT * FROM `courses` ");
+            return results
+                .map(obj => new CourseRecord(obj))
+                .filter(course => course.teacher_id === null);
+        });
+    }
     static getOne(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const [results] = (yield db_1.pool.execute("SELECT * FROM `courses` WHERE `id` = :id", {
@@ -64,6 +72,9 @@ class CourseRecord {
     }
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
+            if ((yield this.countStudents()) > 0) {
+                throw new errors_1.ValidationError('Cannot delete the course. Remove students assigned to this course first.');
+            }
             yield db_1.pool.execute("DELETE FROM `courses` WHERE `id` = :id ", {
                 id: this.id,
             });
@@ -82,11 +93,15 @@ class CourseRecord {
                 name: this.name,
                 teacher_id: this.teacher_id
             });
-            // AKTUALIZACJA tabeli courses_teaches
-            yield db_1.pool.execute("UPDATE `courses_teachers` SET  `teacher_id` = :teacher_id WHERE `course_id` = :course_id", {
-                course_id: this.id,
-                teacher_id: this.teacher_id,
+            yield db_1.pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :course_id", {
+                course_id: this.id
             });
+            if (this.teacher_id !== null) {
+                yield db_1.pool.execute("UPDATE `courses_teachers` SET  `teacher_id` = :teacher_id WHERE `course_id` = :course_id", {
+                    course_id: this.id,
+                    teacher_id: this.teacher_id,
+                });
+            }
         });
     }
     //POBRANIE LICZBY STUDENTÓW DANEGO KURSU

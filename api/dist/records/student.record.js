@@ -16,14 +16,9 @@ const uuid_1 = require("uuid");
 const course_record_1 = require("./course.record");
 class StudentRecord {
     constructor(obj) {
-        if (!obj.name || obj.name.length <= 2 || obj.name.length > 40) {
-            throw new errors_1.ValidationError('Student name should contain from 3 to 40 characters');
-        }
-        if (!obj.last_name || obj.last_name.length <= 2 || obj.last_name.length > 40) {
-            throw new errors_1.ValidationError('Student last name should contain from 3 to 40 characters');
-        }
-        if (!obj.email || obj.email.length < 4 || obj.email.length > 40) {
-            throw new errors_1.ValidationError('Student email should contain from 4 to 40 characters');
+        if (!obj.name || obj.name.length <= 2 || obj.name.length > 40 || !obj.last_name || obj.last_name.length <= 2 || obj.last_name.length > 40
+            || !obj.email || obj.email.length < 4 || obj.email.length > 40) {
+            throw new errors_1.ValidationError('Missing data or data not correct.');
         }
         this.id = obj.id;
         this.name = obj.name;
@@ -48,9 +43,19 @@ class StudentRecord {
             return this.id;
         });
     }
-    static listAll() {
+    static listAll(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = yield db_1.pool.execute("SELECT * FROM `students`");
+            const [results] = yield db_1.pool.execute("SELECT * FROM `students` WHERE `name` LIKE :search", {
+                search: `%${name}%`,
+            });
+            return results.map(obj => new StudentRecord(obj));
+        });
+    }
+    static search(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const [results] = yield db_1.pool.execute("SELECT * FROM `students` WHERE `name` LIKE :search", {
+                search: `%${name}%`,
+            });
             return results.map(obj => new StudentRecord(obj));
         });
     }
@@ -64,7 +69,7 @@ class StudentRecord {
     }
     static getByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = (yield db_1.pool.execute("SELECT * FROM `courses_students` WHERE `email` = :email", {
+            const [results] = (yield db_1.pool.execute("SELECT * FROM `students` WHERE `email` = :email", {
                 email,
             }));
             return results.length === 0 ? null : new StudentRecord(results[0]);
@@ -87,9 +92,16 @@ class StudentRecord {
             });
         });
     }
-    removeFromSelected(course_id) {
+    removeAllCourses() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id AND `course_id` = :course_id", {
+            yield db_1.pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id", {
+                student_id: this.id,
+            });
+        });
+    }
+    removeOneCourseFromStudent(course_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield db_1.pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id AND  `course_id` = :course_id", {
                 student_id: this.id,
                 course_id,
             });
@@ -101,8 +113,8 @@ class StudentRecord {
                 student_id,
             }));
             let selectedCourses = [];
-            if (results.length === null) {
-                selectedCourses = null;
+            if (results.length === 0) {
+                selectedCourses = [];
             }
             else {
                 for (const one of results) {
@@ -119,6 +131,11 @@ class StudentRecord {
             if (!student) {
                 throw new errors_1.ValidationError('Student not found.');
             }
+            //najpierw usuwamy zależności
+            yield db_1.pool.execute('DELETE FROM `courses_students` WHERE `student_id` = :id', {
+                id: student.id
+            });
+            //usuwamy rekord
             yield db_1.pool.execute("DELETE FROM `students` WHERE `id` = :id ", {
                 id: student.id
             });
@@ -130,7 +147,7 @@ class StudentRecord {
             }
         });
     }
-    update() {
+    updateNameAndEmail() {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.pool.execute("UPDATE `students` SET `name` = :name, `last_name` = :last_name, `email`= :email, `password` = :password WHERE `id` = :id", {
                 id: this.id,

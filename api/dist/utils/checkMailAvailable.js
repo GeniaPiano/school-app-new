@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkMailAvaible = void 0;
+exports.checkMailAvailableWhenUpdating = exports.checkMailAvailable = void 0;
 const db_1 = require("./db");
-const checkMailAvaible = (mail) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllMails = () => __awaiter(void 0, void 0, void 0, function* () {
     const [dataTeachers] = yield db_1.pool.execute("SELECT  `email` FROM `teachers` ");
     const [dataStudents] = yield db_1.pool.execute("SELECT `email` FROM `students`");
     const [dataAdmin] = yield db_1.pool.execute("SELECT `email` FROM `admin`");
@@ -20,11 +20,25 @@ const checkMailAvaible = (mail) => __awaiter(void 0, void 0, void 0, function* (
     dataTeachersStudents.map(el => {
         mails.push(el.email);
     });
+    return mails;
+});
+const checkMailAvailable = (mail) => __awaiter(void 0, void 0, void 0, function* () {
+    const mails = yield getAllMails();
     const check = mails.filter(one => one === mail);
     if (check.length !== 0)
         return false;
     if (check.length === 0)
         return true;
 });
-exports.checkMailAvaible = checkMailAvaible;
+exports.checkMailAvailable = checkMailAvailable;
+const checkMailAvailableWhenUpdating = (prevMail, nextMail) => __awaiter(void 0, void 0, void 0, function* () {
+    const mails = yield getAllMails();
+    const notAllowedMails = mails.filter(one => one !== prevMail);
+    const check = notAllowedMails.filter(one => one === nextMail);
+    if (check.length !== 0)
+        return false;
+    if (check.length === 0)
+        return true;
+});
+exports.checkMailAvailableWhenUpdating = checkMailAvailableWhenUpdating;
 //# sourceMappingURL=checkMailAvailable.js.map

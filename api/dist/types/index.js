@@ -18,4 +18,5 @@ __exportStar(require("./teacher"), exports);
 __exportStar(require("./course"), exports);
 __exportStar(require("./student"), exports);
 __exportStar(require("./message"), exports);
+__exportStar(require("./admin"), exports);
 //# sourceMappingURL=index.js.map

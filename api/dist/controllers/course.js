@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCourse = exports.createCourse = exports.updateCourse = exports.getOneCourse = exports.getAllCourses = void 0;
+exports.deleteCourse = exports.createCourse = exports.updateCourse = exports.getOneCourse = exports.getCoursesWithoutTeachers = exports.getAllCourses = void 0;
 const course_record_1 = require("../records/course.record");
 const errors_1 = require("../utils/errors");
+const teacher_record_1 = require("../records/teacher.record");
 const getAllCourses = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const coursesList = yield course_record_1.CourseRecord.listAll();
@@ -24,44 +25,46 @@ const getAllCourses = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getAllCourses = getAllCourses;
+const getCoursesWithoutTeachers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const courses = yield course_record_1.CourseRecord.listCoursesWithoutChosenTeacher();
+        res.json({
+            courses,
+        });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.getCoursesWithoutTeachers = getCoursesWithoutTeachers;
 const getOneCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { courseId } = req.params;
     const course = yield course_record_1.CourseRecord.getOne(courseId);
     if (!course)
         throw new errors_1.ValidationError('Course not found.');
     const countStudents = yield course.countStudents();
-    const teacherName = !course.teacher_id
+    const teacher = !course.teacher_id
         ? null
-        : yield course.getTeacherName(course.teacher_id);
+        : yield teacher_record_1.TeacherRecord.getOne(course.teacher_id);
     res.json({
         course,
         countStudents,
-        teacherName,
+        teacher,
     });
 });
 exports.getOneCourse = getOneCourse;
 const updateCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const course = yield course_record_1.CourseRecord.getOne(req.params.courseId);
-        if (course === null) {
-            throw new errors_1.ValidationError('The course with given ID does not exist.');
-        }
-        const { name, teacher_id } = req.body;
-        if (name) {
-            course.name = name;
-        }
-        if (teacher_id) {
-            course.teacher_id = teacher_id;
-        }
-        else {
-            course.teacher_id = null;
-        }
-        yield course.update();
-        res.json(course);
+    const course = yield course_record_1.CourseRecord.getOne(req.params.courseId);
+    if (course === null) {
+        throw new errors_1.ValidationError('The course with given ID does not exist.');
     }
-    catch (err) {
-        next(err);
+    const { name, teacher_id } = req.body;
+    if (name) {
+        course.name = name;
     }
+    course.teacher_id = teacher_id ? teacher_id : null;
+    yield course.update();
+    res.json(course);
 });
 exports.updateCourse = updateCourse;
 const createCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -74,7 +77,7 @@ const createCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     if (newCourse.teacher_id !== null) {
         yield newCourse._updateRelationCoursesTeachers(newCourse.teacher_id);
     }
-    res.json(newCourse);
+    res.status(200).json(newCourse);
 });
 exports.createCourse = createCourse;
 const deleteCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -82,11 +85,12 @@ const deleteCourse = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     if (!course) {
         throw new errors_1.ValidationError('No such course.');
     }
+    //@todo wykasować z bazy danych zależności z courses_teacher
     if ((yield course.countStudents()) > 0) {
         throw new errors_1.ValidationError('Cannot remove course. ');
     }
     yield course.delete();
-    res.end();
+    res.json({ message: "ok" });
 });
 exports.deleteCourse = deleteCourse;
 //# sourceMappingURL=course.js.map

@@ -9,109 +9,99 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTeacher = exports.removeCourseFromTeacher = exports.assignCourseToTeacher = exports.updateTeacher = exports.createTeacher = exports.getOneTeacher = exports.getAllTeachers = void 0;
+exports.deleteTeacher = exports.updateTeacher = exports.createTeacher = exports.getOneTeacher = exports.getAllTeachers = void 0;
 const bcrypt = require("bcryptjs");
 const teacher_record_1 = require("../records/teacher.record");
-const errors_1 = require("../utils/errors");
 const checkMailAvailable_1 = require("../utils/checkMailAvailable");
 const generatePassword_1 = require("../utils/generatePassword");
-const course_record_1 = require("../records/course.record");
+const dataWithoutPassword_1 = require("../utils/dataWithoutPassword");
+const errors_1 = require("../utils/errors");
+// export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
+//     const teachers: TeacherEntity[] = await TeacherRecord.listAll();
+//     res.json( {teachers: teachers.map(one => userWithoutPassword(one))});
+// }
 const getAllTeachers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const teachers = yield teacher_record_1.TeacherRecord.listAll();
-    res.json({
-        teachers,
-    });
+    var _a;
+    try {
+        const searchedTeachers = yield teacher_record_1.TeacherRecord.listAll((_a = req.params.name) !== null && _a !== void 0 ? _a : '');
+        res.json({
+            teachers: searchedTeachers.map(one => (0, dataWithoutPassword_1.userWithoutPassword)(one))
+        });
+    }
+    catch (err) {
+        next(err);
+    }
 });
 exports.getAllTeachers = getAllTeachers;
 const getOneTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const teacher = yield teacher_record_1.TeacherRecord.getOne(req.params.id);
-    if (!teacher)
-        throw new errors_1.ValidationError('Teacher not found.');
+    if (!teacher) {
+        throw new errors_1.NotFoundError('Teacher not found');
+    }
+    const teacherCleaned = (0, dataWithoutPassword_1.userWithoutPassword)(teacher);
     const selectedCourses = yield teacher_record_1.TeacherRecord._getCoursesOfThisTeacher(req.params.id);
     res.json({
-        teacher,
-        selectedCourses,
+        teacher: teacherCleaned,
+        selectedCourses: selectedCourses === null ? [] : selectedCourses
     });
 });
 exports.getOneTeacher = getOneTeacher;
 const createTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, last_name } = req.body;
+    const { name, last_name } = req.body.teacher;
+    const { selectedCourses } = req.body;
     const rawPassword = (0, generatePassword_1.generatePassword)(name, last_name);
     const hashedPassword = yield bcrypt.hash(rawPassword, 10);
-    const teacherData = Object.assign(Object.assign({}, req.body), { password: hashedPassword, is_admin: 0 });
+    const teacherData = Object.assign(Object.assign({}, req.body.teacher), { password: hashedPassword });
     const teacher = new teacher_record_1.TeacherRecord(teacherData);
-    const checkOkMail = yield (0, checkMailAvailable_1.checkMailAvaible)(teacher.email); //sprawdzanie dostępności maila
+    const checkOkMail = yield (0, checkMailAvailable_1.checkMailAvailable)(teacher.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
-        throw new errors_1.ValidationError('Email already exists.');
+        throw new errors_1.ValidationError("Email already exists.");
     }
-    // miejsce na wysłanie hasła na maila użytkownika
-    const hash = yield bcrypt.hash(teacher.password, 10);
+    //miejsce na wysłanie hasła na maila użytkownika
     yield teacher.insert();
-    res.json(teacher);
+    if (selectedCourses)
+        for (const oneCourse of selectedCourses) {
+            const id = oneCourse.id;
+            yield teacher.assignCourseToTeacher(id);
+        }
+    const courses = yield teacher_record_1.TeacherRecord._getCoursesOfThisTeacher(teacher.id);
+    res.status(200).json({
+        teacher: (0, dataWithoutPassword_1.userWithoutPassword)(teacher),
+        selectedCourses: courses,
+    });
 });
 exports.createTeacher = createTeacher;
 const updateTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const teacher = yield teacher_record_1.TeacherRecord.getOne(req.params.id);
     if (teacher === null) {
-        throw new errors_1.ValidationError('The teacher with given ID does not exist.');
+        throw new errors_1.NotFoundError('Teacher with given ID does not exist.');
     }
-    const { name, last_name, email } = req.body;
-    const fieldsToUpdate = { name, last_name, email };
-    for (const key in fieldsToUpdate) {
-        if (fieldsToUpdate[key]) {
-            teacher[key] = fieldsToUpdate[key];
-        }
+    const { name, last_name, email } = req.body.teacher;
+    const mailOk = yield (0, checkMailAvailable_1.checkMailAvailableWhenUpdating)(teacher.email, email);
+    if (!mailOk) {
+        throw new errors_1.ValidationError('Given email, already exists in database, give the correct email.');
     }
-    console.log(teacher);
+    teacher.name = name;
+    teacher.last_name = last_name;
+    teacher.email = email;
     yield teacher.update();
-    res.json(teacher);
+    yield teacher.removeAllCoursesFromTeacher();
+    const { selectedCourses } = req.body;
+    if (selectedCourses.length !== 0)
+        for (const oneCourse of selectedCourses) {
+            const id = oneCourse.id;
+            yield teacher.assignCourseToTeacher(id);
+        }
+    res.json({
+        teacher: (0, dataWithoutPassword_1.userWithoutPassword)(teacher),
+        selectedCourses: yield teacher_record_1.TeacherRecord._getCoursesOfThisTeacher(teacher.id)
+    });
 });
 exports.updateTeacher = updateTeacher;
-//PRZENIEŚĆ DO ODDZIELNEJ KLASY APLIKACJI Z METODAMI STATIC
-const assignCourseToTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const teacher = yield teacher_record_1.TeacherRecord.getOne(req.params.id);
-    if (!teacher)
-        throw new errors_1.ValidationError('Cannot find teacher');
-    const { selectedCourseId } = req.body;
-    if (selectedCourseId === '' || !selectedCourseId) {
-        throw new errors_1.ValidationError('No course to assign.');
-    }
-    const course = yield course_record_1.CourseRecord.getOne(selectedCourseId);
-    if (!course) {
-        throw new errors_1.ValidationError('Course you want to assign does not exist.');
-    }
-    if (course.teacher_id === null) {
-        yield teacher.assignCourseToTeacher(selectedCourseId);
-    }
-    else {
-        throw new errors_1.ValidationError('The course has already assigned teacher .');
-    }
-    res.end();
-});
-exports.assignCourseToTeacher = assignCourseToTeacher;
-const removeCourseFromTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const teacher = yield teacher_record_1.TeacherRecord.getOne(req.params.id);
-    if (!teacher) {
-        throw new errors_1.ValidationError("No such teacher.");
-    }
-    const { selectedCourseId } = req.body;
-    if (selectedCourseId === '' || !selectedCourseId) {
-        throw new errors_1.ValidationError('No course to remove.');
-    }
-    const course = yield course_record_1.CourseRecord.getOne(selectedCourseId);
-    if (!course) {
-        throw new errors_1.ValidationError('Course you want to remove does not exist.');
-    }
-    if (course.teacher_id !== null) {
-        yield teacher.removeCourseFromTeacher(selectedCourseId);
-    }
-    res.end();
-});
-exports.removeCourseFromTeacher = removeCourseFromTeacher;
 const deleteTeacher = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const teacher = yield teacher_record_1.TeacherRecord.getOne(req.params.id);
     if (!teacher) {
-        throw new errors_1.ValidationError('No such teacher.');
+        throw new errors_1.NotFoundError('Teacher not found');
     }
     yield teacher.delete();
     res.end();

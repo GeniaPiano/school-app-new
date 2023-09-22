@@ -48,8 +48,19 @@ export const AuthProvider = ({ children }: Props) => {
             return ({success: true})
 
         } catch (err) {
-            dispatchError('Invalid login data.')
-            console.log(err.response.data.message)
+            console.log(err.message)
+            if (err.message === 'Request failed with status code 500') {
+                dispatchError('Sorry, something went wrong. Try again later.')
+            }
+            if ( err.message === 'Network Error' ) {
+                dispatchError ('Cannot connect to server. Try again later.')
+            }
+            if (err.message === 'Request failed with status code 401') {
+                dispatchError('Invalid email or password')
+            }
+
+
+
 
 
         }

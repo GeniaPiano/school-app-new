@@ -23,6 +23,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 // app.use(limiter)
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/school-app/course', course_1.courseRouter);
 app.use('/school-app/teacher', teacher_1.teacherRouter);

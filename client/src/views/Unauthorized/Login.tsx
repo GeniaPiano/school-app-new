@@ -15,9 +15,9 @@ import {useAuth} from "../../hooks/useAuth";
 import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../../components/common/ErrorText";
 import {handleInputChange, initialLoginInputTouch, initialLoginValues} from "./helper";
-import {AiFillGithub} from "react-icons/ai";
 import {AppInfoWindow} from "./AppInfoWindow/AppInfoWindow";
-import {InfoOutlineIcon} from "@chakra-ui/icons";
+import {useAppInfo} from "../../providers/AppInfoProvider";
+import {Footer} from "./Footer";
 
 
 interface Props {
@@ -32,8 +32,7 @@ export const Login = ({ toggleRegister}:Props) => {
     const {error} = useError()
     const [inputValues, setInputValues] = useState (initialLoginValues)
     const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
-    const [isOpen, setIsOpen] = useState<boolean>(true)
-    const onClose = () => setIsOpen(false)
+    const {isOpen, onClose, onOpen} = useAppInfo();
 
 
     const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
@@ -70,7 +69,7 @@ export const Login = ({ toggleRegister}:Props) => {
                     onSubmit={handleSubmit}
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
                     borderRadius='15px'
-                    p={{base:"80px 50px", md: "90px 70px"}}
+                    p={{base:"60px 50px", md: "70px 70px"}}
                     bg="gray.50"
                     flexDirection="column"
                     maxWidth="600px"  >
@@ -101,7 +100,7 @@ export const Login = ({ toggleRegister}:Props) => {
                             bg="brand.800"
                             color="whitesmoke"
                             _hover={{bg: "teal.600"}}
-                            mt={5} > sign in </Button>
+                            mt={10} > sign in </Button>
                     <HStack my={2}>
                         <Text color="gray.500"> need an account? </Text>
                         <Text onClick={toggleRegister} color="pink.400" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
@@ -121,16 +120,7 @@ export const Login = ({ toggleRegister}:Props) => {
 
                 </Center>
 
-                <HStack>
-                    <Button as={Link} colorScheme="gray"  mt={4} display="flex" justifyContent="center" alignItems="center" gap={2}
-                          href="https://github.com/GeniaPiano/school-app-new"
-                          isExternal>
-                        See the code <AiFillGithub/>
-                    </Button>
-                    <Button onClick={()=> setIsOpen(true)} colorScheme="gray" mt={4} display="flex" justifyContent="center" alignItems="center" gap={2}>
-                        Open info <InfoOutlineIcon/>
-                    </Button>
-                </HStack>
+                <Footer/>
                 <AppInfoWindow isOpen={isOpen} onClose={onClose} />
 
             </Flex>

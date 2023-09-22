@@ -1,4 +1,4 @@
-import {Box, Button, Center, Flex, HStack, Text} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, Heading, HStack, Text} from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {ErrorText} from "../../components/common/ErrorText";
 import {useError} from "../../providers/ErrorProvider";
@@ -8,6 +8,7 @@ import {
     initialRegisterInputTouchCount,
     initialRegisterInputValues
 } from "./helper";
+import {Footer} from "./Footer";
 
 interface Props {
     toggleRegister: ()=> void;
@@ -63,17 +64,21 @@ export const Register = ({toggleRegister}: Props) => {
              width="100%"
              height="100vh"
              bg="gray.100"
+             pt={20}
         >
 
-            <Flex alignItems="center" justifyItems="center" height="100vh">
+            <Flex alignItems="center" justifyItems="center" height="100vh" flexDirection="column">
 
                 <Center
                     as="form"
                     onSubmit={handleRegister}
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
-                    borderRadius='15px' p={{base:"80px 50px", md: "100px 70px", lg: "120px 100px"}} bg="gray.50"
+                    borderRadius='15px'
+                    p={{base:"60px 50px", md: "70px 70px"}}
+                    bg="gray.50"
                     flexDirection="column"
-                    maxWidth="500px"  >
+                    maxWidth="600px"  >
+                    <Heading mb={5} as="h4" color="teal.600" size="md">Register</Heading>
 
                     <FormField name="email"
                                errorMessage='Login is required and must contain from 4 to 40 characters.'
@@ -120,6 +125,7 @@ export const Register = ({toggleRegister}: Props) => {
                     </HStack>
 
                 </Center>
+                <Footer/>
 
             </Flex>
         </Box>

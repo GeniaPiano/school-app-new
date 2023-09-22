@@ -15,17 +15,9 @@ const errors_1 = require("../utils/errors");
 const uuid_1 = require("uuid");
 class TeacherRecord {
     constructor(obj) {
-        if (!obj.name || obj.name.length < 2 || obj.name.length > 40) {
-            throw new errors_1.ValidationError('Teacher name should contain from to 40 characters');
-        }
-        if (!obj.last_name || obj.last_name.length < 2 || obj.last_name.length > 40) {
-            throw new errors_1.ValidationError('Teacher last name should contain from 2 to 40 characters');
-        }
-        if (!obj.email || obj.email.length < 4 || obj.email.length > 40) {
-            throw new errors_1.ValidationError('Teacher email should contain from 4 to 40 characters');
-        }
-        if (!obj.password || obj.password.length < 8 || obj.password.length > 86) {
-            throw new errors_1.ValidationError('Password should contain from 8 to 40 characters');
+        if (!obj.name || obj.name.length < 2 || obj.name.length > 40 || !obj.last_name || obj.last_name.length < 2
+            || obj.last_name.length > 40 || !obj.email || obj.email.length < 4 || obj.email.length > 40) {
+            throw new errors_1.ValidationError('Missing data or data not correct.');
         }
         this.id = obj.id;
         this.name = obj.name;
@@ -50,9 +42,15 @@ class TeacherRecord {
             return this.id;
         });
     }
-    static listAll() {
+    // static async listAll(): Promise <TeacherRecord[]> {
+    //     const [results] = await pool.execute("SELECT * FROM `teachers`") as TeacherRecordResults;
+    //     return results.map(obj => new TeacherRecord(obj));
+    // }
+    static listAll(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const [results] = yield db_1.pool.execute("SELECT * FROM `teachers`");
+            const [results] = yield db_1.pool.execute("SELECT * FROM `teachers` WHERE `name` LIKE :search", {
+                search: `%${name}%`,
+            });
             return results.map(obj => new TeacherRecord(obj));
         });
     }
@@ -85,14 +83,14 @@ class TeacherRecord {
             });
         });
     }
-    removeCourseFromTeacher(courseId) {
+    removeAllCoursesFromTeacher() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.pool.execute("UPDATE `courses` SET `teacher_id`=:teacher_id WHERE `id`= :id", {
-                id: courseId,
-                teacher_id: null,
+            yield db_1.pool.execute("DELETE FROM `courses_teachers` WHERE `teacher_id` =:teacher_id", {
+                teacher_id: this.id
             });
-            yield db_1.pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` =:course_id", {
-                course_id: courseId,
+            yield db_1.pool.execute("UPDATE `courses` SET `teacher_id` =:noTeacher WHERE `teacher_id` =:teacher_id", {
+                noTeacher: null,
+                teacher_id: this.id
             });
         });
     }
@@ -116,7 +114,8 @@ class TeacherRecord {
             yield db_1.pool.execute("DELETE FROM `teachers` WHERE `id` = :id ", {
                 id: this.id,
             });
-            yield db_1.pool.execute("DELETE FROM `courses` WHERE `teacher_id` =:teacher_id", {
+            yield db_1.pool.execute("UPDATE `courses` SET `teacher_id` = :noId WHERE `teacher_id` =:teacher_id", {
+                noId: null,
                 teacher_id: this.id
             });
             yield db_1.pool.execute("DELETE FROM `courses_teachers` WHERE `teacher_id` =:teacher_id", {

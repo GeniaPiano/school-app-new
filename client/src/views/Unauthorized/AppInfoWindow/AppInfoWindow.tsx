@@ -11,13 +11,13 @@ import {
 } from "@chakra-ui/react";
 import {AppInfo} from "./AppInfo";
 import {icons} from "./aboutApp";
+import {useAppInfo} from "../../../providers/AppInfoProvider";
 
 
-interface Props {
-    isOpen: boolean;
-    onClose: ()=> void;
-}
-export const AppInfoWindow = ({isOpen, onClose}: Props) => {
+
+export const AppInfoWindow = () => {
+
+    const {isOpen, onClose} = useAppInfo();
     return (
         <Modal  isOpen={isOpen} onClose={onClose} >
             <ModalOverlay />
@@ -28,7 +28,7 @@ export const AppInfoWindow = ({isOpen, onClose}: Props) => {
                     <AppInfo/>
 
                     <Flex mt={5} justifyContent="center" >
-                        <Flex gap={3} as={List}> {icons.map(icon => <ListItem><Icon boxSize={8} color="pink.700" as={icon}/></ListItem>)}</Flex>
+                        <Flex gap={3} as={List}> {icons.map((icon, i) => <ListItem key={i} ><Icon boxSize={8} color="pink.700" as={icon}/></ListItem>)}</Flex>
                     </Flex>
                     <Text mt={5}>Close this window and click <strong>sign in</strong> button to see the DEMO Version as an admin.</Text>
 

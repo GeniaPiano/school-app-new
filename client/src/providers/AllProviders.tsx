@@ -8,6 +8,7 @@ import {PostingDataProvider} from "./PostingDataProvider";
 import {CourseInfoProvider} from "./CourseProvider";
 import {SearchProvider} from "./SearchProvider";
 import {AuthProvider} from "../hooks/useAuth";
+import {AppInfoProvider} from "./AppInfoProvider";
 
 
 const theme = extendTheme({colors, components})
@@ -17,6 +18,7 @@ export const AllProviders: FC = ({ children }) => {
     return (
         <ChakraProvider theme={theme}>
             <ErrorProvider>
+             <AppInfoProvider>
               <AuthProvider>
                 <SearchProvider>
                   <CourseInfoProvider>
@@ -30,6 +32,7 @@ export const AllProviders: FC = ({ children }) => {
                   </CourseInfoProvider>
                 </SearchProvider>
               </AuthProvider>
+             </AppInfoProvider>
             </ErrorProvider>
         </ChakraProvider>
     );

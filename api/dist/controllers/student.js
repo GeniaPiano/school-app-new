@@ -9,33 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudent = exports.updateStudent = exports.removeCourseFromStudent = exports.addCourseToStudent = exports.createStudent = exports.getStudentsByCourseId = exports.getOneStudent = exports.getAllStudents = void 0;
+exports.getAllStudents = exports.removeCourseFromStudent = exports.deleteStudent = exports.updateStudent = exports.createStudent = exports.getStudentsByCourseId = exports.getOneStudent = void 0;
 const bcrypt = require("bcryptjs");
 const errors_1 = require("../utils/errors");
 const student_record_1 = require("../records/student.record");
 const generatePassword_1 = require("../utils/generatePassword");
 const checkMailAvailable_1 = require("../utils/checkMailAvailable");
-const checkAlreadyExistsRelaions_1 = require("../utils/checkAlreadyExistsRelaions");
-const course_record_1 = require("../records/course.record");
-const getAllStudents = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const students = yield student_record_1.StudentRecord.listAll();
-        res.json({
-            students,
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-exports.getAllStudents = getAllStudents;
+const dataWithoutPassword_1 = require("../utils/dataWithoutPassword");
 const getOneStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_record_1.StudentRecord.getOne(req.params.id);
     if (!student)
         throw new errors_1.ValidationError('Student not found.');
     const selectedCourses = yield student_record_1.StudentRecord._getSelectedCoursesByStudent(req.params.id);
     res.json({
-        student,
+        student: (0, dataWithoutPassword_1.userWithoutPassword)(student),
         selectedCourses,
     });
 });
@@ -53,76 +40,99 @@ const getStudentsByCourseId = (req, res) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.getStudentsByCourseId = getStudentsByCourseId;
 const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, last_name } = req.body;
+    const { name, last_name } = req.body.student;
     const rawPassword = (0, generatePassword_1.generatePassword)(name, last_name);
     const hashedPassword = yield bcrypt.hash(rawPassword, 10);
-    const studentData = Object.assign(Object.assign({}, req.body), { password: hashedPassword });
+    const { selectedCourses } = req.body;
+    console.log(rawPassword);
+    const studentData = Object.assign(Object.assign({}, req.body.student), { password: hashedPassword });
     const student = new student_record_1.StudentRecord(studentData);
-    const checkOkMail = (0, checkMailAvailable_1.checkMailAvaible)(student.email); //sprawdzanie dostępności maila
+    const checkOkMail = yield (0, checkMailAvailable_1.checkMailAvailable)(student.email); //sprawdzanie dostępności maila
     if (!checkOkMail) {
-        throw new errors_1.ValidationError('Mail already exists.');
+        throw new errors_1.ValidationError("Email already exists.");
     }
-    //@todo miejsce na wysłanie hasła na maila użytkownika
+    //miejsce na wysłanie hasła na maila użytkownika
     yield student.insert();
+    if (selectedCourses.length > 0) {
+        for (const id of selectedCourses) {
+            yield student.insertCourseForStudent(id);
+        }
+    }
     res.json({
-        password: rawPassword,
-        student: student,
+        student: (0, dataWithoutPassword_1.userWithoutPassword)(student),
+        selectedCourses: student_record_1.StudentRecord._getSelectedCoursesByStudent(student.id)
     });
 });
 exports.createStudent = createStudent;
-const addCourseToStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const student = yield student_record_1.StudentRecord.getOne(req.params.id);
-    if (!student)
-        throw new errors_1.ValidationError('Cannot find student');
-    const courseId = req.body.courseId;
-    const courseToAdd = yield course_record_1.CourseRecord.getOne(courseId);
-    if (!courseToAdd)
-        throw new errors_1.ValidationError('Course wanted to assign to student not found.');
-    const check = yield (0, checkAlreadyExistsRelaions_1.AlreadyExistsRelations)(student.id, courseToAdd.id);
-    if (check)
-        throw new errors_1.ValidationError('Cannot assign this course to student. Chosen course is already assigned to this student.');
-    yield student.insertCourseForStudent(courseToAdd.id);
-    res.json({
-        message: "ok"
-    });
-});
-exports.addCourseToStudent = addCourseToStudent;
-const removeCourseFromStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const student = yield student_record_1.StudentRecord.getOne(req.params.id);
-    if (!student) {
-        throw new errors_1.ValidationError('Cannot find student.');
-    }
-    if (req.body.courseId) {
-        yield student.removeFromSelected(req.body.courseId);
-    }
-    else
-        throw new errors_1.ValidationError("No courses to delete.");
-    res.end();
-});
-exports.removeCourseFromStudent = removeCourseFromStudent;
-const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_record_1.StudentRecord.getOne(req.params.id);
     if (student === null) {
         throw new errors_1.ValidationError('Student with given ID does not exist.');
     }
-    const { name, last_name, email } = req.body;
+    //aktualizacja name, lastName, email
+    const { name, last_name, email } = req.body.student;
     const fieldsToUpdate = { name, last_name, email };
     for (const key in fieldsToUpdate) {
         if (fieldsToUpdate[key]) {
             student[key] = fieldsToUpdate[key];
         }
     }
-    yield student.update();
-    res.json(student);
+    yield student.updateNameAndEmail();
+    //aktua lizacja coursesSelected
+    yield student.removeAllCourses();
+    const { selectedCourses } = req.body;
+    if (selectedCourses.length === 0) {
+        res.json({
+            student: (0, dataWithoutPassword_1.userWithoutPassword)(student),
+            selectedCourses: student_record_1.StudentRecord._getSelectedCoursesByStudent(student.id),
+        });
+    }
+    else if (selectedCourses.length > 0) {
+        for (const course of selectedCourses) {
+            yield student.insertCourseForStudent(course);
+        }
+    }
+    const chosenCourses = yield student_record_1.StudentRecord._getSelectedCoursesByStudent(student.id);
+    res.json({
+        student: (0, dataWithoutPassword_1.userWithoutPassword)(student),
+        selectedCourses: chosenCourses,
+    });
 });
 exports.updateStudent = updateStudent;
 const deleteStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_record_1.StudentRecord.getOne(req.params.id);
     if (!student) {
-        throw new errors_1.ValidationError('Cannot find student.');
+        throw new errors_1.NotFoundError('Cannot find student.');
     }
     yield student.delete(req.params.id);
     res.end();
 });
 exports.deleteStudent = deleteStudent;
+const removeCourseFromStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const student = yield student_record_1.StudentRecord.getOne(req.params.id);
+    if (!student) {
+        throw new errors_1.NotFoundError('Cannot find student.');
+    }
+    yield student.removeOneCourseFromStudent(req.body.course_id);
+    res.end();
+});
+exports.removeCourseFromStudent = removeCourseFromStudent;
+const getAllStudents = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const students = yield student_record_1.StudentRecord.listAll((_a = req.params.name) !== null && _a !== void 0 ? _a : '');
+        const studentsWithSelectedCourses = yield Promise.all(students.map((oneStudent) => __awaiter(void 0, void 0, void 0, function* () {
+            const selectedCourses = yield student_record_1.StudentRecord._getSelectedCoursesByStudent(oneStudent.id);
+            return {
+                student: (0, dataWithoutPassword_1.userWithoutPassword)(oneStudent),
+                selectedCourses,
+            };
+        })));
+        res.json({ students: studentsWithSelectedCourses });
+    }
+    catch (err) {
+        next(err);
+    }
+});
+exports.getAllStudents = getAllStudents;
 //# sourceMappingURL=student.js.map

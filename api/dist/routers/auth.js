@@ -8,48 +8,66 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authRouter = void 0;
 const express_1 = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const checkRoleByEmail_1 = require("../utils/checkRoleByEmail");
+const getUser_1 = require("../utils/getUser");
+// import {TeacherRecord} from "../records/teacher.record";
+// import {AdminRecord} from "../records/admin.record";
+// import {StudentRecord} from "../records/student.record";
+// import {NotFoundError, ValidationError} from "../utils/errors";
+const dataWithoutPassword_1 = require("../utils/dataWithoutPassword");
 exports.authRouter = (0, express_1.Router)();
 exports.authRouter.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = yield (0, checkRoleByEmail_1.getUserWithRoleByEmail)(email);
+    const user = yield (0, getUser_1.getUserWithRoleByEmail)(email);
     if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
-    const passwordMatch = yield bcrypt.compare(password, user.password);
-    console.log('Wynik porównania hasła:', passwordMatch);
-    if (!passwordMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+    if (user) {
+        const passwordMatch = yield bcrypt.compare(password, user.password);
+        if (passwordMatch) {
+            const token = jwt.sign({ userId: user.id }, 'easy-secret-key', { expiresIn: '1h' });
+            console.log(token);
+            res.json({
+                user: (0, dataWithoutPassword_1.userWithoutPassword)(user),
+                token,
+            });
+        }
+        else {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
     }
-    const cleared = (userObj) => {
-        const { password } = userObj, rest = __rest(userObj, ["password"]);
-        return Object.assign({}, rest);
-    };
-    const token = jwt.sign({ userId: user.id, role: user.role }, 'your-secret-key', { expiresIn: '1h' });
-    res.json({
-        user: cleared(user),
-        token,
-    });
-}));
-// .post ('/logout', (req, res) => {
-//
-// })
+}))
+    .get('/me', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.header('Authorization');
+    if (token) {
+        console.log(token);
+        try {
+            const decoded = jwt.verify(token, 'easy-secret-key');
+            if (typeof decoded === 'object' && 'userId' in decoded) {
+                const userId = decoded.userId; // Ręczne rzutowanie do JwtPayload
+                const user = yield (0, getUser_1.getUserById)(userId);
+                if (user) {
+                    const clearedUser = (0, dataWithoutPassword_1.userWithoutPassword)(user);
+                    return res.status(200).json(clearedUser);
+                }
+            }
+            else {
+                console.error('Invalid token format');
+            }
+        }
+        catch (err) {
+            console.error('Token verification failed:', err);
+        }
+    }
+    return res.status(401).json({ error: 'Unauthorized' });
+}))
+    .post('/logout', (req, res) => {
+    res.status(200).json({ message: 'Logged out successfully' });
+});
 // interface User {
 //     role: string;
 //
