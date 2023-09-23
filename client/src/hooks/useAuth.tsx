@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }: Props) => {
 
 
     const register = async (email: string, password: string, confirmEmail: string):Promise<object> => {
-
          try {
             const res = await axios.post(`${AUTH_URL}/register`, {
                 email, password
@@ -97,7 +96,9 @@ export const AuthProvider = ({ children }: Props) => {
             console.log('register', res)
             return ({success: true})
         } catch (err) {
-                         console.log('Errors', err)
+             if(err.response.status === 400) {
+                 dispatchError(err.response.data.message)
+             }
         }
     }
 

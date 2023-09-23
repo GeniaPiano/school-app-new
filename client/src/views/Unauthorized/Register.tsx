@@ -10,6 +10,7 @@ import {
 } from "./helper";
 import {Footer} from "./Footer";
 import {useAuth} from "../../hooks/useAuth";
+import {useAppInfo} from "../../providers/AppInfoProvider";
 
 interface Props {
     toggleRegister: ()=> void;
@@ -17,12 +18,12 @@ interface Props {
 
 export const Register = ({toggleRegister}: Props) => {
 
+
     const {error} = useError()
     const {register} = useAuth();
     const [matchPassword, setMatchPassword] = useState('')
 
     const [inputValues, setInputValues] = useState (initialRegisterInputValues)
-
     const [touchCount, setTouchCount] = useState(initialRegisterInputTouchCount)
 
 
@@ -56,18 +57,12 @@ export const Register = ({toggleRegister}: Props) => {
             setTimeout(()=> {
                 setMatchPassword('')
             }, 2000)
-            testowy
         }
 
-
-
-        await register(inputValues.email, inputValues.password, inputValues.passwordConfirm)
-
-
-
-
-
-
+       const response = await register(inputValues.email, inputValues.password, inputValues.passwordConfirm)
+       if (response.success) {
+            toggleRegister()
+        }
     }
 
 

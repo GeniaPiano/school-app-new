@@ -6,7 +6,7 @@ import {TeachersView} from "../TeachersView/TeachersView";
 import {News} from "../News/News";
 import {NotFoundView} from "../NotFoundView";
 
-export const AdminView = () => {
+export const AdminRoleView = () => {
     return (
 
         <Router>
