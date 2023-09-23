@@ -9,6 +9,7 @@ import {
     initialRegisterInputValues
 } from "./helper";
 import {Footer} from "./Footer";
+import {useAuth} from "../../hooks/useAuth";
 
 interface Props {
     toggleRegister: ()=> void;
@@ -17,6 +18,7 @@ interface Props {
 export const Register = ({toggleRegister}: Props) => {
 
     const {error} = useError()
+    const {register} = useAuth();
     const [matchPassword, setMatchPassword] = useState('')
 
     const [inputValues, setInputValues] = useState (initialRegisterInputValues)
@@ -28,8 +30,9 @@ export const Register = ({toggleRegister}: Props) => {
     const isErrorPassword = touchCount.password > 5 && (inputValues.password.length < 5 || inputValues.password.length > 40)
     const isErrorPasswordConfirm = touchCount.passwordConfirm > 5 && (inputValues.passwordConfirm.length < 5 || inputValues.passwordConfirm.length > 40)
 
-    const handleRegister = (e) => {
-        e.preventDefault()
+    const handleRegister = async(e) => {
+
+         e.preventDefault()
         if (inputValues.email === '') {
             setTouchCount(prev => ({
                 ...prev,
@@ -53,7 +56,18 @@ export const Register = ({toggleRegister}: Props) => {
             setTimeout(()=> {
                 setMatchPassword('')
             }, 2000)
+            testowy
         }
+
+
+
+        await register(inputValues.email, inputValues.password, inputValues.passwordConfirm)
+
+
+
+
+
+
     }
 
 

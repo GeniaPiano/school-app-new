@@ -4,11 +4,18 @@ import axios, { AxiosRequestConfig } from "axios";
 import { TeacherEntity } from "../types/teacher";
 import { StudentEntity } from "../types/student";
 import { AdminEntity } from "../types/admin";
-import {AUTH_URL} from "../utils/url";
+import {AUTH_URL, STUDENT_URL} from "../utils/url";
 
-type User = null | TeacherEntity | StudentEntity | AdminEntity
 
-const AuthContext = createContext({});
+type User = TeacherEntity | StudentEntity | AdminEntity
+interface AuthContextType {
+    user: User | null;
+    signIn: (email: string, password: string) => Promise<object>
+    signOut: ()=> Promise<void>;
+    register:(email: string, password: string, confirmEmail: string)=> Promise<object>
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface Props {
     children: ReactNode;
@@ -61,11 +68,6 @@ export const AuthProvider = ({ children }: Props) => {
             else {
                 dispatchError('Cannot connect to server. Try again later.')
             }
-
-
-
-
-
         }
     }
 
@@ -79,11 +81,27 @@ export const AuthProvider = ({ children }: Props) => {
         } catch (err) {
             console.log(err)
         }
-
-
     }
 
-    return <AuthContext.Provider value={{ user, signIn, signOut }}>
+
+    const register = async (email: string, password: string, confirmEmail: string):Promise<object> => {
+
+         try {
+            const res = await axios.post(`${AUTH_URL}/register`, {
+                email, password
+            } ,{
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            console.log('register', res)
+            return ({success: true})
+        } catch (err) {
+                         console.log('Errors', err)
+        }
+    }
+
+    return <AuthContext.Provider value={{ user, signIn, signOut, register }}>
         {children}
     </AuthContext.Provider>
 }
@@ -95,3 +113,5 @@ export const useAuth = () => {
     }
     return auth;
 }
+
+

@@ -22,7 +22,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
                 const token = jwt.sign({ userId: user.id }, 'easy-secret-key', { expiresIn: '1h' });
-                console.log(token)
                 res.json({
                     user: userWithoutPassword(user),
                     token,
