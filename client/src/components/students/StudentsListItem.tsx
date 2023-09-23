@@ -45,15 +45,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
     const {isEditing, toggleEditing, changeIsEditing, openConfirmation, closeConfirmation} = useFormState()
 
 
-   const handleCloseModal =()=> {
-       if (isEditing) {
-           openConfirmation()
-       } else {
-           onClose();
-       }}
-
-
-   const handleCloseConfirmModal = () => {
+    const handleCloseConfirmModal = () => {
        changeIsEditing(false)
        closeConfirmation()
 
@@ -145,7 +137,7 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                    <ConfirmDeleteStudent student={student} mainList={props.mainList} courseName={props.courseName}/>
                </HStack>
             </UserItem>
-            <Modal isOpen={isOpen} onClose={handleCloseModal}  >
+            <Modal isOpen={isOpen} onClose={isEditing ? openConfirmation : onClose}  >
                 <ModalOverlay />
                 <ModalContent color="gray.500">
                     <Box> {isEditing
@@ -173,7 +165,6 @@ export const StudentsListItem = (props: Props): ReactNode  => {
                                                 handleSubmit={handleSubmit}
                             />
                   </ModalContent>
-
                 </Modal>
               <ConfirmationBeforeClosing
                      handleCloseConfirmStudentModal={handleCloseConfirmModal}

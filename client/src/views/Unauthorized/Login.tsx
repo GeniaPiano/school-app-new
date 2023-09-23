@@ -40,9 +40,11 @@ export const Login = ({ toggleRegister}:Props) => {
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        await signIn(inputValues.email, inputValues.password)
-        setTouchCount(initialLoginInputTouch)
-        setInputValues(initialLoginValues)
+        const res = await signIn(inputValues.email, inputValues.password)
+        if (res.success) {
+            setTouchCount(initialLoginInputTouch)
+            setInputValues(initialLoginValues)
+        }
     }
 
 

@@ -1,11 +1,7 @@
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogCloseButton,
-    AlertDialogContent,
-    AlertDialogOverlay,
+
     Box,
-    Flex, useDisclosure
+
 } from "@chakra-ui/react";
 
 import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
@@ -25,8 +21,6 @@ import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
 import {useFormState} from "../../providers/FormStateProvider";
 import {ConfirmTextAndIcon} from "../common/ConfirmTextAndIcon";
-import {Loader} from "../common/Loader";
-import {CheckIcon} from "@chakra-ui/icons";
 import {usePostingData} from "../../providers/PostingDataProvider";
 
 
@@ -46,7 +40,7 @@ export const TeacherUpdateForm = ({teacher, selectedCourses}:Props) => {
     const {dispatchError, error} = useError();
     const {incrementTeacherCounter, counterTeacher} = useCounter();
     const {changeIsEditing} = useFormState();
-    const {isPostedData, isLoadingData,changeIsPostedData, changeIsLoadingData} = usePostingData()
+    const {isPostedData, changeIsPostedData} = usePostingData()
 
 
     useEffect(()=> {

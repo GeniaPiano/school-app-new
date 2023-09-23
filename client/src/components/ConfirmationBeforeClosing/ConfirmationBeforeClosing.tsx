@@ -5,7 +5,7 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay,
+
 
 } from "@chakra-ui/react";
 import {useFormState} from "../../providers/FormStateProvider";
@@ -20,7 +20,6 @@ export const ConfirmationBeforeClosing = ({handleConfirmModalCloseForAdding, han
 
     return (
         <Modal isOpen={isConfirmationOpen} onClose={handleModalCloseBtn}>
-            <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Confirmation</ModalHeader>
                 <ModalBody>

@@ -79,7 +79,7 @@ export const CourseInfo = () => {
         if (isOpen) {
             (async () => {
                 try {
-                    const results = await getAllTeachers();
+                    const results = await getAllTeachers('');
                     setTeachers(results)
                 } catch (err) {
                     console.log(err)

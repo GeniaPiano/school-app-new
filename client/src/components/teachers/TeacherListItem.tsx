@@ -21,6 +21,7 @@ import {InfoTeacher} from "./InfoTeacher";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
 import { useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
+import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
 
 interface Props {
     teacher: TeacherEntity;
@@ -31,6 +32,7 @@ export const TeacherListItem = ({teacher}: Props) => {
     const {getOneTeacher} = useTeachers();
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity [] | []>([])
     const {isEditing,  openConfirmation} = useFormState();
+    const {counterTeacher} = useCounter()
 
 
 
@@ -39,12 +41,14 @@ export const TeacherListItem = ({teacher}: Props) => {
             const res = await getOneTeacher(teacher.id)
             setSelectedCourses(res.selectedCourses)
         })()
-    }, [])
+    }, [counterTeacher])
 
     const handleOpenTeacherInfo = async() => {
         onOpen();
 
     }
+
+
 
     return (
         <ListItem>
@@ -59,7 +63,7 @@ export const TeacherListItem = ({teacher}: Props) => {
             </UserItem>
             <Modal
                 isOpen={isOpen}
-                onClose={isEditing ?  openConfirmation : onClose}
+                onClose={isEditing ? openConfirmation : onClose}
                 color='gray.500'>
                 <ModalOverlay/>
                 <ModalContent color="gray.500">
@@ -78,6 +82,9 @@ export const TeacherListItem = ({teacher}: Props) => {
 
                 </ModalContent>
             </Modal>
+            <ConfirmationBeforeClosing
+
+            />
 
         </ListItem>
     )
