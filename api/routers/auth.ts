@@ -1,14 +1,4 @@
-import {NextFunction, Request, Response, Router} from "express";
-
-import * as bcrypt from "bcryptjs";
-import * as jwt from 'jsonwebtoken';
-import {getUserById, getUserWithRoleByEmail} from "../utils/getUser";
-// import {TeacherRecord} from "../records/teacher.record";
-// import {AdminRecord} from "../records/admin.record";
-// import {StudentRecord} from "../records/student.record";
-// import {NotFoundError, ValidationError} from "../utils/errors";
-import {userWithoutPassword} from "../utils/dataWithoutPassword";
-import {JwtPayload} from "jsonwebtoken";
+import { Router} from "express";
 import {checkToken, login, logout, register} from "../controllers/auth";
 
 export const authRouter = Router();

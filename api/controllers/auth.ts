@@ -74,8 +74,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
     const userData = {
         ...req.body,
-        name: 'unknown',
-        last_name: 'unknown',
+        name: null,
+        last_name: null,
         password: hashedPassword,
     } as StudentRecord;
     const user = await new StudentRecord(userData);
