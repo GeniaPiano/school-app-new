@@ -1,6 +1,7 @@
 Project Overview: School Management CRM
 
-Compact School Management System, showcasing my skills as a junior developer. This small-scale web application streamlines school administration and enhances the educational experience. 
+Compact School Management System, showcasing my skills as a junior developer.
+This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
 Access the live application here: 
 https://menager.networkmanager.pl/
 

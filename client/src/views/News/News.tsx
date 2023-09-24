@@ -49,6 +49,7 @@ export const News = () =>  {
                 title
                 category
                 content
+                description
                 image {
                   url
                 }
