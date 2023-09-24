@@ -52,7 +52,7 @@ Deployed the application on linux server.
 
  - Open your preferred SQL management tool such as phpMyAdmin or HeidiSQL. 
  - Open the SQL script file create-database.sql in a text editor. It is located in folder sql, that you wil find in the main catalogue of repository.
- - Copy the contents of the create-database.sql script.
+ - Copy the content of the create-database.sql script.
  - In your SQL management tool, navigate to the SQL editor or query window.
  -  Paste the copied script into the SQL editor.
  - Execute the script to create the database and its tables.
