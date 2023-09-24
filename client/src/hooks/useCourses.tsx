@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import axios from "axios";
-import {COURSE_URL} from "../utils/url";
+import {COURSE_URL} from "../config/api";
 import {CourseEntity} from "../types/course";
 import {GetSingleCourseRes} from "../types/course"
 

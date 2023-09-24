@@ -1,4 +1,4 @@
-export const BASE_URL: string = 'http://localhost:3001/school-app';
+export const BASE_URL: string = 'http://localhost:3001';
 
 export const STUDENT_URL: string = BASE_URL + '/student';
 

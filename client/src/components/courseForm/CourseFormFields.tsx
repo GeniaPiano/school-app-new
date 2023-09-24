@@ -38,7 +38,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
 
     useEffect(() => {
         (async() => {
-            const teachersData = await getAllTeachers();
+            const teachersData = await getAllTeachers('');
             setTeachers(teachersData);
         })()
     }, [])
@@ -71,7 +71,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
             setInputTouchedCount(0)
             if (res.success) {
                 changeIsPostedData(true);
-                dispatchText('Course has benn added.')
+                dispatchText('Course has been added.')
                 setTimeout(()=> {
                     onClose();
                     changeIsPostedData(false)
@@ -99,7 +99,7 @@ export const CourseFormFields = ({isConfirmationOpen, handleCloseConfirmModal, h
                        errorMessage=" Course name is required. It should contain from 4 to 40 chars."
             />
             {error &&  <ErrorText text={error}/>}
-            <SelectForm comment="* You can add teacher later." label="Teacher" data={teachers} handleChange={handleSelect} placeholder="Select teacher." />
+            <SelectForm comment="* You can add teacher later." label="Teacher" isTeacher={true} data={teachers} handleChange={handleSelect} placeholder="Select teacher." />
 
             <Button mb={8} colorScheme="gray" onClick={handleSubmit}>Save</Button>
             <ConfirmModal

@@ -4,7 +4,7 @@ import {
     ModalCloseButton,
     ModalContent,
     ModalHeader,
-    ModalOverlay, useControllableProp,
+    ModalOverlay,
 } from "@chakra-ui/react";
 
 

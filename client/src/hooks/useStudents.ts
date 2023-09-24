@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {useCallback} from "react";
-import {STUDENT_URL} from "../utils/url";
+import {STUDENT_URL} from "../config/api";
 import {SingleStudentRes, StudentBasicData, StudentEntity} from "../types/student";
 
 import {useCounter} from "../providers/CounterPovider";
