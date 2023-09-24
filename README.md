@@ -5,6 +5,8 @@ This small web application allows you to manage data for various types of instit
 Access the live application here: 
 https://menager.networkmanager.pl/
 
+**Note: The application is currently under active development, and I am working on adding new features and improvements.**
+
 This a fullstack application, powered by a NODE.JS backend and EXPRESS.JS to handle routing and create RESTfull API. It is integrated with SQL DATABASE as well as GRAPHQL for fetching data from Dato CMS. The frontend is built in React and Chakra UI has been used for styling.TYPESCRIPT is used both in the frontend and backend.
 
 My Contribution:
