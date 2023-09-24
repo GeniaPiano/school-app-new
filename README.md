@@ -5,10 +5,7 @@ This small web application allows you to manage data for various types of instit
 Access the live application here: 
 https://menager.networkmanager.pl/
 
-
-I have created this compact solution to demonstrate my ability to build applications that simplify complex processes, even in a small-scale format.
-
-Built with Node.js, Express, React, and Chakra UI, all in TypeScript.
+This a fullstack application, powered by a NODE.JS backend and EXPRESS.JS to handle routing and create RESTfull API. It is integrated with SQL DATABASE as well as GRAPHQL for fetching data from Dato CMS. The frontend is built in React and Chakra UI has been used for styling.TYPESCRIPT is used both in the frontend and backend.
 
 My Contribution:
 Designed the application.
