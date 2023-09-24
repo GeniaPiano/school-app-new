@@ -26,7 +26,7 @@ How to run the applicaton:
 Setting Up the Database:
 1. Open your preferred SQL management tool such as phpMyAdmin or HeidiSQL.
 2. Open the SQL script file create-database.sql in a text editor. It is located in folder sql, that you wil find in the main catalogue of repository.
-3. Copy the contents of the create-sqldab.sql script.
+3. Copy the contents of the create-database.sql script.
 4. In your SQL management tool, navigate to the SQL editor or query window.
 5. Paste the copied script into the SQL editor.
 6. Execute the script to create the database and its tables.
