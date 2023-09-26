@@ -27,6 +27,11 @@ export const AppInfoWindow = () => {
                 <ModalBody mt={3}>
                     <AppInfo/>
 
+                    <Text mt={3} textAlign="justify">
+                        <Text fontWeight="700" >Note:</Text> The application is currently under active development, working on adding new features and improvements.
+
+                    </Text>
+
                     <Flex mt={5} justifyContent="center" >
                         <Flex gap={3} as={List}> {icons.map((icon, i) => <ListItem key={i} ><Icon boxSize={8} color="pink.700" as={icon}/></ListItem>)}</Flex>
                     </Flex>

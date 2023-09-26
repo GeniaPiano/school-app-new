@@ -15,7 +15,7 @@ https://menager.networkmanager.pl/
     - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
     - Express.js: Express is used for handling routing and creating a RESTful API.
     - SQL Database: The application utilizes a SQL database to store and manage data.
-    - GraphQL: GraphQL is integrated for efficient data fetching from Dato CMS.
+    - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
 
 - **Frontend:**
     - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
