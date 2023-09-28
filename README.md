@@ -1,4 +1,6 @@
-Project Overview: School Management CRM
+Project Overview: 
+School Management CRM - fullstack project
+
 
 Compact School Management System, showcasing my skills as a junior developer.
 This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
@@ -7,20 +9,19 @@ https://menager.networkmanager.pl/
 
 **Note: The application is currently under active development, and I am working on adding new features and improvements.**
 
-
-
 **Technology Stack:**
 
 - **Backend:**
     - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
     - Express.js: Express is used for handling routing and creating a RESTful API.
+    - TypeScript
     - SQL Database: The application utilizes a SQL database to store and manage data.
     - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
 
 - **Frontend:**
     - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
     - Chakra UI: Chakra UI is used for styling the frontend components, providing a modern and responsive design.
-    - TypeScript: Both frontend and backend are developed using TypeScript for enhanced type safety.
+    - TypeScript
 
 - **Deployment:**
     - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
