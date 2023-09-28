@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }: Props) => {
                         }
                     } as AxiosRequestConfig)
                     setUser(response.data);
-                    console.log(response.data)
                 } catch (err) {
                     console.log('Error:', err);
                 }
