@@ -22,6 +22,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             const passwordMatch = await bcrypt.compare(password, user.password);
             if (passwordMatch) {
                 const token = jwt.sign({ userId: user.id }, 'easy-secret-key', { expiresIn: '1h' });
+
                 res.json({
                     user: userWithoutPassword(user),
                     token,
@@ -36,7 +37,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 export const checkToken = async(req: Request, res: Response, next: NextFunction) => {
-        const token = req.header('Authorization');
+        const token = req.header('Authorization').slice(7);
         if (token) {
             try {
 
@@ -45,6 +46,8 @@ export const checkToken = async(req: Request, res: Response, next: NextFunction)
                 if (typeof decoded === 'object' && 'userId' in decoded) {
                     const userId = (decoded as JwtPayload).userId; // Ręczne rzutowanie do JwtPayload
                     const user = await getUserById(userId)
+
+
                     if (user) {
                         const clearedUser = userWithoutPassword(user);
                         return res.status(200).json(clearedUser);
@@ -54,6 +57,7 @@ export const checkToken = async(req: Request, res: Response, next: NextFunction)
                 }
             } catch (err) {
                 console.error('Token verification failed:', err);
+
             }
         }
     return res.status(401).json({ error: 'Unauthorized' });
