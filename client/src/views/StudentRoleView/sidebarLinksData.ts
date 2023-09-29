@@ -2,6 +2,7 @@ import { FiGlobe, FiHome, FiUser} from "react-icons/fi";
 import {PiChalkboardTeacherDuotone} from "react-icons/pi";
 import {BiLogOut} from "react-icons/bi";
 import {SidebarLink} from "../../types/sidebarLink";
+import {EmailIcon} from "@chakra-ui/icons";
 
 
 
@@ -9,23 +10,20 @@ export const sidebarLinksData: SidebarLink[] = [
     {
         icon: FiHome,
         title: 'Home',
-        path: '/student',
+        path: '/student/news',
     },
     {
         icon: FiUser,
         title: 'Account',
-        path: '/students',
+        path: '/student/my-account',
     },
+
     {
-        icon: PiChalkboardTeacherDuotone,
-        title: 'Teachers',
-        path: '/teachers',
-    },
-    {
-        icon: FiGlobe,
+        icon: EmailIcon,
         title: 'News',
-        path: '/news',
+        path: '/student/contact',
     },
+
     {
         icon: BiLogOut,
         title: 'Logout',

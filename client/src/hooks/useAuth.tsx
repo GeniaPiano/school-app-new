@@ -8,6 +8,7 @@ import {AUTH_URL, STUDENT_URL} from "../config/api";
 
 
 type User = TeacherEntity | StudentEntity | AdminEntity
+
 interface AuthContextType {
     user: User | null;
     signIn: (email: string, password: string) => Promise<object>
@@ -26,6 +27,8 @@ export const AuthProvider = ({ children }: Props) => {
     const { dispatchError } = useError();
 
     useEffect(() => {
+
+
         const token = localStorage.getItem('token')
         if (token) {
             (async () => {
@@ -83,25 +86,26 @@ export const AuthProvider = ({ children }: Props) => {
     }
 
 
-    const register = async (email: string, password: string, confirmEmail: string):Promise<object> => {
-         try {
-            const res = await axios.post(`${AUTH_URL}/register`, {
-                email, password
-            } ,{
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            console.log('register', res)
-            return ({success: true})
-        } catch (err) {
-             if(err.response.status === 400) {
-                 dispatchError(err.response.data.message)
-             }
-        }
+    const register = async (email: string, password: string):Promise<object> => {
+        //  try {
+        //     const res = await axios.post(`${AUTH_URL}/register`, {
+        //         email, password
+        //     } ,{
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         }
+        //     })
+        //     console.log('register', res)
+        //     return ({success: true})
+        // } catch (err) {
+        //      if(err.response.status === 400) {
+        //          dispatchError(err.response.data.message)
+        //      }
+        // }
     }
 
     return <AuthContext.Provider value={{ user, signIn, signOut, register }}>
+
         {children}
     </AuthContext.Provider>
 }

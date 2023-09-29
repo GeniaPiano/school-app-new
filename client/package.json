@@ -20,8 +20,10 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.16.0",
+    "react-leaflet": "^4.2.1",
     "sass": "^1.58.1",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -33,6 +35,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "@types/leaflet": "^1.9.3",
+    "customize-cra": "^1.0.0"
   }
 }

@@ -1,10 +1,10 @@
 import {MainLayout} from "../../layouts/MainLayout";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
 import {CoursesView} from "./CourseView/CoursesView";
-import {StudentsView} from "../StudentsView/StudentsView";
+import {StudentsView} from "./StudentsView/StudentsView";
 import {TeachersView} from "./TeachersView/TeachersView";
 import {News} from "../News/News";
-import {NotFoundView} from "../NotFoundView";
+import {NotFoundView} from "../NotFoundView/NotFoundView";
 import {sidebarLinksData} from "./sidebarLinksData";
 
 export const AdminRoleView = () => {

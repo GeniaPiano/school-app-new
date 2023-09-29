@@ -5,15 +5,15 @@ import {
     ModalOverlay, useDisclosure,
 } from "@chakra-ui/react";
 
-import {StudentsList} from "../../components/students/StudentsList";
-import {Header} from "../../components/Header/Header";
-import {StudentAddForm} from "../../components/studentForm/StudentAddForm";
-import {FormStateProvider} from "../../providers/FormStateProvider";
-import {usePostingData} from "../../providers/PostingDataProvider";
-import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
-import {SearchBar} from "../../components/SearchBar/SearchBar";
-import {useError} from "../../providers/ErrorProvider";
-import {ErrorText} from "../../components/common/ErrorText";
+import {StudentsList} from "../../../components/students/StudentsList";
+import {Header} from "../../../components/Header/Header";
+import {StudentAddForm} from "../../../components/studentForm/StudentAddForm";
+import {FormStateProvider} from "../../../providers/FormStateProvider";
+import {usePostingData} from "../../../providers/PostingDataProvider";
+import {ConfirmModalContent} from "../../../components/common/ConfirmModalContent";
+import {SearchBar} from "../../../components/SearchBar/SearchBar";
+import {useError} from "../../../providers/ErrorProvider";
+import {ErrorText} from "../../../components/common/ErrorText";
 
 
 

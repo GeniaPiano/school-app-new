@@ -7,11 +7,9 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/react";
-import { useEffect, useState} from "react";
+import { useEffect} from "react";
 import {TeacherFormFields} from "./TeacherFormFields";
 import {useTeachers} from "../../hooks/useTeachers";
-import {CourseEntity} from "../../types/course";
-import {initialStateUser, initialStateTouchCount} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
 import {useError} from "../../providers/ErrorProvider";
 import {usePostingData} from "../../providers/PostingDataProvider";
@@ -35,8 +33,7 @@ export const TeacherAddForm = ({onClose, isOpen})=> {
 
     const {setAvailableCourses, inputTouchedCount, inputValues,
         resetInputAndTouch, checkInputTouchCount, selectedCourses,
-        handleSelectCourse, handleRemoveCourse, handleChangeInputValue,
-        setTouchedCount, availableCourses} = useAddUser();
+        handleSelectCourse, handleRemoveCourse, handleChangeInputValue, availableCourses} = useAddUser();
 
 
 

@@ -10,7 +10,7 @@ import {
 } from "./helper";
 import {Footer} from "./Footer";
 import {useAuth} from "../../hooks/useAuth";
-import {useAppInfo} from "../../providers/AppInfoProvider";
+
 
 interface Props {
     toggleRegister: ()=> void;
