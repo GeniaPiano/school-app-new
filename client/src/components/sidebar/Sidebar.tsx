@@ -6,9 +6,24 @@ import {NavSizeContext} from "../../providers/NavSizeProvider";
 import {useAuth} from "../../hooks/useAuth";
 
 
+
 export const Sidebar = ({data}) => {
     const {user} = useAuth()
     const {navSize, changeNavSize} = useContext(NavSizeContext)
+    let avatarInitials;
+    switch (user?.role) {
+        case "admin":
+            avatarInitials = 'admin';
+            break;
+        case "student":
+            avatarInitials = 'student'
+            break;
+        case "teacher":
+            avatarInitials = 'teacher';
+            break;
+        default:
+            avatarInitials = null;
+    }
 
 
         return (
@@ -52,8 +67,7 @@ export const Sidebar = ({data}) => {
                    </Flex>
                         <>{
                             data.map(oneLink => (
-
-                                  <SidebarItem  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
+                                <SidebarItem  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
                             ))
                         }</>
                     </Flex>
@@ -66,11 +80,11 @@ export const Sidebar = ({data}) => {
                             >
             <Divider  />
             <Flex mt={4} align="center" gap="5px">
-                   <Avatar size="sm" name="admin" bg="gray.400"/>
+                   <Avatar size="sm" name={avatarInitials} bg="gray.400"/>
                    <Flex flexDir="column"
                          display={navSize === "small" ? "none" : "flex"}>
-                       <Heading as="h3" fontSize="12px" fontWeight="500">{user.email}</Heading>
-                       <Text fontSize="xs">{user.role}</Text>
+                       <Heading as="h3" fontSize="12px" fontWeight="500">{"email" in user ? user.email :''}</Heading>
+                       <Text fontSize="xs">{"role" in user ? user.role : ''}</Text>
                    </Flex>
                </Flex>
             </Flex>

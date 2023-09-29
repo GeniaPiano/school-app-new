@@ -1,4 +1,4 @@
-import { FiGlobe, FiHome, FiUsers} from "react-icons/fi";
+import { FiGlobe, FiHome, FiUser} from "react-icons/fi";
 import {PiChalkboardTeacherDuotone} from "react-icons/pi";
 import {BiLogOut} from "react-icons/bi";
 import {SidebarLink} from "../../types/sidebarLink";
@@ -8,12 +8,12 @@ import {SidebarLink} from "../../types/sidebarLink";
 export const sidebarLinksData: SidebarLink[] = [
     {
         icon: FiHome,
-        title: 'Courses',
-        path: '/courses',
+        title: 'Home',
+        path: '/student',
     },
     {
-        icon: FiUsers,
-        title: 'students',
+        icon: FiUser,
+        title: 'Account',
         path: '/students',
     },
     {
