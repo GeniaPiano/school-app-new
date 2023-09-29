@@ -4,16 +4,16 @@ import {
     Modal, ModalOverlay, ModalContent,
     useDisclosure,
 } from "@chakra-ui/react";
-import {Header} from "../../components/Header/Header";
-import {TeacherAddForm} from "../../components/teacherForm/TeacherAddForm";
-import {TeacherList} from "../../components/teachers/TeacherList";
-import {usePostingData} from "../../providers/PostingDataProvider";
-import {ConfirmModalContent} from "../../components/common/ConfirmModalContent";
-import {FormStateProvider} from "../../providers/FormStateProvider";
-import {AddUserProvider} from "../../providers/AddUserProvider";
-import {SearchBar} from "../../components/SearchBar/SearchBar";
-import {ErrorText} from "../../components/common/ErrorText";
-import {useError} from "../../providers/ErrorProvider";
+import {Header} from "../../../components/Header/Header";
+import {TeacherAddForm} from "../../../components/teacherForm/TeacherAddForm";
+import {TeacherList} from "../../../components/teachers/TeacherList";
+import {usePostingData} from "../../../providers/PostingDataProvider";
+import {ConfirmModalContent} from "../../../components/common/ConfirmModalContent";
+import {FormStateProvider} from "../../../providers/FormStateProvider";
+import {AddUserProvider} from "../../../providers/AddUserProvider";
+import {SearchBar} from "../../../components/SearchBar/SearchBar";
+import {ErrorText} from "../../../components/common/ErrorText";
+import {useError} from "../../../providers/ErrorProvider";
 
 
 

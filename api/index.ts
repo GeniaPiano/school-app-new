@@ -27,7 +27,7 @@ const app = express();
 
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://courses.networkmanager.pl', 'https://menager.networkmanager.pl'],
 };
 
 app.use(cors(corsOptions));

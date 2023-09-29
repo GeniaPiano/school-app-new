@@ -3,21 +3,21 @@ import {ReactNode} from "react";
 import {Flex} from "@chakra-ui/react";
 import {Sidebar} from "../components/sidebar/Sidebar";
 import {NavSizeContext} from "../providers/NavSizeProvider";
-
-
+import {SidebarLink} from "../types/sidebarLink";
 
 
 interface Props {
     children: ReactNode;
+    data: SidebarLink[];
 }
-export const AdminLayout: FC<Props> = ({children}) => {
+export const MainLayout: FC<Props> = ({children, data}) => {
 
     const {navSize} = useContext(NavSizeContext)
 
 
     return (
         <Flex>
-            <Sidebar />
+            <Sidebar data={data}/>
             <Flex alignItems="center"
                   justifyContent="center"
                   width="100%"

@@ -6,7 +6,7 @@ import {Login} from "../Unauthorized/Login";
 import {Register} from "../Unauthorized/Register";
 import {useState} from "react";
 import {StudentRoleView} from "../StudentRoleView/StudentRoleView";
-import {TeacherRoleView} from "../TecaherRoleView/TeahcerRoleView";
+import {TeacherRoleView} from "../AdminRoleView/TecaherRoleView/TeahcerRoleView";
 
 export const Root = () => {
     const {user} = useAuth();

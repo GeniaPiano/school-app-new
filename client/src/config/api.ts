@@ -1,4 +1,5 @@
 export const BASE_URL: string = 'http://localhost:3001';
+//export const BASE_URL: string = 'courses.networkmanager.pl/api';
 
 export const STUDENT_URL: string = BASE_URL + '/student';
 

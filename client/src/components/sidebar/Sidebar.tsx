@@ -2,12 +2,11 @@ import { useContext} from "react";
 import {Avatar, Divider, Flex, Heading, IconButton, Text} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
-import {sidebarLinksData} from "./sidebarLinksData";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
 import {useAuth} from "../../hooks/useAuth";
 
 
-export const Sidebar = () => {
+export const Sidebar = ({data}) => {
     const {user} = useAuth()
     const {navSize, changeNavSize} = useContext(NavSizeContext)
 
@@ -52,9 +51,9 @@ export const Sidebar = () => {
                         />
                    </Flex>
                         <>{
-                            sidebarLinksData.map(oneLink => (
+                            data.map(oneLink => (
 
-                                  <SidebarItem active  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
+                                  <SidebarItem  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
                             ))
                         }</>
                     </Flex>
