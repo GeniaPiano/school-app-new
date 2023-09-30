@@ -2,7 +2,8 @@ import { FiGlobe, FiHome, FiUser} from "react-icons/fi";
 import {PiChalkboardTeacherDuotone} from "react-icons/pi";
 import {BiLogOut} from "react-icons/bi";
 import {SidebarLink} from "../../types/sidebarLink";
-import {EmailIcon} from "@chakra-ui/icons";
+import {BsInfoSquare} from "react-icons/bs";
+
 
 
 
@@ -10,7 +11,7 @@ export const sidebarLinksData: SidebarLink[] = [
     {
         icon: FiHome,
         title: 'Home',
-        path: '/student/news',
+        path: '/student/home',
     },
     {
         icon: FiUser,
@@ -19,9 +20,9 @@ export const sidebarLinksData: SidebarLink[] = [
     },
 
     {
-        icon: EmailIcon,
-        title: 'News',
-        path: '/student/contact',
+        icon:BsInfoSquare,
+        title: 'Info',
+        path: '/student/info',
     },
 
     {

@@ -1,20 +1,31 @@
-import {Box, Flex, Heading, SimpleGrid, Text} from "@chakra-ui/react";
+import {Box, Flex, Heading, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useAuth} from "../../hooks/useAuth";
 import {useStudents} from "../../hooks/useStudents";
 import {useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
+import {UserInfoBoxItem} from "../../components/common/UserInfoBox";
 
-export const StudentAccount = () => {
+
+export const StudentAccountView = () => {
 const {user} = useAuth();
 const {getStudentById} = useStudents();
 const [studentData, setStudentData] = useState<SingleStudentRes>(null)
-const {student, selectedCourses} = studentData
+
+
+
 useEffect(() => {
     (async () => {
         const response = await getStudentById(user.id)
         setStudentData(response)
+
     })()
-}, [user.id])
+}, [getStudentById])
+
+const {selectedCourses} = studentData || {}
+
+    if (!studentData) {
+        return <Spinner/>
+    }
 
 
     return (
@@ -30,11 +41,18 @@ useEffect(() => {
             </div>
 
             <Box>
-                <Text>  Your email: {user.email} </Text>
-                <Text> Your courses:</Text>
-                <SimpleGrid>
-                    {selectedCourses && selectedCourses.map(course => <p>{course.name}</p>)}
-                </SimpleGrid>
+                      <Flex flexDirection="column"
+                      width={{base: "95%", md: "60%", lg: "45%"}}
+                      gap={3}
+                      mt={3} >
+                    <Text ml={5} color="gray.600">Your email:</Text>
+                    <Box  p={3} mb={5} borderRadius="5px"  bg="brand.500" >{user.email}</Box>
+                    <Text ml={5} color="gray.600">Your courses:</Text>
+                          {selectedCourses.length > 0 && selectedCourses.map(course =>
+                     <UserInfoBoxItem key={course.id} children={course.name}/>) }
+
+                </Flex>
+
 
 
             </Box>

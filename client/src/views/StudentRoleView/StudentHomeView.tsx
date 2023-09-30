@@ -2,7 +2,7 @@ import {Text, Flex, Heading} from "@chakra-ui/react";
 import {useAuth} from "../../hooks/useAuth";
 
 
-export const Home = () => {
+export const StudentHomeView = () => {
 
     const {user} = useAuth()
     return (

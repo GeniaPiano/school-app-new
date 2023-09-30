@@ -2,14 +2,14 @@ import * as express from "express";
 
 import * as cors from 'cors';
 import 'express-async-errors';
-// import rateLimit from 'express-rate-limit'
-//
-// const limiter = rateLimit({
-//     windowMs: 5 * 60 * 1000,
-//     max: 200,
-//     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-//     legacyHeaders: false,
-// })
+import rateLimit from 'express-rate-limit'
+
+const limiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 200,
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false,
+})
 
 
 
@@ -27,11 +27,11 @@ const app = express();
 
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://courses.networkmanager.pl', 'https://menager.networkmanager.pl'],
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://menager.networkmanager.pl'],
 };
 
 app.use(cors(corsOptions));
-// app.use(limiter)
+app.use(limiter)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 

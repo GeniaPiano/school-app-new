@@ -10,7 +10,6 @@ interface Props {
 
 export const ChosenCourses = ({data, handleRemove} : Props) => {
 
-
      return (
          <SimpleGrid columns={3} spacing={4} my={5}>
              {data.map(oneDataItem => (
