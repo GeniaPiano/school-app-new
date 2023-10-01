@@ -6,15 +6,19 @@ import {
     Heading,
     Flex,
     HStack,
-    Text,
-
-
+    Text
 } from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
 import {useError} from "../../providers/ErrorProvider";
 import {ErrorText} from "../../components/common/ErrorText";
-import {handleInputChange, initialLoginInputTouch, initialLoginValues} from "./helper";
+import {
+    demoAdminValues,
+    demoStudentValues,
+    handleInputChange,
+    initialLoginInputTouch,
+    initialLoginValues
+} from "./helper";
 import {AppInfoWindow} from "./AppInfoWindow/AppInfoWindow";
 import {useAppInfo} from "../../providers/AppInfoProvider";
 import {Footer} from "./Footer";
@@ -45,6 +49,11 @@ export const Login = ({ toggleRegister}:Props) => {
             setTouchCount(initialLoginInputTouch)
             setInputValues(initialLoginValues)
         }
+    }
+
+    const handleLogin = async(values) => {
+        const res = await signIn(values.email, values.password)
+
     }
 
 
@@ -99,6 +108,7 @@ export const Login = ({ toggleRegister}:Props) => {
 
                     <Button type="submit"
                             px={20}
+                            variant="outline"
                             bg="brand.800"
                             color="whitesmoke"
                             _hover={{bg: "teal.600"}}
@@ -109,22 +119,37 @@ export const Login = ({ toggleRegister}:Props) => {
                             register
                         </Text>
                     </HStack>
-
-                    <Box color="teal.500" fontSize="md" mt={10}>
-                        <HStack >
-                            <Text> Click </Text>
-                            <Text onClick={handleSubmit} color="pink.400" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}> sign-in </Text>
-                            <Text> button</Text>
-                            <Text>to try </Text>
-                        </HStack>
-                        <Text>DEMO VERSION as an admin.</Text>
-                    </Box>
-
                 </Center>
 
+
+                <Box display="flex"
+                     flexDirection="column"
+                     justifyContent="center"
+                     alignItems="center"
+                     width="100%"
+
+
+                >
+                <Box color="teal.500" fontSize="md" my={5}>
+                    <Text color="pink.600">TRY DEMO</Text>
+                </Box>
+                <Flex flexDirection="column" gap={2}>
+                    <Button
+                        onClick={()=> handleLogin(demoAdminValues)}
+                        colorScheme="pink"
+                    >Demo Admin no registration</Button>
+                    <Button
+                        colorScheme="pink"
+                        onClick={()=> handleLogin(demoStudentValues)}
+                    >Demo Student no registration</Button>
+                </Flex>
+
                 <Footer/>
+
+
                 <AppInfoWindow isOpen={isOpen} onClose={onClose} />
 
+                </Box>
             </Flex>
         </Box>
 

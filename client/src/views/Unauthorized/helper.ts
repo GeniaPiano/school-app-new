@@ -3,8 +3,18 @@ export const initialLoginInputTouch = {
     password: 0,
 }
 export const initialLoginValues = {
+    email: "",
+    password: '',
+}
+
+export const demoAdminValues = {
     email: "admin@admin.com",
     password: 'adminadmin74337',
+}
+
+export const demoStudentValues = {
+    email: "test@test.com",
+    password: 'test',
 }
 
 export const initialRegisterInputTouchCount = {

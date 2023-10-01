@@ -1,10 +1,7 @@
-import { FiGlobe, FiHome, FiUser} from "react-icons/fi";
-import {PiChalkboardTeacherDuotone} from "react-icons/pi";
+import { FiHome, FiUser} from "react-icons/fi";
 import {BiLogOut} from "react-icons/bi";
 import {SidebarLink} from "../../types/sidebarLink";
 import {BsInfoSquare} from "react-icons/bs";
-
-
 
 
 export const sidebarLinksData: SidebarLink[] = [

@@ -12,7 +12,7 @@ export const StudentRoleView = () => {
         <Router>
             <MainLayout data={sidebarLinksData}>
                 <Routes>
-                    <Route exact path='/' element={<Navigate to={'/student/news'} />} />
+                    <Route exact path='/' element={<Navigate to={'/student/home'} />} />
                     <Route path='/student' element={<StudentHomeView/>}/>
                     <Route path='/student/my-account' element={<StudentAccountView/>}/>
                     <Route path="/student/home" element={<News />} />

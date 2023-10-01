@@ -7,6 +7,10 @@ interface Props {
 
 export const UserInfoBoxItem = ({children}: Props) => {
     return (
-        <Box  p={3} borderRadius="5px"  bg="pink.200" color="white">{children}</Box>
+        <Box
+            px={{base: "80px", md:"200px", lg: "350px"}}
+            py={3} borderRadius="5px"
+            bg="pink.200"
+            color="white">{children}</Box>
     )
 }
