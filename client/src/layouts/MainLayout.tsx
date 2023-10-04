@@ -15,7 +15,6 @@ interface Props {
 export const MainLayout: FC<Props> = ({children, data}) => {
 
     const {navSize} = useContext(NavSizeContext);
-    const {user} = useAuth()
 
 
 
@@ -32,7 +31,6 @@ export const MainLayout: FC<Props> = ({children, data}) => {
                      ml={{  base: navSize === "large" ? "11.5em" : "7em",
                          md: navSize === "large" ? "16em" : "8em"}}
                    >
-
                    {children}
                </Flex>
            </Box>
