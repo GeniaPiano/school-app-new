@@ -1,26 +1,40 @@
-Project Overview: School Management CRM
+
+# Compact School Menager CRM
 
 Compact School Management System, showcasing my skills as a junior developer.
 This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
-Access the live application here: 
-https://menager.networkmanager.pl/
+
+Admin can:
+- add, edit, remove courses
+- assign multiple courses to one student
+- assign multiple courses to one teacher
+
+Student can:
+- edit his data such as name, lastname, password
+- select and change courses
+
+Teacher can:
+- see his courses
+- see his all students
+- edit his data such as name, lastname, password
 
 **Note: The application is currently under active development, and I am working on adding new features and improvements.**
 
 
 
-**Technology Stack:**
+**TECHNOLOGY STACK:**
 
 - **Backend:**
     - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
-    - Express.js: Express is used for handling routing and creating a RESTful API.
+    - Express.js: Express is used for handling routing and creating a RESTfull API.
     - SQL Database: The application utilizes a SQL database to store and manage data.
     - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
+    - Typescript
 
 - **Frontend:**
     - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
     - Chakra UI: Chakra UI is used for styling the frontend components, providing a modern and responsive design.
-    - TypeScript: Both frontend and backend are developed using TypeScript for enhanced type safety.
+    - TypeScript
 
 - **Deployment:**
     - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
@@ -35,8 +49,8 @@ Implemented user registration and authentication.
 Deployed the application on linux server.
 
 **Planned Features:**
-- Enhanced user profile management.
-- Announcement board: I plan to introduce the ability for administrators and teachers to post short announcements on the main dashboard, enhancing communication with users and providing important updates.
+- Enhanced student and teacher users profile management.
+- Announcement board: main dashboard, with posts and possibility to comment them for logged users.
 
 
 **How to run the application:**
