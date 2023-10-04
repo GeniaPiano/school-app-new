@@ -72,7 +72,7 @@ Deployed the application on linux server.
  - Execute the script to create the database and its tables.
  -  By following these steps, you will set up the database by running the SQL script in your chosen SQL management tool.
 
- 3. **Setup and run server:** 
+3. **Setup and run server:** 
 - Ensure that you have Node.js installed. You can download it from the Node.js website.
 - Install project dependencies: Navigate to the api project directory (the directory where the package.json file is located) and then run the `npm install` command. This will install all the dependencies listed in the package.json file into the node_modules folder.
 - run the script: `npm run start`
