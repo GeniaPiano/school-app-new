@@ -1,5 +1,5 @@
 import { useContext} from "react";
-import {Avatar, Divider, Flex, Heading, IconButton,Stack, Text} from "@chakra-ui/react";
+import { Flex, IconButton} from "@chakra-ui/react";
 import {CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
 import {SidebarItem} from "./SidebarItem";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
@@ -31,8 +31,7 @@ export const Sidebar = ({data}) => {
         <Flex
             color="gray.500"
             position="fixed"
-            top={0}
-            left={5}
+            ml={3}
             h="95vh"
             mt="2.5vh"
             w={navSize === "small" ? "75px" :  {base: "150px", md: "200px"}}
@@ -40,7 +39,7 @@ export const Sidebar = ({data}) => {
             )"
             borderRadius={navSize === "small" ? '15px' : '30px'}
             flexDir="column"
-            // justifyContent="space-between"
+
         >
 
 
@@ -68,13 +67,6 @@ export const Sidebar = ({data}) => {
                             onClick={() =>     changeNavSize(navSize === "small" ? "large" : "small" )}
                         />
                    </Flex>
-
-
-
-
-
-
-
                         <>{
                             data.map(oneLink => (
                                 <SidebarItem  key={oneLink.title} navSize={navSize} icon={oneLink.icon} path={oneLink.path} title={oneLink.title}/>
@@ -82,27 +74,6 @@ export const Sidebar = ({data}) => {
                         }</>
                     </Flex>
 
-
-
-
-
-            {/*<Flex*/}
-            {/*    p="5%"*/}
-            {/*    flexDir="column"*/}
-            {/*    w="100%"*/}
-            {/*    alignItems={navSize === "small" ? "center" : "flex-start"}*/}
-            {/*    left="0"*/}
-            {/*                >*/}
-            {/*<Divider  />*/}
-            {/*<Flex mt={4} align="center" gap="5px">*/}
-            {/*       <Avatar size="sm" name={avatarInitials} bg="gray.400"/>*/}
-            {/*       <Flex flexDir="column"*/}
-            {/*             display={navSize === "small" ? "none" : "flex"}>*/}
-            {/*           <Heading as="h3" fontSize="12px" fontWeight="500">{"email" in user ? user.email :''}</Heading>*/}
-            {/*           <Text fontSize="xs">{"role" in user ? user.role : ''}</Text>*/}
-            {/*       </Flex>*/}
-            {/*   </Flex>*/}
-            {/*</Flex>*/}
 
         </Flex>
     )

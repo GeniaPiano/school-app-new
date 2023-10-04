@@ -52,10 +52,9 @@ export const Login = ({ toggleRegister}:Props) => {
     }
 
     const handleLogin = async(values) => {
-        const res = await signIn(values.email, values.password)
+        await signIn(values.email, values.password)
 
     }
-
 
     return (
        <>
@@ -130,16 +129,18 @@ export const Login = ({ toggleRegister}:Props) => {
 
 
                 >
-                <Box color="teal.500" fontSize="md" my={5}>
-                    <Text color="pink.600">TRY DEMO</Text>
+                <Box fontSize="md" my={5} fontWeight="500">
+                    <Text color="pink.500">TRY DEMO</Text>
                 </Box>
                 <Flex flexDirection="column" gap={2}>
                     <Button
                         onClick={()=> handleLogin(demoAdminValues)}
-                        colorScheme="pink"
+                        colorScheme="teal"
+                        variant="outline"
                     >Demo Admin no registration</Button>
                     <Button
-                        colorScheme="pink"
+                        colorScheme="teal"
+                        variant="outline"
                         onClick={()=> handleLogin(demoStudentValues)}
                     >Demo Student no registration</Button>
                 </Flex>

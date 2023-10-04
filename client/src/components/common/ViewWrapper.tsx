@@ -15,9 +15,11 @@ export const ViewWrapper:FC<Props> = ({children}) => {
            borderRadius='15px'
            p={5}
            mt={10}
+
            minWidth={{base: navSize === 'small' ? '30%' : '35%',
             md: '60vw',
-            lg: '50vw'}}
+            lg: '30vw'}}
+           maxWidth={{lg: "80%"}}
            flexDirection="column"
        >
            {children}

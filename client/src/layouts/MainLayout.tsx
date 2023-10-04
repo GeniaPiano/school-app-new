@@ -1,6 +1,6 @@
 import {FC, useContext} from "react";
 import {ReactNode} from "react";
-import {Flex} from "@chakra-ui/react";
+import {Flex,Box} from "@chakra-ui/react";
 import {Sidebar} from "../components/sidebar/Sidebar";
 import {NavSizeContext} from "../providers/NavSizeProvider";
 import {SidebarLink} from "../types/sidebarLink";
@@ -20,21 +20,22 @@ export const MainLayout: FC<Props> = ({children, data}) => {
 
 
     return (
-        <Flex>
+        <Flex >
             <Sidebar data={data}/>
-             <Flex flexDir="column" width="95%" >
+             <Box flexDir="column" width="95%" >
                <UserInfoHeader/>
 
 
                <Flex alignItems="center"
                      justifyContent="center"
-                     width="100%"
+                     width="90%"
                      ml={{  base: navSize === "large" ? "11.5em" : "7em",
-                         md: navSize === "large" ? "16em" : "8em"}}>
+                         md: navSize === "large" ? "16em" : "8em"}}
+                   >
 
                    {children}
                </Flex>
-           </Flex>
+           </Box>
 
         </Flex>
     )
