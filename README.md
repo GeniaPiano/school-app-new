@@ -56,9 +56,15 @@ Deployed the application on linux server.
 - Announcement board: main dashboard, with posts and possibility to comment them for logged users.
 
 
-[](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
-[](https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg)
-[](https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg)
+<img alt="" src="https://www.datocms-assets.com/107048/1696586242-screenshot_2.jpg" height="400">
+<img alt=""  src="https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg" height="400">
+
+![](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
+<img alt="" src="https://www.datocms-assets.com/107048/1696586209-screenshot_8.jpg" height="400">
+<img alt=""  src="https://www.datocms-assets.com/107048/1696586198-screenshot_9.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1696586252-screenshot_7.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1696586262-screenshot_5.jpg" height="400">
 
 
 **How to run the application locally:**
