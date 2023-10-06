@@ -56,7 +56,12 @@ Deployed the application on linux server.
 - Announcement board: main dashboard, with posts and possibility to comment them for logged users.
 
 
-**How to run the application:**
+[](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
+[](https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg)
+[](https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg)
+
+
+**How to run the application locally:**
 
  1. **Clone repository**
 
