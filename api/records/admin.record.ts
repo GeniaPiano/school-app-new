@@ -7,8 +7,8 @@ type AdminRecordResults = [AdminRecord[], FieldPacket[]]
 
 export class AdminRecord {
     readonly id: string;
-    readonly email: string;
-    readonly password: string;
+    email: string;
+    password: string;
     readonly role: 'admin';
 
     constructor(obj: AdminRecord) {
@@ -39,5 +39,15 @@ export class AdminRecord {
         })) as AdminRecordResults;
         return results.length === 0 ? null : new AdminRecord(results[0]);
     }
+
+    async updateAdminData(): Promise<void> {
+        await pool.execute("UPDATE `admin` SET  `email`= :email, `password` = :password WHERE `id` = :id", {
+            id: this.id,
+            email: this.email,
+            password: this.password, // zahaszować!!!
+        });
+
+    }
+
 }
 

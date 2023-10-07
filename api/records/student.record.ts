@@ -155,7 +155,6 @@ export class StudentRecord implements StudentEntity {
             id: student.id
         })
 
-
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(id);
         if (selectedCourses.length !== 0) {
             pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id", {
