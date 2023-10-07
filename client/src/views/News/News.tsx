@@ -60,6 +60,7 @@ export const News = () =>  {
                            {
                                headers: {
                                    Authorization: `Bearer b15fa86fc636fb281b1b844ebcc6c9`,
+
                                },
                            }
                        )
