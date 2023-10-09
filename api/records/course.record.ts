@@ -15,7 +15,6 @@ export class CourseRecord implements CourseEntity {
         if (!obj.name || obj.name.length < 4 || obj.name.length > 40) {
             throw new ValidationError('Courses name should contain from 4 to 40 characters');
         }
-
         this.id = obj.id;
         this.name = obj.name;
         this.teacher_id = obj.teacher_id;
@@ -42,26 +41,46 @@ export class CourseRecord implements CourseEntity {
 
     //akutalizacja tabeli relacyjnej
     async _updateRelationCoursesTeachers(teacher_id:string,):Promise<void> {
-
          await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`) VALUES(:id, :course_id, :teacher_id)", {
              id: uuid(),
              course_id: this.id,
              teacher_id: teacher_id,
-
             });
     }
 
-    static async listAll(): Promise <CourseRecord[]> {
+    static async listAll(): Promise <CourseRecord[] | []> {
         const [results] = await pool.execute("SELECT * FROM `courses`") as CourseRecordResults;
         return results.map(obj => new CourseRecord(obj));
     }
+
+    static async listAllCoursesAvailable(): Promise<any> {
+        try {
+            const [results] = await pool.execute("SELECT * FROM `courses`") as CourseRecordResults;
+            const filteredCourses: { course: CourseRecord, count: number }[] = await Promise.all(results.map(async (obj) => {
+                const course = await new CourseRecord(obj);
+                const count = await course.countStudents();
+                if (count < 10) {
+                    return {
+                        course,
+                        count,
+                    }
+                }
+            }));
+
+            console.log(filteredCourses);
+            return filteredCourses;
+        } catch (error) {
+                  console.error(error);
+            throw error;
+        }
+    }
+
 
     static async listCoursesWithoutChosenTeacher():Promise <CourseRecord[] | null> {
         const [results] = await pool.execute("SELECT * FROM `courses` ") as CourseRecordResults;
         return results
             .map(obj => new CourseRecord(obj))
             .filter(course => course.teacher_id === null)
-
     }
 
     static async getOne(id: string): Promise<CourseRecord | null> {
@@ -76,7 +95,6 @@ export class CourseRecord implements CourseEntity {
         if (await this.countStudents() > 0 ) {
             throw new ValidationError('Cannot delete the course. Remove students assigned to this course first.')
         }
-
         await pool.execute("DELETE FROM `courses` WHERE `id` = :id ", {
             id: this.id,
         })
@@ -124,7 +142,6 @@ export class CourseRecord implements CourseEntity {
         const data = await pool.execute<RowDataPacket[]>("SELECT  `name`, `last_name` FROM `teachers` WHERE `id` = :teacher_id", {
             teacher_id,
         });
-
         const {name, last_name} = data[0][0];
         return String(`${name} ${last_name}`);
     }
