@@ -1,1 +1,1 @@
-export * from './userEntityLoginData'
+export * from './user'

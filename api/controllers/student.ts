@@ -15,9 +15,7 @@ import {userWithoutPassword} from "../utils/dataWithoutPassword";
 export const getOneStudent = async (req: Request, res: Response) => {
         const student = await StudentRecord.getOne(req.params.id);
         if (!student) throw new ValidationError('Student not found.');
-
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(req.params.id)
-
         res.json({
             student: userWithoutPassword(student),
             selectedCourses,
@@ -86,7 +84,7 @@ export const updateStudent = async (req: Request, res: Response, next: NextFunct
 
     await student.updateNameAndEmail();
 
-    //aktua lizacja coursesSelected
+    //aktualizacja coursesSelected
     await student.removeAllCourses();
     const {selectedCourses} = req.body;
 
@@ -127,7 +125,6 @@ export const removeCourseFromStudent = async (req: Request, res: Response, next:
     if (!student) {
         throw new NotFoundError('Cannot find student.')
     }
-
     await student.removeOneCourseFromStudent(req.body.course_id)
     res.end();
 }
