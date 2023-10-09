@@ -78,7 +78,6 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     }
 
     //@todo MAIL INFO TO USER
-
     const userData = {
         ...req.body,
         password: hashedPassword,
