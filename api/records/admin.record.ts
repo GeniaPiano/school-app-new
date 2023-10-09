@@ -22,7 +22,7 @@ export class AdminRecord {
 
     static async listAll(): Promise <any> {
         const [results] = await pool.execute("SELECT * FROM `admin`") as AdminRecordResults;
-        return results[0]
+        return results.map(obj => new AdminRecord(obj))
     }
 
     static async getByEmail(email: string) :Promise <AdminRecord> | null {
@@ -44,7 +44,7 @@ export class AdminRecord {
         await pool.execute("UPDATE `admin` SET  `email`= :email, `password` = :password WHERE `id` = :id", {
             id: this.id,
             email: this.email,
-            password: this.password, // zahaszować!!!
+            password: this.password,
         });
 
     }
