@@ -146,8 +146,6 @@ export const Login = ({ toggleRegister}:Props) => {
                 </Flex>
 
                 <Footer/>
-
-
                 <AppInfoWindow isOpen={isOpen} onClose={onClose} />
 
                 </Box>

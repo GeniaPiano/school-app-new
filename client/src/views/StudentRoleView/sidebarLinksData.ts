@@ -2,9 +2,15 @@ import { FiHome, FiUser} from "react-icons/fi";
 import {BiLogOut} from "react-icons/bi";
 import {SidebarLink} from "../../types/sidebarLink";
 import {BsInfoSquare} from "react-icons/bs";
+import {RxDashboard} from "react-icons/rx";
 
 
 export const sidebarLinksData: SidebarLink[] = [
+    {
+        icon: RxDashboard,
+        title: 'Courses',
+        path:'/student/courses',
+    },
     {
         icon: FiHome,
         title: 'Home',

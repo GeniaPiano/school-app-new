@@ -21,7 +21,6 @@ export class CourseRecord implements CourseEntity {
     }
 
 
-
     async insert():Promise<string>  {
         if (!this.id) {
             this.id = uuid();
