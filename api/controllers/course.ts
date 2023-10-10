@@ -65,6 +65,7 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
 export const createCourse = async (req: Request, res: Response, next: NextFunction)  => {
         const { name, teacher_id} = req.body as CreateCourseReq;
         const newCourse = new CourseRecord({
+            description: "",
             name,
             teacher_id: teacher_id === undefined ? null : teacher_id
         });

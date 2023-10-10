@@ -9,14 +9,24 @@ type CourseRecordResults = [CourseRecord[], FieldPacket[]]
 export class CourseRecord implements CourseEntity {
     id?: string;
     name: string;
+    description: string;
+    price: number;
     teacher_id: string | null;
 
     constructor(obj: CourseEntity) {
         if (!obj.name || obj.name.length < 4 || obj.name.length > 40) {
             throw new ValidationError('Courses name should contain from 4 to 40 characters');
         }
+        if (obj.description && obj.description.length > 3000) {
+            throw new ValidationError('Courses description should contain less than 3000 chars.');
+        }
+        if (!obj.price || obj.price > 99999 || obj.price === 0 || typeof obj.price === 'string') {
+            throw new ValidationError('Price must be a number, must be bigger than 0 and smaller than 99999.')
+        }
         this.id = obj.id;
         this.name = obj.name;
+        this.price = obj.price;
+        this.description = obj.description;
         this.teacher_id = obj.teacher_id;
     }
 
@@ -29,10 +39,11 @@ export class CourseRecord implements CourseEntity {
             this.teacher_id = null;
         }
 
-        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`) VALUES(:id, :name, :teacher_id)", {
+        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`, `description`) VALUES(:id, :name, :description, :teacher_id)", {
             id: this.id,
             name: this.name,
             teacher_id: this.teacher_id,
+            description: this.description,
         });
         return this.id;
     }
@@ -40,10 +51,11 @@ export class CourseRecord implements CourseEntity {
 
     //akutalizacja tabeli relacyjnej
     async _updateRelationCoursesTeachers(teacher_id:string,):Promise<void> {
-         await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`) VALUES(:id, :course_id, :teacher_id)", {
+         await pool.execute("INSERT INTO `courses_teachers`(`id`,`course_id`, `teacher_id`, `description`) VALUES(:id, :course_id, :description, :teacher_id)", {
              id: uuid(),
              course_id: this.id,
              teacher_id: teacher_id,
+             description: this.description,
             });
     }
 
@@ -143,5 +155,7 @@ export class CourseRecord implements CourseEntity {
         const {name, last_name} = data[0][0];
         return String(`${name} ${last_name}`);
     }
+
+
 }
 

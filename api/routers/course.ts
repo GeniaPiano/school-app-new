@@ -12,7 +12,6 @@ import {getCoursesForStudent} from "../controllers/student";
 
 export const courseRouter = Router();
 courseRouter
-
     .get('/', getAllCourses)
     .get('/courses-without-teacher', getCoursesWithoutTeachers)
     .get('/courses-for-student/:id', getCoursesForStudent)
@@ -20,5 +19,4 @@ courseRouter
     .patch('/:courseId', verifyAdmin, updateCourse)
     .post('/', verifyAdmin, createCourse)
     .delete('/:id', verifyAdmin,  deleteCourse)
-
 
