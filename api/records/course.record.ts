@@ -74,7 +74,6 @@ export class CourseRecord implements CourseEntity {
         }
     }
 
-
     static async listCoursesWithoutChosenTeacher():Promise <CourseRecord[] | null> {
         const [results] = await pool.execute("SELECT * FROM `courses` ") as CourseRecordResults;
         return results

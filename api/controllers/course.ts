@@ -48,7 +48,6 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
 
 export const updateCourse = async (req: Request, res: Response, next: NextFunction) => {
 
-
         const course = await CourseRecord.getOne(req.params.courseId);
         if (course === null) {
             throw new ValidationError('The course with given ID does not exist.');
@@ -61,9 +60,7 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
 
         await course.update();
         res.json(course);
-
-
-    }
+     }
 
 export const createCourse = async (req: Request, res: Response, next: NextFunction)  => {
         const { name, teacher_id} = req.body as CreateCourseReq;

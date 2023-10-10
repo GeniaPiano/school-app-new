@@ -14,11 +14,6 @@ import {generatePassword} from "../utils/generatePassword";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
 import {NotFoundError, ValidationError} from "../utils/errors";
 
-// export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
-//     const teachers: TeacherEntity[] = await TeacherRecord.listAll();
-//     res.json( {teachers: teachers.map(one => userWithoutPassword(one))});
-// }
-
 export const getAllTeachers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const searchedTeachers = await TeacherRecord.listAll(req.params.name ?? '')

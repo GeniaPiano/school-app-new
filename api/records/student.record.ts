@@ -1,12 +1,9 @@
-
 import {pool} from "../utils/db";
 import {ValidationError} from "../utils/errors";
 import {v4 as uuid} from "uuid";
 import {FieldPacket} from "mysql2";
 import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
-
-
 
 
 interface RelatedData {
@@ -109,7 +106,6 @@ export class StudentRecord implements StudentEntity {
             student_id: this.id,
             course_id,
         });
-
     }
 
     async removeAllCourses(): Promise<void> {
@@ -139,6 +135,17 @@ export class StudentRecord implements StudentEntity {
             }
         }
         return selectedCourses;
+    }
+    static async _getCoursesNotSelectedByStudent(student_id: string): Promise<CourseRecord[] | null> {
+        const allCourses = await CourseRecord.listAll();
+        const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(student_id);
+        const coursesNotSelected: CourseRecord[] = [];
+        allCourses.forEach(course => {
+            if (!selectedCourses.some(selectedCourse => selectedCourse.id === course.id)) {
+                coursesNotSelected.push(course);
+            }
+        });
+        return coursesNotSelected;
     }
 
     async delete(id:string): Promise<void> {
