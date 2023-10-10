@@ -10,8 +10,6 @@ import {StudentRecord} from "../records/student.record";
 import {generatePassword} from "../utils/generatePassword";
 import {checkMailAvailable} from "../utils/checkMailAvailable";
 import {userWithoutPassword} from "../utils/dataWithoutPassword";
-import {CourseRecord} from "../records/course.record";
-
 
 export const getOneStudent = async (req: Request, res: Response) => {
         const student = await StudentRecord.getOne(req.params.id);
@@ -151,13 +149,12 @@ export const getAllStudents = async (req: Request, res: Response, next: NextFunc
 
 export const getCoursesForStudent = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const coursesAvailable = await StudentRecord._getSelectedCoursesByStudent(req.params.id)
-        const coursesChosen = await  StudentRecord._getCoursesNotSelectedByStudent(req.params.id)
+        const coursesChosen = await  StudentRecord._getSelectedCoursesByStudent(req.params.id)
+        const coursesAvailable = await StudentRecord._getCoursesNotSelectedByStudent(req.params.id)
         res.json({
+            coursesChosen,
             coursesAvailable,
-            coursesChosen
         })
-
     } catch (err) {
         next(err)
     }
