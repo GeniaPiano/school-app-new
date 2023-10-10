@@ -93,7 +93,6 @@ export const News = () =>  {
                          fontWeight="400"
                          fontSize="xx-large"
                          as="h1"> News </Heading>
-
                 {error && <p>Cannot connect to Data CMS.</p>}
 
                 <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5}>
