@@ -1,12 +1,12 @@
 import {Badge, Button, HStack, ModalBody, ModalFooter, Text} from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useCourseInfo} from "../../providers/CourseProvider";
-import {GetSingleCourseRes} from "../../types/course";
+import {GetSingleCourseResponse} from "../../types/course";
 import {HeaderCourseInfo} from "./HeaderCourseInfo";
 
 
 interface Props {
-    courseData: GetSingleCourseRes | null;
+    courseData: GetSingleCourseResponse | null;
 }
 export const BasicInfo = ({courseData }: Props) => {
 

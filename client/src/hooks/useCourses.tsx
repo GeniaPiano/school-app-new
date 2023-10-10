@@ -1,24 +1,30 @@
 import {useCallback} from "react";
 import axios from "axios";
 import {COURSE_URL} from "../config/api";
-import {CourseEntity} from "../types/course";
-import {GetSingleCourseRes} from "../types/course"
+import {CourseEntity, CourseResponse, CoursesForStudentResponse, GetSingleCourseResponse} from "../types/course";
 
 export const useCourses = () => {
-
     const getAllCourses = (useCallback( async () => {
         try {
-            const results = await axios.get(COURSE_URL);
+            const results = await axios.get<CourseResponse>(COURSE_URL);
             return results.data.coursesList as CourseEntity[]
         } catch (e) {
             console.log(e)
         }
     }, []))
 
-    const getCourseById = (useCallback( async (courseId: string):Promise<GetSingleCourseRes> => {
+    const getCoursesForStudent = (useCallback(async(id: string)=> {
+        try {
+            return await (await axios.get<CoursesForStudentResponse>(`${COURSE_URL}/courses-for-student/${id}`)).data
+        } catch (e) {
+            console.log(e)
+        }
+    },[]))
+
+    const getCourseById = (useCallback( async (courseId: string):Promise<GetSingleCourseResponse> => {
         try {
             const results = await axios.get(`${COURSE_URL}/${courseId}`);
-            return results.data as GetSingleCourseRes;
+            return results.data as GetSingleCourseResponse;
         } catch (e) {
             console.log(e)
         }
@@ -55,7 +61,7 @@ export const useCourses = () => {
     const updateCourse = async (courseId: string | null, name: string, teacher_id: string | null) => {
         if (courseId !== null) {
             try {
-                const res = await axios.patch(`${COURSE_URL}/${courseId}`, {
+                    await axios.patch(`${COURSE_URL}/${courseId}`, {
                     name,
                     teacher_id,
                 }, {
@@ -68,7 +74,6 @@ export const useCourses = () => {
                 console.log(err)
             }
         }
-
     }
 
     const deleteCourse = async (courseId: string) => {
@@ -82,6 +87,7 @@ export const useCourses = () => {
 
 return {
     getAllCourses,
+    getCoursesForStudent,
     getCourseById,
     addCourse,
     updateCourse,

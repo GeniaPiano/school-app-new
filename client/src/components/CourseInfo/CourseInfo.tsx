@@ -16,7 +16,7 @@ import {
 import {useNavigate } from "react-router-dom"
 import {useCourses} from "../../hooks/useCourses";
 import {useEffect, useRef, useState} from "react";
-import {GetSingleCourseRes} from "../../types/course";
+import {GetSingleCourseResponse} from "../../types/course";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
@@ -31,7 +31,7 @@ import {BasicInfo} from "./BasicInfo";
 export const CourseInfo = () => {
 
     const navigate = useNavigate();
-    const [courseData, setCourseData] = useState<GetSingleCourseRes | null>(null);
+    const [courseData, setCourseData] = useState<GetSingleCourseResponse | null>(null);
     const [teachers, setTeachers] = useState<TeacherEntity[] | []>([])
     const [selectTeacher, setSelectTeacher] = useState<string | null>(null)
     const [name, setName] = useState<string>(courseData? courseData.course.name : '')

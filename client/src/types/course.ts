@@ -3,14 +3,22 @@ import {TeacherEntity} from "./teacher";
 export interface CourseEntity {
     id: string;
     name: string;
+    description: string;
     teacher_id?: string | null;
+    price: number;
 }
 
-
-export interface GetSingleCourseRes {
+export interface GetSingleCourseResponse {
     course: CourseEntity;
     countStudents: number;
     teacher: null | TeacherEntity;
 }
 
-export type CourseId = string;
+export type CourseResponse = {
+    coursesList: CourseEntity[] | [];
+};
+
+export type CoursesForStudentResponse = {
+    coursesAvailable: CourseEntity[] | [],
+    chosenCourses: CourseEntity[] | [],
+}
