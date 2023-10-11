@@ -13,21 +13,18 @@ interface Props {
 
 export const SidebarItem = (props: Props) => {
     const {signOut} = useAuth();
-    const location = useLocation();
-    const isActive = location.pathname.startsWith(props.path);
-
-
     const navigate = useNavigate()
-    const handleLogout = async() => {
-
-        await signOut();
-        navigate('/')
-
-    }
-
     const {navSize, title, icon, path} = props
+    const location = useLocation();
+    const isActive = location.pathname.startsWith(path);
     const [isHovered, setIsHovered] = useState(false);
     const isLogout = title === 'Logout';
+
+    const handleLogout = async() => {
+        await signOut();
+        navigate('/')
+    }
+
     return (
         <Flex
             mt={30}
@@ -36,11 +33,9 @@ export const SidebarItem = (props: Props) => {
             p={3}
             borderRadius={8}
             background={(isActive && title !== 'Logout') || isHovered ? "brand.600" : "transparent"}
-
             alignItems={navSize === "small" ? "center" : "flex-start"}
             onMouseEnter={()=> {setIsHovered(true)}}
             onMouseLeave={()=> setIsHovered(false)}
-
         >
             <Menu placement="right">
                 {isLogout ? (
@@ -52,8 +47,7 @@ export const SidebarItem = (props: Props) => {
                                 <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
                             </Flex>
                         </MenuButton>
-                    )
-                    : (
+                    ) : (
                         <NavLink
                             to={path}
                             position="relative"
@@ -61,7 +55,7 @@ export const SidebarItem = (props: Props) => {
                         >
                             <MenuButton>
                                 <Flex alignItems="center" >
-                                    <Icon as={icon} fontSize="xl" color={isActive ? "teal": "gray.500"} />
+                                    <Icon as={icon} fontSize="xl" color={isActive ? "myPink.500": "gray.500"} />
                                     <Text ml={5} display={navSize === "small" ? 'none' : 'flex'} > {title} </Text>
                                 </Flex>
                             </MenuButton>
