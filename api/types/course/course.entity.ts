@@ -4,5 +4,4 @@ export interface CourseEntity {
     description: string;
     price: number;
     teacher_id?: string | null;
-
 }

@@ -13,7 +13,6 @@ const limiter = rateLimit({
 })
 
 
-
 import {handleError} from "./utils/errors";
 import "./utils/db"; //połączenie z bazą danych
 
@@ -38,14 +37,13 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cookieParser());
 
-
-
 app.use('/course', courseRouter);
 app.use('/teacher', teacherRouter);
 app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use(handleError);
+
 
 app.listen(3001, '0.0.0.0', () => {
     console.log('Listening on http://localhost:3001');

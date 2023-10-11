@@ -37,7 +37,7 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
         const { name, last_name } = req.body.student as StudentBasicData;
         const rawPassword = generatePassword(name, last_name);
         const hashedPassword = await bcrypt.hash(rawPassword, 10);
-        const {selectedCourses} = req.body
+        //const {selectedCourses} = req.body
 
         console.log(rawPassword)
         const studentData = {
@@ -50,24 +50,23 @@ export const getStudentsByCourseId = async(req: Request, res:Response) => {
         if (!checkOkMail) {
             throw new ValidationError("Email already exists.")
         }
-        //miejsce na wysłanie hasła na maila użytkownika
+        //@todo miejsce na wysłanie hasła na maila użytkownika
         await student.insert();
 
-        if (selectedCourses.length > 0) {
-            for (const id of selectedCourses) {
-               await student.insertCourseForStudent(id)
-            }
-        }
+        // if (selectedCourses.length > 0) {
+        //     for (const id of selectedCourses) {
+        //        await student.insertCourseForStudent(id)
+        //     }
+        // }
 
     res.json({
            student: userWithoutPassword(student),
-           selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id)
+           //selectedCourses: StudentRecord._getSelectedCoursesByStudent(student.id)
         })
 }
 
 
 export const updateStudent = async (req: Request, res: Response, next: NextFunction ) => {
-
     const student = await StudentRecord.getOne(req.params.id);
        if (student === null) {
         throw new ValidationError('Student with given ID does not exist.');
@@ -82,7 +81,6 @@ export const updateStudent = async (req: Request, res: Response, next: NextFunct
     }
 
     await student.updateNameAndEmail();
-
     //aktualizacja coursesSelected
     await student.removeAllCourses();
     const {selectedCourses} = req.body;
@@ -139,9 +137,7 @@ export const getAllStudents = async (req: Request, res: Response, next: NextFunc
                 selectedCourses,
             };
         }));
-
-        res.json({ students: studentsWithSelectedCourses });
-
+                res.json({ students: studentsWithSelectedCourses });
     } catch(err) {
         next(err)
     }
