@@ -8,9 +8,7 @@ import {
     initialRegisterInputTouchCount,
     initialRegisterInputValues
 } from "./helper";
-import {Footer} from "./Footer";
 import {useAuth} from "../../hooks/useAuth";
-
 
 interface Props {
     toggleRegister: ()=> void;
@@ -22,17 +20,13 @@ export const Register = ({toggleRegister}: Props) => {
     const {error} = useError()
     const {register} = useAuth();
     const [matchPassword, setMatchPassword] = useState('')
-
     const [inputValues, setInputValues] = useState (initialRegisterInputValues)
     const [touchCount, setTouchCount] = useState(initialRegisterInputTouchCount)
-
-
     const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
     const isErrorPassword = touchCount.password > 5 && (inputValues.password.length < 5 || inputValues.password.length > 40)
     const isErrorPasswordConfirm = touchCount.passwordConfirm > 5 && (inputValues.passwordConfirm.length < 5 || inputValues.passwordConfirm.length > 40)
 
     const handleRegister = async(e) => {
-
          e.preventDefault()
         if (inputValues.email === '') {
             setTouchCount(prev => ({
@@ -64,7 +58,6 @@ export const Register = ({toggleRegister}: Props) => {
             toggleRegister()
         }
     }
-
 
     return (
         <Box display="flex"
@@ -128,15 +121,12 @@ export const Register = ({toggleRegister}: Props) => {
                             mt={5} > register </Button>
                     <HStack mt={2}>
                         <Text color="gray.500"> Already have an account </Text>
-                        <Text onClick={toggleRegister} color="pink.400" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
+                        <Text onClick={toggleRegister} color="myPink.700" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
                             sign in
                         </Text>
                     </HStack>
-
                 </Center>
-                <Footer/>
-
-            </Flex>
+             </Flex>
         </Box>
     )
 }
