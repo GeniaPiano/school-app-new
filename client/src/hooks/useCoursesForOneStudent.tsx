@@ -22,7 +22,6 @@ export const useCoursesForOneStudent = (userId) => {
             if (userId) {
                 const res = await getCoursesForStudent(userId);
                 setCourses(res);
-
                  }
         })();
     }, [getCoursesForStudent, userId]);

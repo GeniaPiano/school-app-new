@@ -33,16 +33,6 @@ export const useStudents = () => {
         }
     }, [])
 
-    // const getAllStudents = useCallback(async() =>{
-    //     try {
-    //         const results = await axios.get(`${STUDENT_URL}`);
-    //         return results.data.students
-    //
-    //
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }, [])
 
     const getStudentById = useCallback( async (id) => {
         try {
