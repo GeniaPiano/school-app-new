@@ -6,7 +6,7 @@ import {
     Heading,
     Flex,
     HStack,
-    Text
+    Text, useColorModeValue
 } from "@chakra-ui/react";
 import {FormField} from "../../components/FormField/FormField";
 import {useAuth} from "../../hooks/useAuth";
@@ -22,11 +22,14 @@ import {
 import {AppInfoWindow} from "./AppInfoWindow/AppInfoWindow";
 import {useAppInfo} from "../../providers/AppInfoProvider";
 import {Footer} from "./Footer";
+import {ChangeColorModeBtn} from "../../components/ChangeColorModeBtn/ChangeColorModeBtn";
 
 
 interface Props {
     toggleRegister: ()=> void;
 }
+
+
 
 
 
@@ -36,7 +39,7 @@ export const Login = ({ toggleRegister}:Props) => {
     const {error} = useError()
     const [inputValues, setInputValues] = useState (initialLoginValues)
     const [touchCount, setTouchCount] = useState(initialLoginInputTouch)
-    const {isOpen, onClose} = useAppInfo();
+    const {isOpen, onClose} = useAppInfo()
 
 
     const isErrorLogin = touchCount.email > 4 && (inputValues.email.length < 4 || inputValues.email.length > 40 || !inputValues.email.includes('@'))
@@ -53,17 +56,16 @@ export const Login = ({ toggleRegister}:Props) => {
 
     const handleLogin = async(values) => {
         await signIn(values.email, values.password)
-
     }
 
     return (
        <>
+        <ChangeColorModeBtn/>
         <Box display="flex"
              justifyContent="center"
              alignItems="center"
              width="100%"
              height="100vh"
-             bg="gray.100"
              pt={20}
         >
 
@@ -75,12 +77,13 @@ export const Login = ({ toggleRegister}:Props) => {
 
 
                 <Center
+                    bg={useColorModeValue('gray.300', 'gray.600')}
                     as="form"
                     onSubmit={handleSubmit}
                     boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.09)"
                     borderRadius='15px'
                     p={{base:"60px 50px", md: "70px 70px"}}
-                    bg="gray.50"
+                    // bg="gray.50"
                     flexDirection="column"
                     maxWidth="600px"  >
                     <Heading mb={5} as="h4" color="teal.600" size="md">Login</Heading>
@@ -114,7 +117,7 @@ export const Login = ({ toggleRegister}:Props) => {
                             mt={10} > sign in </Button>
                     <HStack my={2}>
                         <Text color="gray.500"> need an account? </Text>
-                        <Text onClick={toggleRegister} color="pink.400" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
+                        <Text onClick={toggleRegister} color="myPink.700" cursor='pointer' _hover={{color: "pink.500", fontWeight: "500"}}>
                             register
                         </Text>
                     </HStack>
@@ -129,9 +132,10 @@ export const Login = ({ toggleRegister}:Props) => {
 
 
                 >
-                <Box fontSize="md" my={5} fontWeight="500">
-                    <Text color="pink.500">TRY DEMO</Text>
-                </Box>
+                <HStack fontSize="md" my={5} fontWeight="500">
+                    <ChangeColorModeBtn isDark={true}/>
+                    <Text color="myPink.700">TRY DEMO</Text>
+                </HStack>
                 <Flex flexDirection="column" gap={2}>
                     <Button
                         onClick={()=> handleLogin(demoAdminValues)}
