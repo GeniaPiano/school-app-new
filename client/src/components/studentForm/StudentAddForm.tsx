@@ -31,20 +31,17 @@ interface Props {
 }
 
 export const StudentAddForm = ({isOpen, onClose}: Props) => {
-    const {getAllCourses} = useCourses()
+    const {getAllCourses} = useCourses();
     const {dispatchError, error} = useError();
     const {changeIsPostedData, dispatchText} = usePostingData();
     const {addStudent} = useStudents();
-    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState()
+    const {handleModalCloseBtn, openConfirmation, closeConfirmation} = useFormState();
+    const {incrementStudentCounter} = useCounter();
 
     const [inputValues, setInputValues] = useState(initialStateUser)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
-
     const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
     const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
-    const {incrementStudentCounter} = useCounter();
-
-
 
     useEffect(()=> {
         (async() => {
@@ -52,8 +49,6 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             setAvailableCourses(res)
         })()
     }, [])
-
-
 
     const handleInputChange = (e) => {
         const {name, value} = e.target
@@ -91,14 +86,13 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
         if (inputValues.name === '') {
             setTouchedCount('name', 3);
         }
-
         if (inputValues.last_name === '') {
             setTouchedCount('last_name', 3);
         }
-
         if (inputValues.email === '') {
             setTouchedCount('email', 4);
         }
+
         try {
             const res = await addStudent(inputValues, selectedCourses)
             if (res.success) {
@@ -112,31 +106,30 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             }
 
         } catch (err) {
-            dispatchError(err.response.data.message)
+            dispatchError(err.response.data.message);
         }
     }
-
 
     const isError = errorDataAddUser(inputTouchedCount, inputValues);
     const handleConfirmModalClose = (shouldClose) => {
         closeConfirmation();
         if (shouldClose) {
             onClose();
-            setInputValues({name: '', last_name: '', email: ''})
-            setInputTouchedCount(initialStateTouchCount)
+            setInputValues({name: '', last_name: '', email: ''});
+            setInputTouchedCount(initialStateTouchCount);
         } else {
-            closeConfirmation()
+            closeConfirmation();
         }
     }
 
     const handleCloseMainModal = () => {
         openConfirmation();
         if (inputTouchedCount.name > 0  ) {
-            openConfirmation()
+            openConfirmation();
         }  else {
-            closeConfirmation()
+            closeConfirmation();
             setInputValues(initialStateUser);
-            setSelectedCourses([])
+            setSelectedCourses([]);
             incrementStudentCounter();
             onClose();
         }
@@ -149,7 +142,6 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             <ModalContent  color="gray.500">
                 <ModalCloseButton onClick={handleCloseMainModal}/>
                 <ModalHeader>Add new student to </ModalHeader>
-
                 <ModalBody>
                     <form>
                        {userFormData.map(oneForm => (
@@ -165,13 +157,11 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
                             />
                         ))}
 
-                        <SelectForm comment="* You can add courses later." label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>
+                        {/*<SelectForm comment="* You can add courses later." label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>*/}
                     </form>
-                    <ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />
-
+                    {/*<ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />*/}
                     {error && <ErrorText text={error}/>}
                 </ModalBody>
-
                 <ModalFooter>
                     <Button mb={8} onClick={handleSubmit}>Save</Button>
                 </ModalFooter>

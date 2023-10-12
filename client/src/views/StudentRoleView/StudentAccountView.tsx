@@ -1,17 +1,18 @@
-import {Box, Flex, Heading, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
+import { Flex, Heading, Spinner, HStack, Button, List, ListItem, ListIcon, Text} from "@chakra-ui/react";
 import {useAuth} from "../../hooks/useAuth";
 import {useStudents} from "../../hooks/useStudents";
 import {useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
-import {UserInfoBoxItem} from "../../components/common/UserInfoBox";
+import {useCoursesForOneStudent} from "../../hooks/useCoursesForOneStudent";
+import {TimeIcon} from "@chakra-ui/icons";
 
 
 export const StudentAccountView = () => {
 const {user} = useAuth();
+const {courses} = useCoursesForOneStudent(user?.id);
 const {getStudentById} = useStudents();
+const {coursesChosen} = courses;
 const [studentData, setStudentData] = useState<SingleStudentRes>(null)
-
-
 
 useEffect(() => {
     (async () => {
@@ -21,12 +22,9 @@ useEffect(() => {
     })()
 }, [getStudentById])
 
-const {selectedCourses} = studentData || {}
-
     if (!studentData) {
         return <Spinner/>
     }
-
 
     return (
         <Flex
@@ -38,7 +36,7 @@ const {selectedCourses} = studentData || {}
             alignItems={{base: "flex-start", md: "center"}}
             mb="5em"
         >
-            <div>
+            <HStack>
 
                 <Heading mr={30}
                          color="gray.500"
@@ -46,24 +44,19 @@ const {selectedCourses} = studentData || {}
                          fontWeight="400"
                          fontSize="xx-large"
                          as="h1"> Hello {user.name} {user.last_name} </Heading>
-            </div>
+                <Button color="gray.600">Edit your data</Button>
+            </HStack>
 
-            <Box display="flex" >
-                <Flex flexDirection="column"
-                      // width={{base: "95%", md: "60%", lg: "45%"}}
-                      gap={3}
-                      mt={3}
+            <Text>Active courses:</Text>
+            <List spacing={3}>
+                {coursesChosen.length > 0 && coursesChosen.map(course => (
+                    <ListItem key={course.id}>
+                        <ListIcon as={TimeIcon} color='brand.600' />
+                        {course.name}
+                    </ListItem>
+                ))}
+            </List>
 
-                >
-                    <Text ml={5} color="gray.600">Your email:</Text>
-                    <Box  px={{base: "80px", md:"200px", lg: "350px"}} py={3} mb={5} borderRadius="5px"  bg="brand.500" >{user.email}</Box>
-                    <Text w="100%" ml={5} color="gray.600">Your courses:</Text>
-                          {selectedCourses.length > 0 && selectedCourses.map(course =>
-                     <UserInfoBoxItem key={course.id} children={course.name}/>) }
-                </Flex>
-
-
-            </Box>
 
 
 

@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { TeacherEntity } from "../types/teacher";
 import { StudentEntity } from "../types/student";
 import { AdminEntity } from "../types/admin";
-import {AUTH_URL, STUDENT_URL} from "../config/api";
+import {AUTH_URL} from "../config/api";
 
 
 type User = TeacherEntity | StudentEntity | AdminEntity
@@ -87,21 +87,21 @@ export const AuthProvider = ({ children }: Props) => {
 
 
     const register = async (email: string, password: string):Promise<object> => {
-        //  try {
-        //     const res = await axios.post(`${AUTH_URL}/register`, {
-        //         email, password
-        //     } ,{
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         }
-        //     })
-        //     console.log('register', res)
-        //     return ({success: true})
-        // } catch (err) {
-        //      if(err.response.status === 400) {
-        //          dispatchError(err.response.data.message)
-        //      }
-        // }
+         try {
+            const res = await axios.post(`${AUTH_URL}/register`, {
+                email, password
+            } ,{
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            console.log('register', res)
+            return ({success: true})
+        } catch (err) {
+             if(err.response.status === 400) {
+                 dispatchError(err.response.data.message)
+             }
+        }
     }
 
     return <AuthContext.Provider value={{ user, signIn, signOut, register }}>
