@@ -22,3 +22,12 @@ export type CoursesForStudentResponse = {
     coursesAvailable: CourseEntity[] | [],
     chosenCourses: CourseEntity[] | [],
 }
+
+export interface CourseWithStartedDate {
+    id: string;
+    name: string;
+    price: number;
+    course_id:string;
+    student_id: string;
+    startedAt: Date;
+}
