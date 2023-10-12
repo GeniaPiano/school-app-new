@@ -12,7 +12,6 @@ export class AdminRecord {
     readonly role: 'admin';
 
     constructor(obj: AdminRecord) {
-
         this.id = obj.id
         this.email = obj.email;
         this.password = obj.password
