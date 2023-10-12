@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {ErrorProvider} from "./ErrorProvider";
-import {ChakraProvider, extendTheme} from "@chakra-ui/react";
+import {ChakraProvider, extendTheme, type ThemeConfig} from "@chakra-ui/react";
 import {colors, components} from "../assets/style/theme";
 import {CounterProvider} from "./CounterPovider";
 import {NavSizeProvider} from "./NavSizeProvider";
@@ -10,8 +10,14 @@ import {SearchProvider} from "./SearchProvider";
 import {AuthProvider} from "../hooks/useAuth";
 import {AppInfoProvider} from "./AppInfoProvider";
 
+const config: ThemeConfig = {
+    initialColorMode: 'system',
+    useSystemColorMode: true,
+}
 
-const theme = extendTheme({colors, components})
+const theme = extendTheme({colors, components, config})
+
+
 
 
 export const AllProviders: FC = ({ children }) => {
