@@ -5,8 +5,6 @@ import {Sidebar} from "../components/sidebar/Sidebar";
 import {NavSizeContext} from "../providers/NavSizeProvider";
 import {SidebarLink} from "../types/sidebarLink";
 import {UserInfoHeader} from "../components/UserInfoHeader/UserInfoHeader";
-import {useAuth} from "../hooks/useAuth";
-
 
 interface Props {
     children: ReactNode;
@@ -15,9 +13,6 @@ interface Props {
 export const MainLayout: FC<Props> = ({children, data}) => {
 
     const {navSize} = useContext(NavSizeContext);
-
-
-
     return (
         <Flex >
             <Sidebar data={data}/>
@@ -28,7 +23,7 @@ export const MainLayout: FC<Props> = ({children, data}) => {
                <Flex alignItems="center"
                      justifyContent="center"
                      width="90%"
-                     ml={{  base: navSize === "large" ? "11.5em" : "7em",
+                     ml={{  base: navSize === "large" ? "14em" : "9em",
                          md: navSize === "large" ? "16em" : "8em"}}
                    >
                    {children}
