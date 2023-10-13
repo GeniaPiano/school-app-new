@@ -116,6 +116,8 @@ export const News = () =>  {
                                         <Button variant='solid' colorScheme='teal'>
                                             See more...
                                         </Button>
+
+
                                     </CardFooter>
                                 </Card>
                             ))

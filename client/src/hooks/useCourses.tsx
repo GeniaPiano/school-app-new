@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import axios from "axios";
-import {COURSE_URL} from "../config/api";
+import {COURSE_URL} from "../../config/api";
 import {CourseEntity, CourseResponse, CoursesForStudentResponse, GetSingleCourseResponse} from "../types/course";
 
 export const useCourses = () => {

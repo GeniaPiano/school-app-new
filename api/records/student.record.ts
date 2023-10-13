@@ -6,11 +6,15 @@ import {StudentEntity} from "../types";
 import {CourseRecord} from "./course.record";
 
 
-interface RelatedData {
+export interface RelatedData {
     id:string;
     course_id: string;
     student_id: string;
+    startedAt: Date,
+    price: number,
+    name: string;
 }
+
 
 type StudentRecordResults = [StudentRecord[], FieldPacket[]]
 type StudentCoursesRelatedData = [RelatedData[], FieldPacket[]]
@@ -108,12 +112,6 @@ export class StudentRecord implements StudentEntity {
         });
     }
 
-    async removeAllCourses(): Promise<void> {
-        await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id",{
-            student_id: this.id,
-        })
-    }
-
     async removeOneCourseFromStudent(course_id: string): Promise<void> {
         await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id AND  `course_id` = :course_id", {
             student_id:this.id,
@@ -121,21 +119,38 @@ export class StudentRecord implements StudentEntity {
         })
     }
 
-    static async _getSelectedCoursesByStudent(student_id:string): Promise<CourseRecord[] | null>  {
-        const [results] = (await pool.execute("SELECT * FROM `courses_students` WHERE `student_id`= :student_id",{
+    async removeAllCourses(): Promise<void> {
+        await pool.execute("DELETE FROM `courses_students` WHERE `student_id` = :student_id",{
+            student_id: this.id,
+        })
+    }
+
+    static async _getSelectedCoursesByStudent(student_id: string): Promise<RelatedData[] | null> {
+        const [results] = (await pool.execute(
+            "SELECT `courses_students`.`course_id`, `courses_students`.`student_id`, `courses_students`.`startedAt`, `courses`.`price`, `courses`.`name` " +
+            "FROM `courses_students` " +
+            "LEFT JOIN `courses` ON `courses_students`.`course_id` = `courses`.`id` " +
+            "WHERE `courses_students`.`student_id` = :student_id",
+            {
                 student_id,
-        })) as StudentCoursesRelatedData;
-        let selectedCourses:CourseRecord[] | null = []
-        if (results.length === 0) {
-            selectedCourses = []
-        } else {
-            for (const one of results){
-                const course = await CourseRecord.getOne(one.course_id)
-                selectedCourses.push(course)
             }
+        )) as StudentCoursesRelatedData;
+        let selectedCourses: RelatedData[] | null = [];
+        if (results.length === 0) {
+            selectedCourses = [];
+        } else {
+            selectedCourses = results.map((result) => ({
+                id: result.course_id,
+                course_id: result.course_id,
+                student_id: result.student_id,
+                startedAt: result.startedAt,
+                price: result.price,
+                name: result.name,
+            }));
         }
         return selectedCourses;
     }
+
     static async _getCoursesNotSelectedByStudent(student_id: string): Promise<CourseRecord[] | null> {
         const allCourses = await CourseRecord.listAll();
         const selectedCourses = await StudentRecord._getSelectedCoursesByStudent(student_id);

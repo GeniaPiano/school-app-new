@@ -15,11 +15,33 @@ import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {StarIcon} from "@chakra-ui/icons";
 import {CourseEntity} from "../../types/course";
 import {AccordionInfo} from "../common/AccordionInfo";
+import {SHOP_URL} from "../../../config/api";
+import axios from "axios";
+// import {loadStripe} from '@stripe/stripe-js';
+
+
 
 interface Props {
     coursesAvailable: CourseEntity[];
 }
 export const CoursesAvailableToBuy = ({coursesAvailable} :Props) => {
+
+    //const stripePromise = loadStripe(process.env.VITE_STRIPE_KEY)
+
+    const formatPrice = new Intl.NumberFormat('pl-PL', {
+        style: 'currency',
+        currency: 'PLN',
+        minimumFractionDigits: 2,
+    })
+
+    const handleOrder = async(id: string) => {
+        console.log("id product:", id);
+        const stripeRes = await axios(`${SHOP_URL}/order`);
+        const data = await stripeRes.data;
+        console.log(data);
+    }
+
+
     const color = useColorModeValue('gray.600', 'gray.50')
     const bg = useColorModeValue('gray.50', 'gray.500')
     const hover = {bg: useColorModeValue('white', 'gray.400' )}
@@ -32,7 +54,10 @@ export const CoursesAvailableToBuy = ({coursesAvailable} :Props) => {
                      <Heading size='s'>{firstLetterToUpper(course.name)}</Heading>
                         </CardHeader>
                              <CardBody>
-                                <Button mb={5} size="sm"
+                                <Button
+                                mb={5}
+                                size="sm"
+                                onClick={()=>handleOrder(course.id)}
                                 color={color}
                                 bg={bg}
                                 _hover={hover}>

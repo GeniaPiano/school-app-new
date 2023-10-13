@@ -10,11 +10,11 @@ import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
 import {useStudents} from "../../hooks/useStudents";
 import {InfoStudent} from "./InfoStudent";
-import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {ConfirmationBeforeClosing} from "../confirmations/ConfirmationBeforeClosing";
 import {UserItem} from "../common/UserItem";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {usePostingData} from "../../providers/PostingDataProvider";
-import {ConfirmDeleteStudent} from "../ConfrimDeleteStudent/ConfirmDeleteStudent";
+import {ConfirmDeleteStudent} from "../confirmations/ConfirmDeleteStudent";
 import {GroupButtonsEditSaveCancel} from "./GroupButtonsEditSaveCancel";
 import {useFormState} from "../../providers/FormStateProvider";
 

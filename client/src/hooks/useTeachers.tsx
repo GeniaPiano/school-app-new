@@ -1,5 +1,5 @@
 import axios from "axios";
-import {COURSE_URL, STUDENT_URL, TEACHER_ULR} from "../config/api";
+import {COURSE_URL, STUDENT_URL, TEACHER_ULR} from "../../config/api";
 import {useCallback} from "react";
 import {GetSingleTeacherRes, TeacherEntity, TeacherBasicData} from "../types/teacher";
 import {CourseEntity} from "../types/course";

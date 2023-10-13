@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { TeacherEntity } from "../types/teacher";
 import { StudentEntity } from "../types/student";
 import { AdminEntity } from "../types/admin";
-import {AUTH_URL} from "../config/api";
+import {AUTH_URL} from "../../config/api";
 
 
 type User = TeacherEntity | StudentEntity | AdminEntity

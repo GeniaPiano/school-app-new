@@ -11,10 +11,14 @@ export interface StudentEntity {
 
 export type CleanedStudent = Omit <StudentEntity, 'password' >
 
+export interface CourseEntityWithDate extends CourseEntity {
+    startedAt: Date,
+}
+
 
 export interface SingleStudentRes {
     student: CleanedStudent,
-    selectedCourses: CourseEntity[];
+    selectedCourses: CourseEntityWithDate[];
 }
 
 export interface StudentBasicData {
@@ -22,8 +26,6 @@ export interface StudentBasicData {
     last_name: string;
     email: string;
 }
-
-
 
 export interface StudentBasicData {
     name: string;
