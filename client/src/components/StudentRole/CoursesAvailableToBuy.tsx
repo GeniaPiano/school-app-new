@@ -34,7 +34,6 @@ export const CoursesAvailableToBuy = ({coursesAvailable} :Props) => {
     })
 
     const handleOrder = async(id: string) => {
-
         const stripeRes = await axios(`${SHOP_URL}/order`);
         const data = await stripeRes.data;
         const {sessionId} = data
