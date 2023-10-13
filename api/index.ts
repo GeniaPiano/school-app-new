@@ -22,6 +22,7 @@ import {teacherRouter} from "./routers/teacher";
 import {studentRouter} from "./routers/student";
 import {authRouter} from "./routers/auth"
 import {adminRouter} from "./routers/admin"
+import {shopRouter} from "./routers/shop";
 
 
 
@@ -32,7 +33,7 @@ const corsOptions = {
 
 //middlewares
 app.use(cors(corsOptions));
-app.use(limiter)
+//app.use(limiter)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cookieParser());
@@ -42,6 +43,7 @@ app.use('/teacher', teacherRouter);
 app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
+app.use('/shop', shopRouter);
 app.use(handleError);
 
 
