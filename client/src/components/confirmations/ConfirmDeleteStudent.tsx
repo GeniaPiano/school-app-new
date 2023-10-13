@@ -13,13 +13,10 @@ import {CheckIcon} from "@chakra-ui/icons";
 import {Btn} from "../common/Btn";
 import {Loader} from "../common/Loader";
 
-
-
 interface Props {
     student: StudentEntity;
     mainList:boolean;
     courseName: string;
-
 }
 
 export const  ConfirmDeleteStudent = ({student, mainList, courseName}: Props) => {
@@ -27,7 +24,6 @@ export const  ConfirmDeleteStudent = ({student, mainList, courseName}: Props) =>
     const { incrementStudentCounter} = useCounter()
     const {deleteStudent, deleteCourseFromStudent } = useStudents();
     const {courseId}: string = useParams();
-
 
     const handleDeleteStudent = async() => {
         try {
@@ -71,9 +67,6 @@ export const  ConfirmDeleteStudent = ({student, mainList, courseName}: Props) =>
     }
 
     const {isLoadingData, isPostedData, changeIsPostedData, changeIsLoadingData} = usePostingData();
-
-
-
 
     return (
         <> <Button size="sm" colorScheme="pink" variant="ghost"  onClick={onOpen}> delete </Button>
