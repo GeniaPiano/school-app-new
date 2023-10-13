@@ -67,6 +67,9 @@ export const AuthProvider = ({ children }: Props) => {
             if (err.message === 'Request failed with status code 401') {
                 dispatchError('Invalid email or password')
             }
+            if (err.message === 'Request failed with status code 429') {
+                dispatchError('Too many requests. Try again after 5 minutes.')
+            }
             else {
                 dispatchError('Cannot connect to server. Try again later.')
             }
@@ -105,7 +108,6 @@ export const AuthProvider = ({ children }: Props) => {
     }
 
     return <AuthContext.Provider value={{ user, signIn, signOut, register }}>
-
         {children}
     </AuthContext.Provider>
 }

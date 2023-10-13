@@ -9,7 +9,6 @@ import {checkMailAvailable} from "../utils/checkMailAvailable";
 import {ValidationError} from "../utils/errors";
 import {UserRecord} from "../records/user.record";
 
-
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password} = req.body;
@@ -43,13 +42,11 @@ export const checkToken = async(req: Request, res: Response, next: NextFunction)
         const token = req.header('Authorization')?.slice(7);
         if (token) {
             try {
-
                 const decoded: JwtPayload | string = jwt.verify(token, process.env.JWT) as JwtPayload;
                 if (typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
                     const id = (decoded as JwtPayload).id
                     const role = (decoded as JwtPayload).role;
                     const user = await UserRecord.getUserById(id);
-
                     if (user) {
                         const clearedUser = userWithoutPassword(user);
                         return res.status(200).json({id, role, ...clearedUser});
@@ -59,7 +56,6 @@ export const checkToken = async(req: Request, res: Response, next: NextFunction)
                 }
             } catch (err) {
                 console.error('Token verification failed:', err);
-
             }
         }
     return res.status(401).json({ error: 'Unauthorized' });
@@ -84,9 +80,5 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     } as StudentRecord;
     const user = await new StudentRecord(userData);
     await user.insert();
-
     res.status(200).json('User has been created')
-
-
-
 }

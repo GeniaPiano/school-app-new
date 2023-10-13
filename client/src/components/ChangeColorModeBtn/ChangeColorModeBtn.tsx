@@ -16,7 +16,7 @@ export const ChangeColorModeBtn = (props: Props) =>  {
                 variant="ghost"
                 color={props.isDark ? 'myPink.700' : "myPink.500"}
                             />
-
         </header>
     )
 }
+

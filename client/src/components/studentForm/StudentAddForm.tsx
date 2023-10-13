@@ -10,16 +10,14 @@ import {
 } from "@chakra-ui/react";
 import {userFormData} from "../../utils/userFormData";
 import {FormField} from "../FormField/FormField";
-import {ChangeEvent, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {initialStateTouchCount, initialStateUser} from "../../utils/initialState";
 import {errorDataAddUser} from "../../utils/errorDataAddUser";
 import {CourseEntity} from "../../types/course";
 import {useCourses} from "../../hooks/useCourses";
-import {ChosenCourses} from "../ChosenCourses/ChosenCourses";
-import {SelectForm} from "../FormSelect/SelectForm";
 import {useError} from "../../providers/ErrorProvider";
 import {usePostingData} from "../../providers/PostingDataProvider";
-import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {ConfirmationBeforeClosing} from "../confirmations/ConfirmationBeforeClosing";
 import {useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
 import {useStudents} from "../../hooks/useStudents";
@@ -61,19 +59,6 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             [name] : value
         }))
     }
-
-     const handleSelectChange = (e : ChangeEvent<HTMLInputElement>) => {
-        const courseId = e.target.value;
-        const courseToAdd = availableCourses.find(course => course.id === courseId)
-        setSelectedCourses(prevState => [...prevState, courseToAdd])
-        setAvailableCourses(prev => prev.filter(course => course.id !== courseId))
-            }
-
-    const handleRemoveCourse = (courseId: string) => {
-        const course = selectedCourses.find(course => course.id === courseId)
-        setSelectedCourses(prevSelectedCourses => prevSelectedCourses.filter(course => course.id !== courseId));
-        setAvailableCourses(prev => ([...prev, course]))
-    };
 
     const setTouchedCount = (field, count) => {
         setInputTouchedCount(prev => ({
@@ -156,10 +141,7 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
                                 error={isError[oneForm.name]}
                             />
                         ))}
-
-                        {/*<SelectForm comment="* You can add courses later." label="Courses" data={availableCourses} handleChange={handleSelectChange} placeholder="Select course/courses."/>*/}
                     </form>
-                    {/*<ChosenCourses data={selectedCourses} handleRemove={handleRemoveCourse} />*/}
                     {error && <ErrorText text={error}/>}
                 </ModalBody>
                 <ModalFooter>

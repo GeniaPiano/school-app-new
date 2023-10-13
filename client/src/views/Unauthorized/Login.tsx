@@ -123,14 +123,11 @@ export const Login = ({ toggleRegister}:Props) => {
                     </HStack>
                 </Center>
 
-
                 <Box display="flex"
                      flexDirection="column"
                      justifyContent="center"
                      alignItems="center"
                      width="100%"
-
-
                 >
                 <HStack fontSize="md" my={5} fontWeight="500">
                     <ChangeColorModeBtn isDark={true}/>

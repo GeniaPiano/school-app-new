@@ -15,7 +15,7 @@ import {useError} from "../../providers/ErrorProvider";
 import {usePostingData} from "../../providers/PostingDataProvider";
 import {useCounter} from "../../providers/CounterPovider";
 import {useFormState} from "../../providers/FormStateProvider";
-import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {ConfirmationBeforeClosing} from "../confirmations/ConfirmationBeforeClosing";
 
 import {SelectForm} from "../FormSelect/SelectForm";
 import {ChosenCourses} from "../ChosenCourses/ChosenCourses";

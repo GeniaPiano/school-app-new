@@ -11,7 +11,7 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {ConfirmDeleteTeacher} from "../ConfirmDeleteTeacher/ConfirmDeleteTeacher";
+import {ConfirmDeleteTeacher} from "../confirmations/ConfirmDeleteTeacher";
 import {UserItem} from "../common/UserItem";
 import {TeacherEntity} from "../../types/teacher";
 import {useEffect, useState} from "react";
@@ -21,7 +21,7 @@ import {InfoTeacher} from "./InfoTeacher";
 import {TeacherUpdateForm} from "../teacherForm/TeacherUpdateForm";
 import { useFormState} from "../../providers/FormStateProvider";
 import {useCounter} from "../../providers/CounterPovider";
-import {ConfirmationBeforeClosing} from "../ConfirmationBeforeClosing/ConfirmationBeforeClosing";
+import {ConfirmationBeforeClosing} from "../confirmations/ConfirmationBeforeClosing";
 
 interface Props {
     teacher: TeacherEntity;
