@@ -17,8 +17,7 @@ import {CourseEntity} from "../../types/course";
 import {AccordionInfo} from "../common/AccordionInfo";
 import {SHOP_URL} from "../../../config/api";
 import axios from "axios";
-// import {loadStripe} from '@stripe/stripe-js';
-
+import {loadStripe} from '@stripe/stripe-js';
 
 
 interface Props {
@@ -26,18 +25,21 @@ interface Props {
 }
 export const CoursesAvailableToBuy = ({coursesAvailable} :Props) => {
 
-    //const stripePromise = loadStripe(process.env.VITE_STRIPE_KEY)
+    const stripePromise = loadStripe("sk_test_51O0AIbCMIZdRR3DNyiWBw4SsxDFALVEiR7RA8nPY61fZ66B5kj81Mxjz7bIwOTFGwwVNOVlYlcfeTodgi8Hxw7fT00X5rsJ0FG")
 
     const formatPrice = new Intl.NumberFormat('pl-PL', {
         style: 'currency',
         currency: 'PLN',
-        minimumFractionDigits: 2,
+        minimumFractionDigits: 1,
     })
 
     const handleOrder = async(id: string) => {
-        console.log("id product:", id);
+
         const stripeRes = await axios(`${SHOP_URL}/order`);
         const data = await stripeRes.data;
+        const {sessionId} = data
+        const stripe = await stripePromise;
+        const { error } = await stripe.redirectToCheckout({sessionId})
         console.log(data);
     }
 
