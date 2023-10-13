@@ -7,7 +7,6 @@ import {StudentAccountView} from "./StudentAccountView";
 import {StudentInfoView} from "./StudentInfoView";
 import {StudentCoursesView} from "./StudentCoursesView";
 
-
 export const StudentRoleView = () => {
     return (
         <Router>
