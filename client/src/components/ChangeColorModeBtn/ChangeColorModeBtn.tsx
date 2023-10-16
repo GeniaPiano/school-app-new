@@ -10,9 +10,9 @@ export const ChangeColorModeBtn = (props: Props) =>  {
     return (
         <header>
             <IconButton
+                m={0}
                 onClick={toggleColorMode}
                 icon={colorMode === 'light' ? <FaMoon/> : <BsSun/> }
-                size="sm"
                 variant="ghost"
                 color={props.isDark ? 'myPink.700' : "myPink.500"}
                             />
