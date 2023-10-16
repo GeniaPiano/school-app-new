@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
     readonly VITE_STRIPE_KEY: string
-    // more env variables...
+    readonly VITE_REACT_APP_API_TOKEN: string
 }
 
 interface ImportMeta {
