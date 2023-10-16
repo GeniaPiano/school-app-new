@@ -14,10 +14,4 @@ export interface StudentBasicData {
     name: string;
     last_name: string;
     email: string;
-
-}
-
-export type StudentReqPost = {
-    student: StudentBasicData;
-    selectedCourses: string[];
 }

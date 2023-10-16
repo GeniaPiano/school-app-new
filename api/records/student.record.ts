@@ -11,6 +11,7 @@ export interface RelatedData {
     course_id: string;
     student_id: string;
     startedAt: Date,
+    description: string | null;
     price: number,
     name: string;
 }
@@ -142,6 +143,7 @@ export class StudentRecord implements StudentEntity {
             selectedCourses = results.map((result) => ({
                 id: result.course_id,
                 course_id: result.course_id,
+                description: result.description,
                 student_id: result.student_id,
                 startedAt: result.startedAt,
                 price: result.price,
