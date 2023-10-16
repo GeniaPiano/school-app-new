@@ -1,66 +1,50 @@
-import { Flex, Heading, Spinner, HStack, Button, List, ListItem, ListIcon, Text} from "@chakra-ui/react";
-import {useAuth} from "../../hooks/useAuth";
-import {useStudents} from "../../hooks/useStudents";
-import {useEffect, useState} from "react";
-import {SingleStudentRes} from "../../types/student";
+import {
+    Box,
+    Flex,
+    Heading,
+    TabPanel,
+    TabPanels,
+    Tab,
+    Tabs,
+    TabList,
+} from "@chakra-ui/react";
 import {useCoursesForOneStudent} from "../../hooks/useCoursesForOneStudent";
-import {TimeIcon} from "@chakra-ui/icons";
+import {useAuth} from "../../hooks/useAuth";
+import {CoursesBought} from "../../components/StudentRole/CoursesBought";
+import {StudentRoleUserInfo} from "../../components/StudentRole/StudentRoleUserInfo";
 
 
 export const StudentAccountView = () => {
-const {user} = useAuth();
-const {courses} = useCoursesForOneStudent(user?.id);
-const {getStudentById} = useStudents();
-const {coursesChosen} = courses;
-const [studentData, setStudentData] = useState<SingleStudentRes>(null)
+    const {user} = useAuth();
+    const {courses} = useCoursesForOneStudent(user?.id);
+    const {coursesChosen} = courses
 
-useEffect(() => {
-    (async () => {
-        const response = await getStudentById(user.id)
-        setStudentData(response)
-
-    })()
-}, [getStudentById])
-
-    if (!studentData) {
-        return <Spinner/>
-    }
 
     return (
-        <Flex
-            color="gray.500"
-            w="100%"
-            h="95vh"
-            mt="2.5vh"
-            flexDir="column"
-            alignItems={{base: "flex-start", md: "center"}}
-            mb="5em"
-        >
-            <HStack>
-
+        <Flex color="gray.500" h="95vh" mt="2.5vh" width="80%" flexDir="column" mb="5em" mr="4.5em">
+            <Box>
                 <Heading mr={30}
                          color="gray.500"
                          m="20px 0 30px"
                          fontWeight="400"
                          fontSize="xx-large"
-                         as="h1"> Hello {user.name} {user.last_name} </Heading>
-                <Button color="gray.600">Edit your data</Button>
-            </HStack>
-
-            <Text>Active courses:</Text>
-            <List spacing={3}>
-                {coursesChosen.length > 0 && coursesChosen.map(course => (
-                    <ListItem key={course.id}>
-                        <ListIcon as={TimeIcon} color='brand.600' />
-                        {course.name}
-                    </ListItem>
-                ))}
-            </List>
-
-
-
-
-
+                         as="h1"> Your account
+                </Heading>
+                <Tabs  variant='enclosed' isFitted>
+                    <TabList >
+                        <Tab _selected={{color: 'white', bg: 'myPink.400'}}>YOUR COURSES</Tab>
+                        <Tab _selected={{color: 'white', bg: 'brand.600'}} >YOUR DATA</Tab>
+                    </TabList>
+                    <TabPanels mt={5}>
+                        <TabPanel >
+                            <CoursesBought coursesChosen={coursesChosen}/>
+                        </TabPanel>
+                        <TabPanel>
+                            <StudentRoleUserInfo user={user}/>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </Box>
         </Flex>
     )
 }
