@@ -3,10 +3,12 @@ import {useCourses} from "../hooks/useCourses";
 import {CourseEntity} from "../types/course";
 
 interface Product {
+     url: string;
      id: string;
      quantity: number;
      price: number;
      name: string;
+
 }
 
 interface CartContextType {
@@ -103,13 +105,13 @@ export const CartProvider = ({children} : Props) => {
 
     const productsCount = cartProducts.reduce((prev, curr) => Number(prev) +  Number(curr.quantity), 0)
 
-    const getTotalCost = (): number => {
-        let totalCost = 0;
-            cartProducts.map(async(cartItem) => {
-            const productData = await getCourseById(cartItem.id);
-            totalCost += (productData.course.price * cartItem.quantity);
-        });
-         return totalCost;
+    const getTotalCost = async ():Promise<number> => {
+       const totalCostArray = await Promise.all(cartProducts.map(async (cartItem) => {
+           const productData = await getCourseById(cartItem.id);
+           return productData.course.price * cartItem.quantity
+       }))
+       const totalCost = totalCostArray.reduce((prev, curr) => prev + curr, 0)
+        return totalCost
     }
 
     const getCourseData = async(id: string): Promise<CourseEntity> => {
