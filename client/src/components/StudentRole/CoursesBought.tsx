@@ -4,6 +4,7 @@ import {
     CardBody,
     CardHeader,
     Flex,
+    Image,
     GridItem,
     Heading,
     SimpleGrid,
@@ -21,9 +22,10 @@ interface Props {
     coursesAvailable: CourseEntity[];
 }
 export const CoursesBought = ({coursesChosen}: Props) => {
-    const color = useColorModeValue('brand.800', 'gray.50')
+    const headingColor = useColorModeValue('gray.600', 'myPink.400')
+    const color = useColorModeValue('gray.500', 'gray.50')
     const bg = useColorModeValue('gray.50', 'gray.400')
-    const bgCard = useColorModeValue('myPink.100', 'myPink.50')
+    const bgCard = useColorModeValue('myPink.100', 'gray.600')
     return (
         <SimpleGrid  columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5} gap={3}>
             {
@@ -33,8 +35,21 @@ export const CoursesBought = ({coursesChosen}: Props) => {
                             bg={bgCard}
                             key={course.id} color="gray"
                             minWidth="200px">
-                            <CardHeader as={Flex} justifyContent="space-between" color="gray.600" fontWeight="500" fontSize="larger">
-                                <Heading as="h3" size='s'>{firstLetterToUpper(course.name)}</Heading>
+
+                            <Heading m={4} as={Flex} justifyContent="space-between" color={headingColor}fontWeight="500" fontSize="larger">
+                                <Flex flexDir="column" >
+                                    <Heading as="h3" size='s'>
+                                        {firstLetterToUpper(course.name)}
+                                    </Heading>
+                                    <Image
+                                        mt={2}
+                                        borderRadius='full'
+                                        src={course.photoUrl}
+                                        height="4rem"
+                                        width="4rem"
+                                    />
+                                </Flex>
+
                                 <Flex flexDirection="column" alignItems="flex-end">
                                     <Flex mr={2}>
                                         <StarIcon color="brand.800"/>
@@ -46,13 +61,15 @@ export const CoursesBought = ({coursesChosen}: Props) => {
                                             bg={bg}
                                             size="sm">leave rating</Button>
                                 </Flex>
-                            </CardHeader>
+                            </Heading>
+
+
                             <CardBody>
                                 <Stack>
-                                    <Stack >
+                                    <Stack color={color} >
                                         <Text>bought for: {course.price.toFixed(2)} PLN</Text>
-                                        <Text> started at: {formatDate(course.startedAt)}</Text>
-                                        <Text color="gray.500"> expires at: {formatDate(getExpireDate(new Date(course.startedAt)))} </Text>
+                                        <Text> date of purchase: {formatDate(course.startedAt)}</Text>
+                                        <Text> expires at: {formatDate(getExpireDate(new Date(course.startedAt)))} </Text>
                                     </Stack>
                                 </Stack>
                             </CardBody>
