@@ -6,6 +6,7 @@ export interface CourseEntity {
     description: string;
     teacher_id?: string | null;
     price: number;
+    photoUrl: string;
 }
 
 export interface GetSingleCourseResponse {
@@ -30,4 +31,5 @@ export interface CourseWithStartedDate {
     course_id:string;
     student_id: string;
     startedAt: Date;
+    photoUtl: string;
 }

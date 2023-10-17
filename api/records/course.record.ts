@@ -10,8 +10,10 @@ export class CourseRecord implements CourseEntity {
     id?: string;
     name: string;
     description: string;
-    price: number;
+    price?: number;
     teacher_id: string | null;
+    photoUrl: string;
+
 
     constructor(obj: CourseEntity) {
         if (!obj.name || obj.name.length < 4 || obj.name.length > 40) {
@@ -28,6 +30,7 @@ export class CourseRecord implements CourseEntity {
         this.price = obj.price;
         this.description = obj.description;
         this.teacher_id = obj.teacher_id;
+        this.photoUrl = obj.photoUrl;
     }
 
 
@@ -39,11 +42,15 @@ export class CourseRecord implements CourseEntity {
             this.teacher_id = null;
         }
 
-        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`, `description`) VALUES(:id, :name, :description, :teacher_id)", {
+
+        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`, `description`,  `price`, `photoUrl`) VALUES(:id, :name, :description, :teacher_id,  :price, :photoUrl)", {
             id: this.id,
             name: this.name,
             teacher_id: this.teacher_id,
             description: this.description,
+            price: this.price,
+            photo: this.photoUrl,
+
         });
         return this.id;
     }
@@ -117,10 +124,12 @@ export class CourseRecord implements CourseEntity {
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `courses` SET `name` = :name, `teacher_id` = :teacher_id WHERE `id` = :id", {
+        await pool.execute("UPDATE `courses` SET `name` = :name, `teacher_id` = :teacher_id WHERE `id` = :id, `description` = :description, `photoUrl` = :photoUrl", {
             id: this.id,
             name: this.name,
-            teacher_id: this.teacher_id
+            teacher_id: this.teacher_id,
+            description: this.description,
+            photoUrl: this.photoUrl,
         });
 
         await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :course_id", {

@@ -36,8 +36,6 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
     const teacher = !course.teacher_id
         ? null
         : await TeacherRecord.getOne(course.teacher_id) as TeacherEntity;
-
-
     res.json({
         course,
         countStudents,
@@ -52,29 +50,29 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
         if (course === null) {
             throw new ValidationError('The course with given ID does not exist.');
         }
-        const { name, teacher_id } = req.body
+        const { name, teacher_id, description } = req.body;
         if (name) {
             course.name = name;
         }
-        course.teacher_id = teacher_id ? teacher_id :  null
-
+        course.teacher_id = teacher_id ? teacher_id :  null;
+        course.description = description ?  description : null;
         await course.update();
         res.json(course);
      }
 
 export const createCourse = async (req: Request, res: Response, next: NextFunction)  => {
-        const { name, teacher_id, price, description} = req.body as CreateCourseReq;
+        const { name, teacher_id, description, price, photoUrl} = req.body as CreateCourseReq;
         const newCourse = new CourseRecord({
             name,
             price,
+            teacher_id: teacher_id === undefined ? null : teacher_id,
             description: description === undefined ? null : description,
-            teacher_id: teacher_id === undefined ? null : teacher_id
+            photoUrl: photoUrl === undefined ? 'https://www.datocms-assets.com/107048/1697483793-dance-studio.png' : photoUrl,
         });
 
         await newCourse.insert();
         if (newCourse.teacher_id !== null) {
-            await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id)
-        }
+            await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id)        }
 
         res.status(200).json(newCourse);
 }

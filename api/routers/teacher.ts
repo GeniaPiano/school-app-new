@@ -15,9 +15,9 @@ teacherRouter
 
     .get('/search/:name?', getAllTeachers)
     .get('/:id',  getOneTeacher)
-    .patch('/:id', verifyUser, updateTeacher)
+    .patch('/:id',  updateTeacher)
     .post('/',  createTeacher)
-    .delete('/:id', verifyUser, deleteTeacher)
+    .delete('/:id', deleteTeacher)
 
 
 

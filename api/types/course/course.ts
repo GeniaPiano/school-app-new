@@ -3,4 +3,5 @@ export interface CreateCourseReq {
     teacher_id?: string;
     description?: string;
     price: number;
+    photoUrl: string;
 }

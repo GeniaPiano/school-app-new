@@ -7,7 +7,7 @@ import {
     deleteCourse,
     getCoursesWithoutTeachers
 } from "../controllers/course";
-import {verifyAdmin} from "../utils/verify";
+
 import {getCoursesForStudent} from "../controllers/student";
 
 export const courseRouter = Router();
@@ -16,7 +16,7 @@ courseRouter
     .get('/courses-without-teacher', getCoursesWithoutTeachers)
     .get('/courses-for-student/:id', getCoursesForStudent)
     .get('/:courseId', getOneCourse)
-    .patch('/:courseId', verifyAdmin, updateCourse)
-    .post('/', verifyAdmin, createCourse)
-    .delete('/:id', verifyAdmin,  deleteCourse)
+    .patch('/:courseId',  updateCourse)
+    .post('/', createCourse)
+    .delete('/:id',  deleteCourse)
 
