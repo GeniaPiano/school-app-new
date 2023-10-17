@@ -9,22 +9,22 @@ import {StudentCoursesView} from "./StudentCoursesView";
 import {SuccessView} from "./SuccesView";
 import {Payment} from "../../components/Payment/Payment";
 
+
 export const StudentRoleView = () => {
     return (
-        <Router>
-            <MainLayout data={sidebarLinksData}>
-                <Routes>
-                    <Route exact path='/' element={<Navigate to={'/student/courses'} />} />
-                    <Route path='/student/courses' element={<StudentCoursesView/>}/>
-                    <Route path='/student/my-account' element={<StudentAccountView/>}/>
-                    <Route path="/student/news" element={<News />} />
-                    <Route path="/student/payment" element={<Payment />} />
-                    <Route path="/student/info" element={<StudentInfoView />} />
-                    <Route path="/student/success" element={<SuccessView/>}/>
-                    <Route path="*" element={<NotFoundView />} />
-                </Routes>
-            </MainLayout>
-        </Router>
-
+               <Router>
+                <MainLayout data={sidebarLinksData}>
+                    <Routes>
+                        <Route exact path='/' element={<Navigate to={'/student/courses'} />} />
+                        <Route path='/student/courses' element={<StudentCoursesView/>}/>
+                        <Route path='/student/my-account' element={<StudentAccountView/>}/>
+                        <Route path="/student/news" element={<News />} />
+                        <Route path="/student/payment" element={<Payment />} />
+                        <Route path="/student/info" element={<StudentInfoView />} />
+                        <Route path="/student/success" element={<SuccessView/>}/>
+                        <Route path="*" element={<NotFoundView />} />
+                    </Routes>
+                </MainLayout>
+            </Router>
     )
 }

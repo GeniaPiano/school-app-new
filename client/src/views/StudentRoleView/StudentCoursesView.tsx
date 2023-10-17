@@ -6,16 +6,18 @@ import {
     TabPanels,
     Tab,
     Tabs,
-    TabList
+    TabList, useColorModeValue
 } from "@chakra-ui/react";
 import {useCoursesForOneStudent} from "../../hooks/useCoursesForOneStudent";
 import {useAuth} from "../../hooks/useAuth";
-import {CoursesAvailableToBuy} from "../../components/StudentRole/CoursesAvailableToBuy";
+import {CoursesStore} from "../../components/StudentRole/CoursesStore";
 
 export const StudentCoursesView = () => {
-const {user} = useAuth();
-const {courses} = useCoursesForOneStudent(user?.id);
-const {coursesAvailable} = courses
+    const {user} = useAuth();
+    const {courses} = useCoursesForOneStudent(user?.id);
+    const {coursesAvailable} = courses
+    const color = useColorModeValue('gray.600', 'gray.50')
+    const bgCard = useColorModeValue('brand.600', 'gray.600')
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" width="80%" flexDir="column" mb="5em" mr="4.5em">
             <Box>
@@ -28,11 +30,11 @@ const {coursesAvailable} = courses
                 </Heading>
                 <Tabs  variant='enclosed' isFitted>
                     <TabList >
-                        <Tab _selected={{color: 'white', bg: 'brand.600'}} > NEW COURSES!</Tab>
+                        <Tab _selected={{color: color, bg: bgCard}} > CHECKOUT NEW CLASSES</Tab>
                     </TabList>
                     <TabPanels mt={5}>
                         <TabPanel>
-                            <CoursesAvailableToBuy coursesAvailable={coursesAvailable}/>
+                            <CoursesStore coursesAvailable={coursesAvailable}/>
                          </TabPanel>
                     </TabPanels>
                 </Tabs>
