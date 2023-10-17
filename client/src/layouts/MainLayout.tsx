@@ -16,13 +16,13 @@ export const MainLayout: FC<Props> = ({children, data}) => {
     return (
         <Flex >
             <Sidebar data={data}/>
-             <Box flexDir="column" width="95%" >
+             <Box flexDir="column" width="95%">
                <UserInfoHeader/>
 
 
                <Flex alignItems="center"
                      justifyContent="center"
-                     width="90%"
+                     width="85%"
                      ml={{  base: navSize === "large" ? "14em" : "9em",
                          md: navSize === "large" ? "16em" : "8em"}}
                    >

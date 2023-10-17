@@ -13,7 +13,6 @@ import {
     SimpleGrid
 } from "@chakra-ui/react";
 
-
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -59,8 +58,7 @@ export const News = () =>  {
                            },
                            {
                                headers: {
-                                   Authorization: `Bearer b15fa86fc636fb281b1b844ebcc6c9`,
-
+                                   Authorization: `Bearer ${import.meta.env.VITE_REACT_APP_API_TOKEN}`,
                                },
                            }
                        )
@@ -125,14 +123,7 @@ export const News = () =>  {
                         }
                     </>
                 </SimpleGrid>
-
-
-
-
-
-
             </Box>
-
         </Flex>
     )
 }

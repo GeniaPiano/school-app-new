@@ -7,6 +7,7 @@ import {Register} from "../Unauthorized/Register";
 import {useState} from "react";
 import {StudentRoleView} from "../StudentRoleView/StudentRoleView";
 import {TeacherRoleView} from "../AdminRoleView/TecaherRoleView/TeahcerRoleView";
+import { CartProvider} from "../../providers/CartProvider";
 
 export const Root = () => {
     const {user} = useAuth();
@@ -31,12 +32,12 @@ export const Root = () => {
 
 
     return (
-             <>
+             <CartProvider>
                  {user ? viewToDisplay : ( isRegister
                      ? <Register  toggleRegister={toggleRegister}  />
                      : <Login toggleRegister={toggleRegister}  />
                  )}
-             </>
+             </CartProvider>
     )
 }
 
