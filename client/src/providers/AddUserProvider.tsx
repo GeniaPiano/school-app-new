@@ -3,7 +3,6 @@ import {CourseEntity} from "../types/course";
 import {initialStateTouchCount, initialStateUser} from "../utils/initialState";
 
 
-
 interface AddUserContextType {
     inputValues:  {name: string, last_name: string, email: string},
     handleChangeInputValue: (e:ChangeEvent<HTMLInputElement>) => void;
@@ -30,8 +29,8 @@ export const AddUserProvider= ({ children }: Props) => {
 
     const [inputValues, setInputValues] = useState(initialStateUser)
     const [inputTouchedCount, setInputTouchedCount] = useState(initialStateTouchCount);
-    const [availableCourses, setAvailableCourses] = useState<CourseEntity[] | []>([])
-    const [selectedCourses, setSelectedCourses] = useState<CourseEntity[] | []>([])
+    const [availableCourses, setAvailableCourses] = useState<CourseEntity[]>([])
+    const [selectedCourses, setSelectedCourses] = useState<CourseEntity[]>([])
 
 
     const handleChangeInputValue = (e:ChangeEvent<HTMLInputElement>) => {
