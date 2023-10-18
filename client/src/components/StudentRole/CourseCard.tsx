@@ -20,9 +20,8 @@ import {useCart} from "../../hooks/useCart";
 
 interface Props {
     course: CourseEntity;
-    handleOrder: (id:string)=> Promise<void>;
 }
-export const CourseCard = ({course, handleOrder}: Props) => {
+export const CourseCard = ({course}: Props) => {
     const color = useColorModeValue('gray.600', 'gray.50')
     const bgCard = useColorModeValue('brand.400', 'gray.600')
     const bgElement = useColorModeValue('gray.100', 'gray.500')
@@ -32,7 +31,11 @@ export const CourseCard = ({course, handleOrder}: Props) => {
     const cart = useCart();
     const  productQuantity = cart.getProductQuantity(course.id)
     return (
-        <Card bg={bgCard} key={course.id} color={color} minWidth="200px">
+        <Card bg={bgCard}
+              key={course.id}
+              color={color}
+
+        >
             <CardBody>
                 <Image
                         borderRadius='lg'
@@ -45,16 +48,21 @@ export const CourseCard = ({course, handleOrder}: Props) => {
                 <HStack mb={5}>
                     {productQuantity > 0
                     ? <HStack>
-                        <Stack>
-                         <Button size="xs" onClick={()=> cart.addOneToCart(course.id)}>+</Button>
-                         <Button size="xs" onClick={()=> cart.removeOneFromCart(course.id)}>-</Button>
-                        </Stack>
-                         <Text> in cart: {productQuantity} </Text>
-                          <Button color={titleColor}
+                        <Flex>
+
+                        </Flex>
+                        <HStack>
+                            <Stack>
+                               <Button size="xs" onClick={()=> cart.addOneToCart(course.id)}>+</Button>
+                               <Button size="xs" onClick={()=> cart.removeOneFromCart(course.id)}>-</Button>
+                            </Stack>
+                             <Text> in cart: {productQuantity} </Text>
+                        </HStack>
+                         <Button color={titleColor}
                                   fontSize="13px"
                                   onClick={()=> cart.deleteFromCart(course.id)}
                                   h={6}
-                                  p={4}>Remove from cart</Button>
+                                  p={4}>Remove</Button>
                       </HStack>
                     : <><IconButton
                         onClick={()=> cart.addOneToCart(course.id)}
@@ -62,14 +70,7 @@ export const CourseCard = ({course, handleOrder}: Props) => {
                         bg={bgElement}
                         _hover={hover}
                         aria-label='add to cart icon' icon={<HiShoppingCart/>}/>
-                            <Button
-                                onClick={()=>handleOrder(course.id)}
-                                color={color}
-                                bg={bgElement}
-                                _hover={hover}>
-                                Buy a single entry
-                            </Button>
-                        </>}
+                            </>}
                 </HStack>
 
                 <HStack justifyContent="space-between" mb={5} mx={3}>

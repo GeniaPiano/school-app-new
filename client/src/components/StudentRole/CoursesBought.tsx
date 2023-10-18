@@ -2,7 +2,6 @@ import {
     Button,
     Card,
     CardBody,
-    CardHeader,
     Flex,
     Image,
     GridItem,
@@ -10,23 +9,26 @@ import {
     SimpleGrid,
     Stack,
     Text,
-    useColorModeValue
+    useColorModeValue, Modal, ModalOverlay, ModalHeader, ModalContent, useDisclosure, ModalCloseButton, ModalBody
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {StarIcon} from "@chakra-ui/icons";
 import {formatDate, getExpireDate} from "../../utils/date-functions";
-import {CourseEntity} from "../../types/course";
+import {CourseWithStartedDate} from "../../types/course";
 
 
 interface Props {
-    coursesAvailable: CourseEntity[];
+    coursesChosen: CourseWithStartedDate[];
 }
 export const CoursesBought = ({coursesChosen}: Props) => {
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const headingColor = useColorModeValue('gray.600', 'myPink.400')
     const color = useColorModeValue('gray.500', 'gray.50')
     const bg = useColorModeValue('gray.50', 'gray.400')
     const bgCard = useColorModeValue('myPink.100', 'gray.600')
+
     return (
+        <>
         <SimpleGrid  columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5} gap={3}>
             {
                 coursesChosen.length > 0 && coursesChosen.map(course =>
@@ -59,10 +61,10 @@ export const CoursesBought = ({coursesChosen}: Props) => {
                                     <Button mt={5}
                                             color={color}
                                             bg={bg}
+                                            onClick={()=> onOpen()}
                                             size="sm">leave rating</Button>
                                 </Flex>
                             </Heading>
-
 
                             <CardBody>
                                 <Stack>
@@ -77,5 +79,18 @@ export const CoursesBought = ({coursesChosen}: Props) => {
                     </GridItem>)
             }
         </SimpleGrid>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay/>
+            <ModalContent  color="gray.600">
+            <ModalCloseButton/>
+                <ModalHeader>
+                   Leave a rate
+                </ModalHeader>
+                <ModalBody mb={10}>
+                    Feature coming soon....
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+        </>
     )
 }
