@@ -107,7 +107,6 @@ export const CartProvider = ({children} : Props) => {
     const getCourseData = async(id: string): Promise<CourseEntity> => {
         const res = await getCourseById(id)
         return res.course
-
     }
 
     const contextValue = {
