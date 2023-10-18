@@ -11,15 +11,14 @@ LIVE PREVIEW:
 
 Key Features:
 
-- Admin Panel: Effortless course and instructor management, including price management.
-- SQL Database: Reliable data storage and retrieval, ensuring data integrity.
+- Admin Panel: managing of courses and instructors, including setting the prices.
+- SQL Database: All data is securely stored and managed in a SQL database.
 - User Authentication: Secure registration and login with JWT.
-- Stripe Integration: Seamless payment processing for course bookings.
+- Stripe Integration: Seamless payment processing for course payments.
 - Student Course Purchase: Students can purchase courses, enhancing user engagement.
-- TypeScript: Enhanced code quality and maintainability.
+- The application features a variety of forms, each equipped with both server-side and client-side validation to ensure data accuracy and security.
 
-Planned Features:
-
+ Planned Features:
 User Ratings: Clients can rate and review courses.
 - Administrative Reports: Gain insights into your studio's performance.
 - Class Cancellation: Instructors can cancel classes with automatic refunds.
