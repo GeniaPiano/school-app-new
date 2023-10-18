@@ -7,8 +7,7 @@ import {StudentAccountView} from "./StudentAccountView";
 import {StudentInfoView} from "./StudentInfoView";
 import {StudentCoursesView} from "./StudentCoursesView";
 import {SuccessView} from "./SuccesView";
-import {Payment} from "../../components/Payment/Payment";
-
+import {CancelView} from "./CancelView";
 
 export const StudentRoleView = () => {
     return (
@@ -19,9 +18,9 @@ export const StudentRoleView = () => {
                         <Route path='/student/courses' element={<StudentCoursesView/>}/>
                         <Route path='/student/my-account' element={<StudentAccountView/>}/>
                         <Route path="/student/news" element={<News />} />
-                        <Route path="/student/payment" element={<Payment />} />
                         <Route path="/student/info" element={<StudentInfoView />} />
                         <Route path="/student/success" element={<SuccessView/>}/>
+                        <Route path="/student/cancel" element={<CancelView/>}/>
                         <Route path="*" element={<NotFoundView />} />
                     </Routes>
                 </MainLayout>
