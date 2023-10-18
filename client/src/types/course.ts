@@ -3,7 +3,7 @@ import {TeacherEntity} from "./teacher";
 export interface CourseEntity {
     id: string;
     name: string;
-    description: string;
+    description: string | null;
     teacher_id?: string | null;
     price: number;
     photoUrl: string;

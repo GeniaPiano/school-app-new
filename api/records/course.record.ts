@@ -41,17 +41,20 @@ export class CourseRecord implements CourseEntity {
         if (!this.teacher_id) {
             this.teacher_id = null;
         }
+        if(!this.description) {
+            this.description = null;
+        }
 
 
-        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`, `description`,  `price`, `photoUrl`) VALUES(:id, :name, :description, :teacher_id,  :price, :photoUrl)", {
+        await pool.execute("INSERT INTO `courses`(`id`, `name`, `teacher_id`, `description`,  `price`, `photoUrl`) VALUES(:id, :name, :teacher_id, :description, :price, :photoUrl)", {
             id: this.id,
             name: this.name,
-            teacher_id: this.teacher_id,
-            description: this.description,
+            teacher_id: this.teacher_id !== undefined ? this.teacher_id : null,
+            description: this.description !== undefined ? this.description : null,
             price: this.price,
-            photo: this.photoUrl,
-
+            photoUrl: this.photoUrl,
         });
+
         return this.id;
     }
 

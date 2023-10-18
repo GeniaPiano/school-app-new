@@ -45,17 +45,19 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
 
 
 export const updateCourse = async (req: Request, res: Response, next: NextFunction) => {
-
         const course = await CourseRecord.getOne(req.params.courseId);
         if (course === null) {
             throw new ValidationError('The course with given ID does not exist.');
         }
-        const { name, teacher_id, description } = req.body;
+        const { name, teacher_id, description, price, photoUrl } = req.body;
+
         if (name) {
             course.name = name;
         }
         course.teacher_id = teacher_id ? teacher_id :  null;
         course.description = description ?  description : null;
+        course.price = price;
+        course.photoUrl = photoUrl;
         await course.update();
         res.json(course);
      }
@@ -65,12 +67,13 @@ export const createCourse = async (req: Request, res: Response, next: NextFuncti
         const newCourse = new CourseRecord({
             name,
             price,
-            teacher_id: teacher_id === undefined ? null : teacher_id,
-            description: description === undefined ? null : description,
-            photoUrl: photoUrl === undefined ? 'https://www.datocms-assets.com/107048/1697483793-dance-studio.png' : photoUrl,
+            teacher_id: teacher_id  ? null : teacher_id,
+            description: description ? null : description,
+            photoUrl: photoUrl ? 'https://www.datocms-assets.com/107048/1697483793-dance-studio.png' : photoUrl,
         });
 
         await newCourse.insert();
+        console.log(newCourse)
         if (newCourse.teacher_id !== null) {
             await newCourse._updateRelationCoursesTeachers(newCourse.teacher_id)        }
 
