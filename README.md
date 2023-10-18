@@ -1,109 +1,104 @@
 
-# Compact School Menager CRM
 
-Compact School Management System, showcasing my skills as a junior developer.
-This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
+<p align="center"><img src="https://www.datocms-assets.com/107048/1697483793-dance-studio.png" alt=""></p>
+<h1 align="center">Sport & Dance Studio
+</h1> 
+
+School Management, showcasing my skills as a junior developer. This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
 
 LIVE PREVIEW:
-https://menager.networkmanager.pl/
+[https://menager.networkmanager.pl/](https://menager.networkmanager.pl/)
 
-Admin can:
-- add, edit, remove courses
-- assign multiple courses to one student
-- assign multiple courses to one teacher
+Key Features:
 
-Student can:
-- edit his data such as name, lastname, password
-- select and change courses
+- Admin Panel: Effortless course and instructor management, including price management.
+- SQL Database: Reliable data storage and retrieval, ensuring data integrity.
+- User Authentication: Secure registration and login with JWT.
+- Stripe Integration: Seamless payment processing for course bookings.
+- Student Course Purchase: Students can purchase courses, enhancing user engagement.
+- TypeScript: Enhanced code quality and maintainability.
 
-Teacher can:
-- see his courses
-- see his all students
-- edit his data such as name, lastname, password
+Planned Features:
+
+User Ratings: Clients can rate and review courses.
+- Administrative Reports: Gain insights into your studio's performance.
+- Class Cancellation: Instructors can cancel classes with automatic refunds.
+- User Ratings: Clients can rate and review courses.
+- 
+Conclusion:
+Simplify fitness studio management of fitness and dance institution studio.
+
 
 **Note: The application is currently under active development, and I am working on adding new features and improvements.**
 
+<h2 align="center"> TECHNOLOGY STACK: </h2>
 
-
-**TECHNOLOGY STACK:**
+<p align="center"> 
+<a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> </a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> 
+<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/> </a>  
+<a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> 
+<a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> 
+<a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> 
+<a href="https://graphql.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg" alt="graphql" width="40" height="40"/> </a> 
+</p>
 
 - **Backend:**
-    - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
-    - Express.js: Express is used for handling routing and creating a RESTfull API.
-    - SQL Database: The application utilizes a SQL database to store and manage data.
-    - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
-    - Typescript
+  - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
+  - Express.js: Express is used for handling routing and creating a RESTful API.
+  - SQL Database: The application utilizes a SQL database to store and manage data.
+  - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
+  - TypeScript
 
 - **Frontend:**
-    - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
-    - Chakra UI: Chakra UI is used for styling the frontend components, providing a modern and responsive design.
-    - TypeScript
+  - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
+  - Chakra UI: Chakra UI is used for styling the frontend components, providing a modern and responsive design.
+  - TypeScript
 
 - **Deployment:**
-    - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
+  - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
 
 
-
-My Contribution:
-Designed the application.
-Implemented the backend and frontend.
-Set up a SQL database.
-Implemented user registration and authentication.
-Deployed the application on linux server.
-
-**Planned Features:**
-- Enhanced student and teacher users profile management.
-- Announcement board: main dashboard, with posts and possibility to comment them for logged users.
-
-
-<img alt="" src="https://www.datocms-assets.com/107048/1696586242-screenshot_2.jpg" height="400">
+<h1 align="center">Screens:</h1> 
+<img src="https://www.datocms-assets.com/107048/1697613974-3.jpg" alt="graphql" height="400"/>
+<img alt="" src="https://www.datocms-assets.com/107048/1697613984-5.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1697613967-1.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1697613971-2.jpg" height="400">
 <img alt=""  src="https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg" height="400">
-
-![](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
 <img alt="" src="https://www.datocms-assets.com/107048/1696586209-screenshot_8.jpg" height="400">
-<img alt=""  src="https://www.datocms-assets.com/107048/1696586198-screenshot_9.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586252-screenshot_7.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586262-screenshot_5.jpg" height="400">
+![](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
+
 
 
 **How to run the application locally:**
 
- 1. **Clone repository**
+1. **Clone repository**
 
-- clone the repository to your computer with command:
- `git clone https://github.com/GeniaPiano/school-app-new.git`
- - go to folder of cloned repository:
-  `cd school-app-new`
+  - Clone the repository to your computer with the command:
+    `git clone https://github.com/GeniaPiano/school-app-new.git`
+  - Go to the folder of the cloned repository:
+    `cd school-app-new`
 
- 2. **Setting Up the Database:**
+2. **Setting Up the Database:**
 
- - Open your preferred SQL management tool such as phpMyAdmin or HeidiSQL. 
- - Open the SQL script file create-database.sql in a text editor. It is located in folder sql, that you wil find in the main catalogue of repository.
- - Copy the content of the create-database.sql script.
- - In your SQL management tool, navigate to the SQL editor or query window.
- -  Paste the copied script into the SQL editor.
- - Execute the script to create the database and its tables.
- -  By following these steps, you will set up the database by running the SQL script in your chosen SQL management tool.
+  - Open your preferred SQL management tool such as phpMyAdmin or HeidiSQL.
+  - Open the SQL script file create-database.sql in a text editor. It is located in the `sql` folder, which you will find in the main catalog of the repository.
+  - Copy the content of the `create-database.sql` script.
+  - In your SQL management tool, navigate to the SQL editor or query window.
+  - Paste the copied script into the SQL editor.
+  - Execute the script to create the database and its tables.
+  - By following these steps, you will set up the database by running the SQL script in your chosen SQL management tool.
 
-3. **Setup and run server:** 
-- Ensure that you have Node.js installed. You can download it from the Node.js website.
-- Install project dependencies: Navigate to the api project directory (the directory where the package.json file is located) and then run the `npm install` command. This will install all the dependencies listed in the package.json file into the node_modules folder.
-- run the script: `npm run start`
+3. **Setup and run server:**
+  - Ensure that you have Node.js installed. You can download it from the [Node.js website](https://nodejs.org/).
+  - Install project dependencies: Navigate to the `api` project directory (the directory where the `package.json` file is located) and then run the `npm install` command. This will install all the dependencies listed in the `package.json` file into the `node_modules` folder.
+  - Run the script: `npm run start`
 
 4. **Setup and run client:**
-- Go to the client folder which is located in the main catalogue of repository
-- Run the command `npm install` to install all dependencies  listed in the package.json
-- Run the application by the command `npm run dev`
-- Open a web browser and go to http://localhost:5173/
-
-
-
-
-
-
-
-
-
-
-
+  - Go to the `client` folder, which is located in the main catalog of the repository.
+  - Run the command `npm install` to install all dependencies listed in the `package.json`.
+  - Run the application by the command `npm run dev`.
+  - Open a web browser and go to [http://localhost:5173/](http://localhost:5173/)
