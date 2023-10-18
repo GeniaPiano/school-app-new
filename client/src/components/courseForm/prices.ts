@@ -1,0 +1,1 @@
+export const prices=['40', '50']
