@@ -1,4 +1,12 @@
-import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay} from "@chakra-ui/react";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+} from "@chakra-ui/react";
 
 interface Props {
     isConfirmationOpen: boolean;
@@ -8,7 +16,7 @@ interface Props {
 
 export const  ConfirmModal = ({isConfirmationOpen, handleCloseConfirmModal, handleGoBackToForm}:Props) => {
 
-    return (
+   return (
         <Modal  isOpen={isConfirmationOpen}  >
             <ModalOverlay />
             <ModalContent>
@@ -17,10 +25,10 @@ export const  ConfirmModal = ({isConfirmationOpen, handleCloseConfirmModal, hand
                     Are you sure you want to close without saving changes?
                 </ModalBody>
                 <ModalFooter >
-                    <Button mr={2} colorScheme="gray"  color="gray.600" onClick={handleCloseConfirmModal}>
+                    <Button mr={2} colorScheme="orange"   onClick={handleCloseConfirmModal}>
                         Yes, Close
                     </Button>
-                    <Button colorScheme="gray"  color="gray.600" onClick={handleGoBackToForm}>
+                    <Button colorScheme="teal"   onClick={handleGoBackToForm}>
                         Go back to Form.
                     </Button>
                 </ModalFooter>
