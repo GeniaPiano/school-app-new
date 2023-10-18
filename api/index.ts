@@ -23,7 +23,7 @@ import {studentRouter} from "./routers/student";
 import {authRouter} from "./routers/auth"
 import {adminRouter} from "./routers/admin"
 import {shopRouter} from "./routers/shop";
-
+import {datoRouter} from "./routers/dato";
 
 
 const app = express();
@@ -44,6 +44,7 @@ app.use('/student', studentRouter);
 app.use('/auth', authRouter);
 app.use('/admin', adminRouter);
 app.use('/shop', shopRouter);
+app.use('/dato', datoRouter)
 app.use(handleError);
 
 

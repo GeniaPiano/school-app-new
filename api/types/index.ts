@@ -4,4 +4,5 @@ export * from './student';
 export * from './message';
 export * from './admin';
 export * from './user';
-export * from './rateCourse'
+export * from './rateCourse';
+export * from './shop';
