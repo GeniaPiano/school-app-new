@@ -14,12 +14,10 @@ export interface RelatedData {
     description: string | null;
     price: number,
     name: string;
+    photoUrl: string;
 }
-
-
 type StudentRecordResults = [StudentRecord[], FieldPacket[]]
 type StudentCoursesRelatedData = [RelatedData[], FieldPacket[]]
-
 
 export class StudentRecord implements StudentEntity {
     id?: string;
@@ -128,7 +126,7 @@ export class StudentRecord implements StudentEntity {
 
     static async _getSelectedCoursesByStudent(student_id: string): Promise<RelatedData[] | null> {
         const [results] = (await pool.execute(
-            "SELECT `courses_students`.`course_id`, `courses_students`.`student_id`, `courses_students`.`startedAt`, `courses`.`price`, `courses`.`name` " +
+            "SELECT `courses_students`.`course_id`, `courses_students`.`student_id`, `courses_students`.`startedAt`, `courses`.`price`, `courses`.`photoUrl`, `courses`.`name` " +
             "FROM `courses_students` " +
             "LEFT JOIN `courses` ON `courses_students`.`course_id` = `courses`.`id` " +
             "WHERE `courses_students`.`student_id` = :student_id",
@@ -148,6 +146,7 @@ export class StudentRecord implements StudentEntity {
                 startedAt: result.startedAt,
                 price: result.price,
                 name: result.name,
+                photoUrl: result.photoUrl,
             }));
         }
         return selectedCourses;
