@@ -8,37 +8,32 @@ interface Product {
      quantity: number;
      price: number;
      name: string;
-
 }
 
 interface CartContextType {
     items: Product[];
     productsCount: number;
     getProductQuantity: (id: string)=> number;
-    addOneToCart: (id:string)=> void;
+    addOneToCart: (id:string)=> Promise<void>;
     removeOneFromCart: (id: string) => void;
     deleteFromCart: (id: string) => void;
-    getTotalCost: () => number;
+    getTotalCost: () => Promise<number>;
     isOpenCart: boolean;
     onOpenCart: () => void;
     onCloseCart: () => void;
     getCourseData: (id: string) => Promise<CourseEntity>;
-
-
 }
 export const CartContext = createContext<CartContextType | undefined>(undefined)
 
 interface Props {
     children: ReactNode;
 }
-
 export const CartProvider = ({children} : Props) => {
-    const [cartProducts, setCartProducts] = useState<Product[] | []>([])
+    const [cartProducts, setCartProducts] = useState<Product[]>([])
     const [isOpenCart, setIsOpenCart] = useState<boolean>(false)
     const {getCourseById} = useCourses();
     const onCloseCart = () => setIsOpenCart(false)
     const onOpenCart = () => setIsOpenCart(true)
-
 
 
     const getProductQuantity = (id: string):number => {
@@ -51,9 +46,9 @@ export const CartProvider = ({children} : Props) => {
 
     const addOneToCart = async (id: string): Promise<void> => {
         const quantity = getProductQuantity(id);
-        const courseData = await getCourseData(id)
 
         if (quantity === 0) {
+            const courseData = await getCourseData(id)
             setCartProducts(
                 [
                     ...cartProducts,
@@ -62,16 +57,16 @@ export const CartProvider = ({children} : Props) => {
                         quantity: 1,
                         name: courseData.name,
                         url: courseData.photoUrl,
-
+                        price: courseData.price,
                     }
                 ]
             )
 
         } else {
-            setCartProducts(
-                cartProducts.map((product) =>
+            setCartProducts((prevProducts) =>
+                prevProducts.map((product) =>
                     product.id === id
-                        ? {...product, quantity: product.quantity + 1}
+                        ? { ...product, quantity: product.quantity + 1 }
                         : product
                 )
             );
@@ -79,29 +74,25 @@ export const CartProvider = ({children} : Props) => {
     }
 
     const deleteFromCart = (id: string): void => {
-        setCartProducts(
-            cartProducts => cartProducts
-                .filter(product => product.id !== id)
-        )
-    }
-
+        setCartProducts((prevProducts) =>
+            prevProducts.filter((product) => product.id !== id)
+        );
+    };
 
     const removeOneFromCart = (id):void => {
         const quantity = getProductQuantity(id);
         if (quantity === 1 ) {
             deleteFromCart(id)
         } else if (quantity > 1) {
-            setCartProducts(
-                cartProducts.map((product) =>
-                product.id === id
-                ? {...product, quantity: product.quantity - 1}
-                : product
+            setCartProducts((prevProducts) =>
+                prevProducts.map((product) =>
+                    product.id === id
+                        ? { ...product, quantity: product.quantity - 1 }
+                        : product
                 )
-            )
-        } else {
-            return;
+            );
         }
-    }
+    };
 
     const productsCount = cartProducts.reduce((prev, curr) => Number(prev) +  Number(curr.quantity), 0)
 
@@ -110,12 +101,11 @@ export const CartProvider = ({children} : Props) => {
            const productData = await getCourseById(cartItem.id);
            return productData.course.price * cartItem.quantity
        }))
-       const totalCost = totalCostArray.reduce((prev, curr) => prev + curr, 0)
-        return totalCost
+        return totalCostArray.reduce((prev, curr) => prev + curr, 0)
     }
 
     const getCourseData = async(id: string): Promise<CourseEntity> => {
-        const res =  await getCourseById(id)
+        const res = await getCourseById(id)
         return res.course
 
     }
