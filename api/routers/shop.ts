@@ -1,40 +1,16 @@
 import {Request, Response, Router} from "express";
 import { resolve } from "path"
+import {LineItem, ShopItem} from "../types";
+import {CourseRecord} from "../records/course.record";
 export const shopRouter = Router();
-
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 shopRouter
-    .get('/', (req: Request, res: Response) => {
-        const path = resolve(process.env.STATIC_DIR + "/index.html");
-        res.sendFile(path);
-    })
-
-    .get('/config', (req: Request, res: Response) => {
-            res.send({
-                publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-            });
-        })
-
-    .post('/create-payment-intent',async(req: Request, res: Response) => {
-        try {
-            const paymentIntent = await stripe.paymentIntents.create({
-                currency: 'eur',
-                amount: 1,
-                payment_method_types: ['card', 'p24'],
-            })
-            res.send({clientSecret: paymentIntent.client_secret})
-        } catch (err) {
-            return res.status(400).send({error: {
-                    message: err.message,
-                } })
-        }
-    })
 
     .get('/order', async(req: Request, res: Response) => {
 
       const stripeObj = await stripe.checkout.sessions.create({
-         success_url: 'https://localhost:3001/success',
+         success_url: 'https://localhost:5173/success',
          cancel_url: 'https://localhost/cancel',
          payment_method_types: ['card', 'p24'],
          line_items: [
@@ -48,3 +24,36 @@ shopRouter
 
       res.json(stripeObj)
    })
+
+    .get('/price-id', async(req: Request, res: Response) => {
+        res.json({
+            priceDance: process.env.STRIPE_DANCE_PRICE,
+            priceSport: process.env.STRIPE_SPORT_PRICE,
+        })
+    })
+
+    .post('/checkout', async(req: Request, res: Response)=>{
+        const items: ShopItem[] = req.body.items
+
+        const lineItems: Promise<LineItem>[] = items.map(async item => {
+            const course = await CourseRecord.getOne(item.id)
+            return {
+                price: course.price === 50 ? process.env.STRIPE_DANCE_PRICE : process.env.STRIPE_SPORT_PRICE,
+                quantity: item.quantity
+            }
+        });
+        const resolvedLineItems = await Promise.all(lineItems);
+
+        const session = await stripe.checkout.sessions.create({
+            line_items: resolvedLineItems,
+            mode: 'payment',
+            success_url: 'http://localhost:5173/student/success',
+            cancel_url: 'http://localhost:5173/student/cancel',
+        })
+
+        res.json({
+            url: session.url
+        });
+
+    })
+
