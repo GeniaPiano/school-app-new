@@ -10,11 +10,12 @@ import {
     Text,
     Button,
     Spinner,
-    SimpleGrid
+    SimpleGrid, Modal, ModalOverlay, ModalContent, ModalCloseButton, ModalHeader, ModalBody, useDisclosure
 } from "@chakra-ui/react";
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import {lorem} from "./lorem";
 
 
 interface AllArticles {
@@ -28,7 +29,7 @@ interface Article {
 }
 
 export const News = () =>  {
-
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const [articles, setArticles] = useState<Article[] | []>([]);
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false);
@@ -96,34 +97,48 @@ export const News = () =>  {
                 <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5}>
                     <>
                         {articles ? articles.map((article) => (
+                            <>
                                 <Card key={article.title} mb={5}>
-
                                     <CardBody>
                                         <>{article.image && <Image
                                             src={article.image.url}
                                             alt="photo"
                                             borderRadius='lg'
                                         />} </>
-
                                         <Stack mt='6' spacing='3'>
                                             <Heading size="md" color="brand.800"> {article.title} </Heading>
                                             <Text color="gray.500"> {article.content} </Text>
                                         </Stack>
                                     </CardBody>
                                     <CardFooter>
-                                        <Button variant='solid' colorScheme='teal'>
+                                        <Button
+                                            onClick={()=> onOpen()}
+                                            variant='solid' colorScheme='teal'>
                                             See more...
                                         </Button>
-
-
                                     </CardFooter>
                                 </Card>
+
+                              </>
                             ))
                             :  <p>No artircles.</p>
                         }
                     </>
+
                 </SimpleGrid>
             </Box>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader   color="brand.800">
+                        <ModalCloseButton/>
+                        About
+                    </ModalHeader>
+                    <ModalBody mb={10}   color="gray.600">
+                        {lorem}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </Flex>
     )
 }

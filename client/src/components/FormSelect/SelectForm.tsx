@@ -1,16 +1,16 @@
 import {FormControl, FormLabel, Select, Text} from "@chakra-ui/react";
-import {CourseEntity} from "../../types/course";
 import {TeacherEntity} from "../../types/teacher";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 
 interface Props {
-    data: CourseEntity[] | TeacherEntity | [];
+    data: TeacherEntity[];
     handleChange: (e) => void;
     placeholder: string;
     label: string;
     comment?: string;
     isTeacher?: boolean;
     value?: string;
+
 }
 
 
@@ -19,7 +19,7 @@ interface Props {
 export const SelectForm = ({data, comment, handleChange, placeholder, label, isTeacher, value}:Props) => {
 
     return (
-            <FormControl mb={10}>
+            <FormControl mb={5}>
                 <FormLabel>{label}</FormLabel>
                 <Select placeholder={placeholder}
                         variant='filled'

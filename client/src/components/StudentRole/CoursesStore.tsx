@@ -6,7 +6,6 @@ import {
 import {CourseEntity} from "../../types/course";
 import {SHOP_URL} from "../../../config/api";
 import {loadStripe} from '@stripe/stripe-js';
-import {Payment} from "../Payment/Payment";
 import {CourseCard} from "./CourseCard";
 
 interface Props {
@@ -15,12 +14,6 @@ interface Props {
 export const CoursesStore = ({coursesAvailable} :Props) => {
 
     const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY)
-    const formatPrice = new Intl.NumberFormat('pl-PL', {
-        style: 'currency',
-        currency: 'PLN',
-        minimumFractionDigits: 1,
-    })
-
     const handleOrder = async(id: string) => {
         const stripeRes = await fetch(`${SHOP_URL}/order`);
         const {id: sessionId} = await stripeRes.json();

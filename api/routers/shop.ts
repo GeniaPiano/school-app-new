@@ -7,30 +7,25 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 shopRouter
 
-    .get('/order', async(req: Request, res: Response) => {
+   //  .get('/order', async(req: Request, res: Response) => {
+   //
+   //    const stripeObj = await stripe.checkout.sessions.create({
+   //       success_url: 'https://localhost:5173/success',
+   //       cancel_url: 'https://localhost/cancel',
+   //       payment_method_types: ['card', 'p24'],
+   //       line_items: [
+   //          {
+   //              price: 'price_1O0gJ5CMIZdRR3DNosbJwqU6',
+   //              quantity: 1,
+   //          },
+   //       ],
+   //       mode: 'payment',
+   //    });
+   //
+   //    res.json(stripeObj)
+   // })
 
-      const stripeObj = await stripe.checkout.sessions.create({
-         success_url: 'https://localhost:5173/success',
-         cancel_url: 'https://localhost/cancel',
-         payment_method_types: ['card', 'p24'],
-         line_items: [
-            {
-                price: 'price_1O0gJ5CMIZdRR3DNosbJwqU6',
-                quantity: 1,
-            },
-         ],
-         mode: 'payment',
-      });
 
-      res.json(stripeObj)
-   })
-
-    .get('/price-id', async(req: Request, res: Response) => {
-        res.json({
-            priceDance: process.env.STRIPE_DANCE_PRICE,
-            priceSport: process.env.STRIPE_SPORT_PRICE,
-        })
-    })
 
     .post('/checkout', async(req: Request, res: Response)=>{
         const items: ShopItem[] = req.body.items

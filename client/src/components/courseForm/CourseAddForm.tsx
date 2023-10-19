@@ -59,7 +59,6 @@ export const CourseAddForm = ({isOpen, onClose}: Props) => {
                                 handleGoBackToForm={handleGoBackToForm}
                                 onClose={onClose}
                                 changeInputTouched={changeInputTouched }
-
                             />
                         </ModalBody>
                     </>}</>

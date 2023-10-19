@@ -35,15 +35,22 @@ export const useCourses = () => {
         data: CourseEntity,
     }
 
-    const addCourse = async(name: string, teacher_id: string) => {
+    const addCourse = async(name: string,
+                            teacher_id: string,
+                            price: string,
+                            description: string,
+                            photoUrl: string) => {
         if (name === '' || name.length < 4 || name.length > 40) {
             console.log('Invalid given data. Name should be from 4 to 40 chars.')
             return;
-       }
+            }
         try {
             const res = await axios.post(COURSE_URL, {
                 name,
                 teacher_id,
+                price: Number(price),
+                description,
+                photoUrl,
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,12 +65,20 @@ export const useCourses = () => {
         }
     }
 
-    const updateCourse = async (courseId: string | null, name: string, teacher_id: string | null) => {
+    const updateCourse = async (courseId: string | null,
+                                name: string,
+                                teacher_id: string | null,
+                                description: string | null,
+                                price: string,
+                                photoUrl: string) => {
         if (courseId !== null) {
             try {
                     await axios.patch(`${COURSE_URL}/${courseId}`, {
                     name,
                     teacher_id,
+                    description,
+                    price: Number(price),
+                    photoUrl,
                 }, {
                     headers: {
                         'Content-Type': 'application/json',

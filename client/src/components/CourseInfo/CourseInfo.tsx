@@ -1,45 +1,55 @@
 import {
     AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogOverlay,
-    Badge,
     Box,
     Button,
     Flex,
     Modal,
-    ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalFooter,
-    ModalHeader,
     ModalOverlay, ModalProps,
-    Text, useDisclosure
+    useDisclosure
 } from "@chakra-ui/react";
 import {useNavigate } from "react-router-dom"
 import {useCourses} from "../../hooks/useCourses";
-import {useEffect, useRef, useState} from "react";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
 import {GetSingleCourseResponse} from "../../types/course";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {useTeachers} from "../../hooks/useTeachers";
 import {TeacherEntity} from "../../types/teacher";
 import {useCounter} from "../../providers/CounterPovider";
 import {Loader} from "../common/Loader";
-import {ArrowDownIcon, CheckIcon} from "@chakra-ui/icons";
-import {EditCourse} from "./EditCourse";
+import { CheckIcon} from "@chakra-ui/icons";
+import {UpdateCourseForm} from "./UpdateCourseForm";
 import {BasicInfo} from "./BasicInfo";
-
+import {ModalUpdated} from "./ModalUpdated";
+import {ModalPosting} from "./ModalPosting";
+import {ModalWarning} from "./ModalWarning";
+import {ModalConfirmation} from "./ModalConfirmation";
 
 
 export const CourseInfo = () => {
-
     const navigate = useNavigate();
-    const [courseData, setCourseData] = useState<GetSingleCourseResponse | null>(null);
+    const [courseData, setCourseData] = useState<GetSingleCourseResponse>(null);
     const [teachers, setTeachers] = useState<TeacherEntity[] | []>([])
     const [selectTeacher, setSelectTeacher] = useState<string | null>(null)
-    const [name, setName] = useState<string>(courseData? courseData.course.name : '')
+    const [name, setName] = useState<string>('')
+    const [price, setPrice] = useState('')
     const [initialFormData, setInitialFormData] = useState<{
         name: string;
         teacher: { id: string | null };
-    } | null>(null);
-    const [message, setMessage] = useState<string | null>(null)
+    } | null> (null);
+    const [message, setMessage] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [photoUrl, setPhotoUrl] = useState('')
+
+    const handleSelectPhotoUrl = (url: string) => setPhotoUrl(url);
+
+    const handleDescription = (e:ChangeEvent<HTMLTextAreaElement>) => {
+        setDescription(e.target.value)
+    }
+    const handleSelectPrice = (newPrice: string) => {
+        setPrice(newPrice)
+    }
 
     const { isOpen, closeModal, courseId, isEditing, changeIsPosted, changeIsEditing, isLoadingEvent, changeIsLoadingEvent, isPostedEvent, changeIsPostedEvent,
         isPosted, isConfirmed, toggleIsConfirmed, isDelete, changeIsDelete, changeConfirmClose, confirmClose} = useCourseInfo();
@@ -54,26 +64,28 @@ export const CourseInfo = () => {
 
 
 
-
-
     useEffect(() => {
         if (isOpen && courseId) {
             (async () => {
                 try {
                     const results = await getCourseById(courseId);
                     setCourseData(results);
+                    setPhotoUrl(results.course.photoUrl)
                     setName(results.course.name)
+                    setPrice(String(results.course.price))
+                    setDescription(results.course.description)
                     setSelectTeacher(results.teacher ? results.teacher.id : null)
                     setInitialFormData({
                         name: results.course.name,
                         teacher: { id:results.teacher ? results.teacher.id : null},
                     })
+
                 } catch (error) {
                     console.error(error);
                 }
             })();
         }
-    }, [isOpen, courseId, counterCourse])
+    }, [isOpen, courseId, counterCourse, setDescription])
 
     useEffect(()=> {
         if (isOpen) {
@@ -91,6 +103,7 @@ export const CourseInfo = () => {
 
     const handleInputChange = (e) => {
         setName(e.target.value)
+        console.log(name)
     }
 
     const handleSelectChange = (e) => {
@@ -124,7 +137,7 @@ export const CourseInfo = () => {
             },3000)
             return
         }
-        const response = await updateCourse(courseId, name, selectTeacher)
+        const response = await updateCourse(courseId, name, selectTeacher, description, price, photoUrl )
         if (response.success) {
             changeIsEditing(false)
             changeIsPosted(true)
@@ -153,8 +166,6 @@ export const CourseInfo = () => {
             closeModal()
         }
     }
-
-
 
 
     const handleDeleteCourse = async() => {
@@ -196,54 +207,31 @@ export const CourseInfo = () => {
                 <ModalCloseButton color="gray.500" />
                 {courseData && (
                     isEditing
-                        ?   <EditCourse  courseName={courseData.course.name}
-                                         handleInputChange={handleInputChange}
-                                         handleSelectChange={handleSelectChange}
-                                         name={name}
-                                         teachers={teachers}
-                                         selectTeacher={selectTeacher}
-                                         handleSubmit={handleSubmit}
-                                         cancelEditing={cancelEditing}
-                                         message={message} />
+                        ?   <UpdateCourseForm course={courseData.course}
+                                              handleInputChange={handleInputChange}
+                                              handleSelectChange={handleSelectChange}
+                                              description={description}
+                                              handleDescription={handleDescription}
+                                              name={name}
+                                              price={price}
+                                              handleSelectPrice={handleSelectPrice}
+                                              teachers={teachers}
+                                              selectTeacher={selectTeacher}
+                                              handleSubmit={handleSubmit}
+                                              cancelEditing={cancelEditing}
+                                              message={message}
+                                              photoUrl={photoUrl}
+                                              handleSelectPhotoUrl={handleSelectPhotoUrl}
+                            />
                         :  <> { isPosted
-                            ? ( !isConfirmed ?
-                                <ModalBody p="60px 30px" as={Flex} justifyContent='center' alignItems="center" gap={25}>
-                                    <Box color='teal'>Updated</Box>
-                                    <CheckIcon color="teal"/>
-                                </ModalBody>
-                              :  <ModalBody p="60px 30px">
-                                    <Loader colorScheme="red" loadingText='posting...' />
-                                </ModalBody> )
-                            :
-                            <>
-                                {isDelete ?  (courseData.countStudents > 0 ?
-                                        <>
-                                            <ModalBody mb={30}>
-                                                <Flex my={10}  fontWeight="500"  >
-                                                    <Text mr={4}> Cannot delete </Text>
-                                                    <Text bg="teal.200" px={2} borderRadius="2px">{courseData.course.name.toUpperCase()}</Text>
-                                                </Flex>
-                                                <Text>Remove students from this course first.</Text>
-
-                                                <Flex mt={37} justifyContent="center">
-                                                    <ArrowDownIcon _hover={{color:"teal.300"}} color="teal.500" boxSize={5} cursor='pointer' onClick={closeModal}/>
-                                                </Flex>
-                                            </ModalBody>
-                                        </> :
-                                    <>
-                                        <ModalHeader color="gray.600">Delete course</ModalHeader>
-                                        <ModalBody>Are you sure you want to delete
-                                            <Badge colorScheme='teal'> {courseData.course.name} </Badge> ? <br/>
-                                            You cannot undo this action.
-                                        </ModalBody>
-                                        <ModalFooter>
-                                            <Button colorScheme='pink' onClick={handleDeleteCourse} mr={3}>Yes, delete</Button>
-                                            <Button onClick={()=> {
-                                                changeIsDelete(false)
-                                                closeModal();
-                                            }}>No</Button>
-                                        </ModalFooter>
-                                    </>)
+                            ? ( !isConfirmed ?  <ModalUpdated/> : <ModalPosting/> )
+                            :  <>
+                                {isDelete ?  (courseData.countStudents > 0
+                                   ? <ModalWarning name={courseData.course.name}  closeModal={closeModal}/>
+                                   : <ModalConfirmation name={courseData.course.name}
+                                                        closeModal={closeModal}
+                                                        handleDeleteCourse={handleDeleteCourse}
+                                                        changeIsDelete={changeIsDelete}/> )
                                     : <BasicInfo courseData={courseData}/> }
                             </>
                     } </>
