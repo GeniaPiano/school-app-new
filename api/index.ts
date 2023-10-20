@@ -1,16 +1,8 @@
 import * as express from "express";
 import * as cors from 'cors';
 import 'express-async-errors';
-import rateLimit from 'express-rate-limit'
 import * as cookieParser from "cookie-parser";
 require('dotenv').config();
-
-const limiter = rateLimit({
-    windowMs: 5 * 60 * 1000,
-    max: 200,
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false,
-})
 
 
 import {handleError} from "./utils/errors";
@@ -38,13 +30,13 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/course', courseRouter);
-app.use('/teacher', teacherRouter);
-app.use('/student', studentRouter);
-app.use('/auth', authRouter);
-app.use('/admin', adminRouter);
-app.use('/shop', shopRouter);
-app.use('/dato', datoRouter)
+app.use('/api/course', courseRouter);
+app.use('/api/teacher', teacherRouter);
+app.use('/api/student', studentRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/shop', shopRouter);
+app.use('/api/dato', datoRouter)
 app.use(handleError);
 
 
