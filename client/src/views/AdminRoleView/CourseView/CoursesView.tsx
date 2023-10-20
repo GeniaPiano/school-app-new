@@ -52,7 +52,6 @@ export const CoursesView = () => {
     }, [courseId, counterCourse])
 
 
-
     if (!courseId && courses && courses.length > 0) return (
         <Navigate to={`/courses/${courses[0].id}`}/>
     )
@@ -82,15 +81,11 @@ export const CoursesView = () => {
                                    fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
                                    bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
                                    color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
-
                                >
                                 <Box   _hover={{color:"white"}}>
                                     {firstLetterToUpper(oneCourse.name)}
                                 </Box>
-
-
-
-                                   <Menu  >
+                                   <Menu>
                                        <MenuButton >
                                            <ChevronDownIcon size="l" />
                                        </MenuButton>
@@ -107,13 +102,9 @@ export const CoursesView = () => {
                                </Flex>
                            </NavLink>)})
                                } </>
-
             </SimpleGrid>
             </Box>
-
             <StudentsList courseName={selectedCourse} mainList={false}/>
-
-
         </Flex>
         </FormStateProvider>
     )

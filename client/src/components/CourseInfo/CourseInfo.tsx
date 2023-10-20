@@ -26,6 +26,13 @@ import {ModalPosting} from "./ModalPosting";
 import {ModalWarning} from "./ModalWarning";
 import {ModalConfirmation} from "./ModalConfirmation";
 
+interface InitialFormState {
+    name: string;
+    teacher: { id: string | null };
+    description: string;
+    price: string;
+    photoUrl: string;
+}
 
 export const CourseInfo = () => {
     const navigate = useNavigate();
@@ -34,10 +41,7 @@ export const CourseInfo = () => {
     const [selectTeacher, setSelectTeacher] = useState<string | null>(null)
     const [name, setName] = useState<string>('')
     const [price, setPrice] = useState('')
-    const [initialFormData, setInitialFormData] = useState<{
-        name: string;
-        teacher: { id: string | null };
-    } | null> (null);
+    const [initialFormData, setInitialFormData] = useState< InitialFormState | null> (null);
     const [message, setMessage] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [photoUrl, setPhotoUrl] = useState('')
@@ -63,7 +67,6 @@ export const CourseInfo = () => {
     const cancelRef2 = useRef() as  NonNullable<ModalProps["initialFocusRef"]>
 
 
-
     useEffect(() => {
         if (isOpen && courseId) {
             (async () => {
@@ -73,13 +76,18 @@ export const CourseInfo = () => {
                     setPhotoUrl(results.course.photoUrl)
                     setName(results.course.name)
                     setPrice(String(results.course.price))
-                    setDescription(results.course.description)
+                    setDescription(results.course.description === null ? '' : results.course.description)
                     setSelectTeacher(results.teacher ? results.teacher.id : null)
-                    setInitialFormData({
-                        name: results.course.name,
-                        teacher: { id:results.teacher ? results.teacher.id : null},
+                    setInitialFormData((prev) => {
+                        return {
+                            ...prev,
+                            name: results.course.name,
+                            teacher: {id: results.teacher ? results.teacher.id : null},
+                            description: results.course.description ? description : '',
+                            price: String(results.course.price),
+                            photoUrl: results.course.photoUrl,
+                        }
                     })
-
                 } catch (error) {
                     console.error(error);
                 }
@@ -100,36 +108,37 @@ export const CourseInfo = () => {
         }
     },[isOpen])
 
-
     const handleInputChange = (e) => {
         setName(e.target.value)
-        console.log(name)
     }
 
     const handleSelectChange = (e) => {
         setSelectTeacher(e.target.value)
-    }
+        }
 
     const cancelEditing =()=>{
         changeIsEditing(false)
         setName(name)
-    }
+        }
 
     // sprawdzenie czy są wprowadzone zmiany w form
     const checkDifference = () => {
         if (!initialFormData) {
             return "noDiff";
         }
+        const isPhotoUrlDifferent = photoUrl !== initialFormData.photoUrl
         const isNameDifferent = name !== initialFormData.name;
         const isTeacherDifferent = selectTeacher !== initialFormData.teacher.id;
-        if (isNameDifferent || isTeacherDifferent) {
+        const isDescriptionDifferent = description !== initialFormData.description;
+        const isPriceDifferent = price !== initialFormData.price;
+        if (isNameDifferent || isTeacherDifferent || isDescriptionDifferent || isPriceDifferent || isPhotoUrlDifferent) {
             return "diff";
         }
         return "noDiff";
     };
 
-
     const handleSubmit = async() => {
+        console.log('checkDiff',checkDifference())
         if (checkDifference() === 'noDiff') {
             setMessage('No changes have been made.')
             setTimeout(()=> {
