@@ -68,7 +68,7 @@ export const useCourses = () => {
     const updateCourse = async (courseId: string | null,
                                 name: string,
                                 teacher_id: string | null,
-                                description: string | null,
+                                description: string,
                                 price: string,
                                 photoUrl: string) => {
         if (courseId !== null) {
