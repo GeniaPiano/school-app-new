@@ -24,66 +24,71 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `id` varchar(36) NOT NULL,
   `password` varchar(64) NOT NULL,
   `email` varchar(40) NOT NULL,
-  `role` varchar(6) NOT NULL DEFAULT 'admin'
+  `role` varchar(6) NOT NULL DEFAULT 'admin',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Zrzucanie danych dla tabeli school_app_db.admin: ~0 rows (około)
+-- Zrzucanie danych dla tabeli school_app_db.admin: ~1 rows (około)
 INSERT INTO `admin` (`id`, `password`, `email`, `role`) VALUES
-	('asdkfjhgk2j432543asd', '$2a$10$Aj6PG6Yvf2tKo2XeKP.yc..N5BXjq0KvrLa0lvl7igoyGykE.0iEG', 'admin@admin.com', 'admin');
+	('asdkfjhgk2j432543asd', '$2a$10$UmeWXznU56QhGoWwucmxYeGWfIp3mpKk9M/17DCTU1SUCT/cVnf76', 'admin@admin.com', 'admin');
 
 -- Zrzut struktury tabela school_app_db.courses
 CREATE TABLE IF NOT EXISTS `courses` (
   `id` varchar(36) NOT NULL,
   `name` varchar(40) NOT NULL,
-  `teacher_id` varchar(36) DEFAULT NULL
+  `teacher_id` varchar(36) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `price` int(5) NOT NULL,
+  `photoUrl` char(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Zrzucanie danych dla tabeli school_app_db.courses: ~10 rows (około)
-INSERT INTO `courses` (`id`, `name`, `teacher_id`) VALUES
-	('75b09ce2-e107-4706-b295-4cfad485c253', 'karate kyokushin', NULL),
-	('2d5cc783-e524-40e7-9fa0-395f68723a1d', 'Musical sing', '520b229e-514c-4289-8176-19843131b7f0'),
-	('adb40db3-05f8-4c5d-b760-b24fd212ebd1', 'Tenis', 'fb1b7dd1-9205-448e-9065-4e75de552b61'),
-	('0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', 'Brodway dance ', 'd28de20c-632c-4195-94f7-e4256eb99c45'),
-	('457a2163-0444-41fa-af8d-8a1e51f2bcf4', 'Piłka nożna', NULL),
-	('5fc8688b-9acf-4821-8501-90603bfc65bc', 'Ukulele', NULL),
-	('0a95c9a3-ac83-4f32-a4a0-001f6a2cb5ca', 'Joga', '58d40a8c-dda8-4e98-9b18-250153464201'),
-	('6bbe603b-ea15-48ec-b161-d93d3fb30b7e', 'Choire', NULL),
-	('4d4c4843-ef6d-4523-8dce-9073c809471c', 'Pianino', '520b229e-514c-4289-8176-19843131b7f0'),
-	('10da00d0-630d-44b0-a482-9353ca7882b7', 'Pilates', NULL);
+INSERT INTO `courses` (`id`, `name`, `teacher_id`, `description`, `price`, `photoUrl`) VALUES
+	('0a95c9a3-ac83-4f32-a4a0-001f6a2cb5ca', 'Joga', '58d40a8c-dda8-4e98-9b18-250153464201', 'JOGA is a three dimensional movement system that hybrids the science of yoga with the biomechanics of sports movement. JOGA cultivates results as it optimizes the human system : essentially we have hacked traditional yoga and created a system that thrives on efficiency, results and optimal human performance.', 40, 'https://www.datocms-assets.com/107048/1697483765-dance-studio-5.png'),
+	('0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', 'Brodway dance ', 'd28de20c-632c-4195-94f7-e4256eb99c45', NULL, 50, 'https://www.datocms-assets.com/107048/1697483782-dance-studio-2.png'),
+	('10da00d0-630d-44b0-a482-9353ca7882b7', 'Pilates', NULL, NULL, 40, 'https://www.datocms-assets.com/107048/1697483765-dance-studio-5.png'),
+	('2d5cc783-e524-40e7-9fa0-395f68723a1d', 'latino', '520b229e-514c-4289-8176-19843131b7f0', NULL, 50, 'https://www.datocms-assets.com/107048/1697484069-dance-studio-10.png'),
+	('457a2163-0444-41fa-af8d-8a1e51f2bcf4', 'pole dance', NULL, NULL, 50, 'https://www.datocms-assets.com/107048/1697483793-dance-studio.png'),
+	('4d4c4843-ef6d-4523-8dce-9073c809471c', 'jiu jitsu', '520b229e-514c-4289-8176-19843131b7f0', NULL, 40, 'https://www.datocms-assets.com/107048/1697484074-dance-studio-9.png'),
+	('5fc8688b-9acf-4821-8501-90603bfc65bc', 'break dance', '520b229e-514c-4289-8176-19843131b7f0', NULL, 50, 'https://www.datocms-assets.com/107048/1697483776-dance-studio-3.png'),
+	('6bbe603b-ea15-48ec-b161-d93d3fb30b7e', 'hip hop', NULL, NULL, 50, 'https://www.datocms-assets.com/107048/1697483770-dance-studio-4.png'),
+	('75b09ce2-e107-4706-b295-4cfad485c253', 'karate', NULL, NULL, 40, 'https://www.datocms-assets.com/107048/1697484138-dance-studio-12.png'),
+	('adb40db3-05f8-4c5d-b760-b24fd212ebd1', 'judo', 'fb1b7dd1-9205-448e-9065-4e75de552b61', NULL, 40, 'https://www.datocms-assets.com/107048/1697484145-dance-studio-11.png');
 
 -- Zrzut struktury tabela school_app_db.courses_students
 CREATE TABLE IF NOT EXISTS `courses_students` (
   `id` varchar(36) NOT NULL,
   `course_id` varchar(36) NOT NULL,
-  `student_id` varchar(36) NOT NULL
+  `student_id` varchar(36) NOT NULL,
+  `startedAt` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  KEY `student_id` (`student_id`),
+  CONSTRAINT `courses_students_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
+  CONSTRAINT `courses_students_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Zrzucanie danych dla tabeli school_app_db.courses_students: ~22 rows (około)
-INSERT INTO `courses_students` (`id`, `course_id`, `student_id`) VALUES
-	('c8bf6964-1adb-4d1e-942c-ec56766bc9f9', '457a2163-0444-41fa-af8d-8a1e51f2bcf4', 'e27358ff-50a2-4bef-a1fe-1d3075514f2f'),
-	('57d424ed-5e80-4279-8e80-2eaec828831b', '75b09ce2-e107-4706-b295-4cfad485c253', '8ba573a2-581a-4bdd-922a-17f37fe20c75'),
-	('0af89755-a1a5-4474-ab8f-08570cff134b', '457a2163-0444-41fa-af8d-8a1e51f2bcf4', '8ba573a2-581a-4bdd-922a-17f37fe20c75'),
-	('f7e4a72f-3d74-4967-a86b-2fa8660be86b', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '8ba573a2-581a-4bdd-922a-17f37fe20c75'),
-	('0a2e062a-ad86-4eb9-ad9c-cb3b021c98ee', '457a2163-0444-41fa-af8d-8a1e51f2bcf4', '84d2d7a6-b7c6-4a15-9b4c-924d304b1beb'),
-	('2e6b065e-96c0-4520-8720-136238acccd7', '0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', '5bde42cc-b02f-447d-a7ee-e584aec86bd0'),
-	('8928d819-1c24-4089-8428-1fabf3a0b905', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '5bde42cc-b02f-447d-a7ee-e584aec86bd0'),
-	('3317ef89-ef75-491f-bf6c-45660392f105', '0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', '8aa6cf5a-1f63-487d-abe8-c8a816007b20'),
-	('10573359-bc5f-4ec0-a63c-9729663a21f9', 'adb40db3-05f8-4c5d-b760-b24fd212ebd1', '7f37c165-8b72-4fac-98f7-7c27dade7186'),
-	('c9b63db8-aa2e-426e-9494-f6f92d19c706', '4d4c4843-ef6d-4523-8dce-9073c809471c', '65cdbdd1-fcbb-4b09-b233-f89c9b785f9e'),
-	('e26aca53-d710-4431-a155-5d5997447b29', 'adb40db3-05f8-4c5d-b760-b24fd212ebd1', '65cdbdd1-fcbb-4b09-b233-f89c9b785f9e'),
-	('a2b0585c-6cd6-4291-bd17-6c01fcae48ac', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '65cdbdd1-fcbb-4b09-b233-f89c9b785f9e'),
-	('d0e15de4-419c-4a02-b442-4331fe687fb5', '75b09ce2-e107-4706-b295-4cfad485c253', '0fd81e14-27b9-469f-9ee6-c59f622d5c2f'),
-	('4caeaa7d-8782-4245-b010-91424901dcb0', '5fc8688b-9acf-4821-8501-90603bfc65bc', '0fd81e14-27b9-469f-9ee6-c59f622d5c2f'),
-	('5ae55179-3a42-4aa7-98c4-2e0ef26268e7', '6bbe603b-ea15-48ec-b161-d93d3fb30b7e', '0fd81e14-27b9-469f-9ee6-c59f622d5c2f'),
-	('7e118e3b-b453-43c0-bd12-911f0079419c', '2d5cc783-e524-40e7-9fa0-395f68723a1d', 'bc1a73b9-4043-44c8-8762-9a6bbcdc7447'),
-	('7ff0e3fc-5ae1-4652-bd7d-e29de83e4cb2', '75b09ce2-e107-4706-b295-4cfad485c253', 'bc1a73b9-4043-44c8-8762-9a6bbcdc7447'),
-	('48c02696-1da6-4994-836e-9aea1468cc21', '10da00d0-630d-44b0-a482-9353ca7882b7', '31aa1f63-64df-4398-92c4-9070ff49b08d'),
-	('74ae7481-1839-45b4-95b0-c1800ac92db9', '75b09ce2-e107-4706-b295-4cfad485c253', '31aa1f63-64df-4398-92c4-9070ff49b08d'),
-	('54db39f4-1768-46f0-bba1-8f35ce6cb82e', '457a2163-0444-41fa-af8d-8a1e51f2bcf4', '31aa1f63-64df-4398-92c4-9070ff49b08d'),
-	('76b28e8e-36fd-4006-b679-d8e84f28eb7b', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '31aa1f63-64df-4398-92c4-9070ff49b08d'),
-	('a687ef3d-0315-43bc-b553-022d1052f947', '6bbe603b-ea15-48ec-b161-d93d3fb30b7e', '31aa1f63-64df-4398-92c4-9070ff49b08d'),
-	('ed6eeb84-65bf-4f1e-a7e7-9cb417e7d3ed', 'adb40db3-05f8-4c5d-b760-b24fd212ebd1', 'ccc8613d-3ba5-4394-a090-f8efea80a40b'),
-	('1fa5d909-a5d6-4160-ba83-fa808ef110d1', 'adb40db3-05f8-4c5d-b760-b24fd212ebd1', '04faa90c-17e8-421f-bc3c-cb15a20abc52');
+-- Zrzucanie danych dla tabeli school_app_db.courses_students: ~7 rows (około)
+INSERT INTO `courses_students` (`id`, `course_id`, `student_id`, `startedAt`) VALUES
+	('47nf57vn75v5b59ge9', '75b09ce2-e107-4706-b295-4cfad485c253', '535bb083-4291-4962-bb63-03496a82b73a', '2023-10-19'),
+	('4tfe88yg03948th45gtrh', '4d4c4843-ef6d-4523-8dce-9073c809471c', '49b98916-f74e-4c15-b650-669a3652ed42', '2023-10-08'),
+	('5v5g4e9hg0weurg0t98t4t', '6bbe603b-ea15-48ec-b161-d93d3fb30b7e', 'e3e8e231-0c2e-4003-9b7c-fc2b258e0d97', '2023-10-17'),
+	('asdb44rff77gdsdsssddff', '0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', '3e3e6e95-5e71-40a3-8ae6-c790c1fa0689', '2023-10-16'),
+	('djfhvbf8fuifnj4kltglnbdrsfdc', '0a95c9a3-ac83-4f32-a4a0-001f6a2cb5ca', '3e3e6e95-5e71-40a3-8ae6-c790c1fa0689', '2023-10-06'),
+	('dzfzsd8fhv394hv93874cirawefsrg', '2d5cc783-e524-40e7-9fa0-395f68723a1d', 'f8ea52bd-7a31-49f5-b12d-13859f55427c', '2023-10-17'),
+	('v5t498ghegw09j9fjq3rgwrtg', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '49b98916-f74e-4c15-b650-669a3652ed42', '2023-10-18');
+
+-- Zrzut struktury tabela school_app_db.courses_students_history
+CREATE TABLE IF NOT EXISTS `courses_students_history` (
+  `id` varchar(36) NOT NULL,
+  `student_id` varchar(36) NOT NULL,
+  `course_id` varchar(36) NOT NULL,
+  `finishedAt` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Zrzucanie danych dla tabeli school_app_db.courses_students_history: ~0 rows (około)
 
 -- Zrzut struktury tabela school_app_db.courses_teachers
 CREATE TABLE IF NOT EXISTS `courses_teachers` (
@@ -91,15 +96,41 @@ CREATE TABLE IF NOT EXISTS `courses_teachers` (
   `course_id` varchar(36) NOT NULL,
   `teacher_id` varchar(36) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `student_id` (`teacher_id`) USING BTREE
+  KEY `student_id` (`teacher_id`) USING BTREE,
+  CONSTRAINT `courses_teachers_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Zrzucanie danych dla tabeli school_app_db.courses_teachers: ~3 rows (około)
+-- Zrzucanie danych dla tabeli school_app_db.courses_teachers: ~5 rows (około)
 INSERT INTO `courses_teachers` (`id`, `course_id`, `teacher_id`) VALUES
+	('1364281d-3f6c-4f91-85a7-040061fbc068', '4d4c4843-ef6d-4523-8dce-9073c809471c', '520b229e-514c-4289-8176-19843131b7f0'),
 	('2d135e46-36cb-435f-be85-a75bfd617434', '0a95c9a3-ac83-4f32-a4a0-001f6a2cb5ca', '58d40a8c-dda8-4e98-9b18-250153464201'),
 	('658aaef0-316a-465a-b4fa-1e6eb8a1afc8', '0c35ece1-ca1c-4bb0-bd04-ebf29613b6df', 'd28de20c-632c-4195-94f7-e4256eb99c45'),
-	('84e429c5-93de-4b6b-9b0a-e9785d24a8c8', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '520b229e-514c-4289-8176-19843131b7f0'),
-	('8b2b1810-c7ff-4792-8ff9-84c1c2dea6ac', '4d4c4843-ef6d-4523-8dce-9073c809471c', '520b229e-514c-4289-8176-19843131b7f0');
+	('9be99a44-9dde-410b-9866-173078867774', '5fc8688b-9acf-4821-8501-90603bfc65bc', '520b229e-514c-4289-8176-19843131b7f0'),
+	('ed5b7b05-fe1f-41ba-ae79-229ca7a3cf51', '2d5cc783-e524-40e7-9fa0-395f68723a1d', '520b229e-514c-4289-8176-19843131b7f0');
+
+-- Zrzut struktury tabela school_app_db.course_student_rates
+CREATE TABLE IF NOT EXISTS `course_student_rates` (
+  `id` varchar(36) NOT NULL,
+  `course_id` varchar(36) NOT NULL,
+  `student_id` varchar(36) NOT NULL,
+  `stars` tinyint(1) NOT NULL,
+  `opinion` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Zrzucanie danych dla tabeli school_app_db.course_student_rates: ~0 rows (około)
+
+-- Zrzut struktury tabela school_app_db.posts
+CREATE TABLE IF NOT EXISTS `posts` (
+  `id` varchar(36) NOT NULL,
+  `heading` varchar(100) NOT NULL,
+  `content` text DEFAULT NULL,
+  `authorId` varchar(36) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Zrzucanie danych dla tabeli school_app_db.posts: ~0 rows (około)
 
 -- Zrzut struktury tabela school_app_db.students
 CREATE TABLE IF NOT EXISTS `students` (
@@ -112,25 +143,15 @@ CREATE TABLE IF NOT EXISTS `students` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Zrzucanie danych dla tabeli school_app_db.students: ~19 rows (około)
+-- Zrzucanie danych dla tabeli school_app_db.students: ~7 rows (około)
 INSERT INTO `students` (`id`, `name`, `last_name`, `email`, `password`, `role`) VALUES
-	('04faa90c-17e8-421f-bc3c-cb15a20abc52', 'Tomasz', 'Borucki', 'tom@gamail.com', '$2a$10$5A7Bya0oIPy6Srnw0ltmm.OYpuG/bkUrD5/o/BFvRuZ/oyw7Gs5z2', 'student'),
-	('0fd81e14-27b9-469f-9ee6-c59f622d5c2f', 'Natalia', 'Piotrowska', 'nati@gmail.com', '$2a$10$JnbJFOST5wNKuNCwA3yBq..M7kGRfuTmPjFch1dDWRzXYGNyMnKY2', 'student'),
-	('243540ca-3789-4174-8ea9-84a44d40063e', NULL, NULL, 'testowy@testowy', '$2a$10$c5S5mdiKglh4CVKbEGdHfOAJKPf9g2mypHR/fd.A8p9OxTH5PRObi', 'student'),
-	('31aa1f63-64df-4398-92c4-9070ff49b08d', 'Ewa', 'Fala', 'ela@gmail.com', '$2a$10$2o4zGWqu8aWOuQ/fP3A4/O4V3H.ewbcr6N78I1V2gShaXes71vPfm', 'student'),
-	('35c5c265-8758-4fa3-a14b-2a9c1d316505', 'unknown', 'unknown', 'asdasdasd@asdasdp', '$2a$10$Vj07FO5.2m8dI19ydVDsKewGDCE9G5/B1nNRoi0nn3bYCW2ToDhaG', 'student'),
-	('5bde42cc-b02f-447d-a7ee-e584aec86bd0', 'Ania', 'wrzosek', 'ania@wp.pl', '$2a$10$9X9/mAZqRGa47X5CORMa4ObQNtMUuxkRctOuFy4wdtfERlSB0ryWO', 'student'),
-	('65cdbdd1-fcbb-4b09-b233-f89c9b785f9e', 'Oliwia', 'Wieczorek', 'oli@gmail.com', '$2a$10$8YuctcwcXHs67qqh8x44hurTcuBfHf7H1GadWJLTmTOqQ0kMN3ly.', 'student'),
-	('7f37c165-8b72-4fac-98f7-7c27dade7186', 'Basia', 'Budka', 'basia@gmail.com', '$2a$10$bbCS2ULP4u99dmju4utADu6emBE4i.XpXV4q0socEAdc.rFXwtrNy', 'student'),
-	('84d2d7a6-b7c6-4a15-9b4c-924d304b1beb', 'Natalia', 'Paluch', 'natalia@gmail.com', '$2a$10$OXcFYIIvNVuYnamhleViL.IXzkhcTiJe3KvQqGg3EwZPLtmd/qYRu', 'student'),
-	('8aa6cf5a-1f63-487d-abe8-c8a816007b20', 'Wiki', 'Komi', 'wiwk@gmail.com', '$2a$10$9/S7osb1IGeO6/YM5gol2eH9TzFQfI2HAFvGO6xJs2Kk85xuBk/xy', 'student'),
-	('8ba573a2-581a-4bdd-922a-17f37fe20c75', 'Kamil', 'Balonik', 'kamil@wp.pl', '$2a$10$5oVxuCNesYCjZXLzLMr41enO.xrcdXXMjfJJbAgcMIbKNOwMonU2C', 'student'),
-	('bc1a73b9-4043-44c8-8762-9a6bbcdc7447', 'Justyna', 'Król', 'justi@gmail.com', '$2a$10$3Igd6TiXEvYQ8/ciINMsVORgw7sbN59CD6NbNElKM32McskFXc7ce', 'student'),
-	('ccc8613d-3ba5-4394-a090-f8efea80a40b', 'asd', 'asd', 'asd@2asd', '$2a$10$78nOl7eVvCdsEtX7sMFbYehCLOnu648Nec8PGukZw63XP6C5ldqcm', 'student'),
-	('e27358ff-50a2-4bef-a1fe-1d3075514f2f', 'Kajtek', 'Lui', 'kajtek@lu', '$2a$10$BhXpF061ikOYGsxlac5JJeb.gk4FReNaW7KU43sUx1bO6FZsadp.m', 'student'),
-	('e66e55bd-f138-41d8-b6d4-4491f47fd13c', 'Witold', 'Nowiński', 'wit@gmail.com', '$2a$10$jExBAgGmXtS8BwrkzY2xN.U0YhLEbwhP2Ac3Puo5We3AHLZ8dVQIK', 'student'),
-	('eb8b427a-79e9-45ee-86c4-aea3c2ff8ae9', 'Tomek', 'Sroka', 'tomek@gmail.com', '$2a$10$zSNu.NTaIxmo8RCgdGjSs.SOroME27usrSMi0ihJp2QEygsxwrFWu', 'student'),
-
+	('3e3e6e95-5e71-40a3-8ae6-c790c1fa0689', 'Test', 'User', 'test@test.com', '$2a$10$mxRh0Btqnc.PBPk7jW4RduqHur7fwIE1J4vDzmFug3XEaHpWqacxK', 'student'),
+	('49b98916-f74e-4c15-b650-669a3652ed42', 'Krzysztof', 'Kolanko', 'krzychu@gmail.com', '$2a$10$u7fuL6pkOlrYYkJcuyhelunHar9OYplnpmtG4lcOBKGsx2Ph3OafG', 'student'),
+	('535bb083-4291-4962-bb63-03496a82b73a', 'Anna', 'Wolińska', 'ania@gmail.com', '$2a$10$84t8JEfTsEyaTXJwPocSx.lodNUzaHo9T9CKQciQDpCxTUJgoggV2', 'student'),
+	('9be30e5e-3b06-47ad-a71e-13b67330d9ed', 'Sonia', 'Wiatraczek', 'sonia@gmail.com', '$2a$10$wvk2TaO5JhRqaVhFSu6xQuRGemyphPY97jz2WUu9pdsX/02UIW3Dq', 'student'),
+	('c581685e-822e-487b-b6f4-31526787d2f3', 'Weronika', 'Liczko', 'wero@gmail.com', '$2a$10$3JFVcyNS9hKZswPlJHvJluj8vihixJ/2JeKhKEpl2OR5UigQcyYYm', 'student'),
+	('e3e8e231-0c2e-4003-9b7c-fc2b258e0d97', 'Katarzyna', 'Kornacka', 'kati@gmail.com', '$2a$10$xOQVI3/cicNMuJYTuNBCruBI6l0lzGfCMz3Z/O/atHn5o1Hj5ADO6', 'student'),
+	('f8ea52bd-7a31-49f5-b12d-13859f55427c', 'Adam ', 'Walczak', 'adam@gmail.com', '$2a$10$CEccczrO/7r.CHsKbtTwnOO5my6jfDL4G4s7Nw1Fa2ZWLtwgLACzO', 'student');
 
 -- Zrzut struktury tabela school_app_db.teachers
 CREATE TABLE IF NOT EXISTS `teachers` (
@@ -151,16 +172,6 @@ INSERT INTO `teachers` (`id`, `name`, `last_name`, `email`, `password`, `role`) 
 	('c9daa121-75aa-42ba-9eaa-f1a87c166ba1', 'Jan', 'Smoczyński', 'smoczke@gmail.com', '$2a$10$Nl.h/a0QIlS8l1eScR4UlOX/62Q6UiBg.sbG2ZrMdddTQs5.A5RNK', 'teacher'),
 	('d28de20c-632c-4195-94f7-e4256eb99c45', 'Karolina', 'Koszalińska', 'kor@kar', '$2a$10$UIWqyxVQFUZq8JrTsftD4Ovhl97O7L/m.tD4oUa1trzNcw.CRPXEi', 'teacher'),
 	('fb1b7dd1-9205-448e-9065-4e75de552b61', 'Kamil', 'Szor', 'kam2szor@', '$2a$10$8HPIwg8pkZheLXBe118H6e8oYivgcrM/XDXufQtwFr9T7A5jprTJ2', 'teacher');
-
--- Zrzut struktury tabela school_app_db.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` varchar(36) NOT NULL,
-  `email` varchar(40) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Zrzucanie danych dla tabeli school_app_db.users: ~0 rows (około)
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
