@@ -17,7 +17,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {lorem} from "./lorem";
 
-
 interface AllArticles {
     allArticles : Article[] | []
 }
@@ -81,7 +80,6 @@ export const News = () =>  {
         return <Spinner/>
     }
 
-
     return (
         <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column" mb="5em">
             <Box >
@@ -97,7 +95,6 @@ export const News = () =>  {
                 <SimpleGrid columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5}>
                     <>
                         {articles ? articles.map((article) => (
-                            <>
                                 <Card key={article.title} mb={5}>
                                     <CardBody>
                                         <>{article.image && <Image
@@ -118,8 +115,6 @@ export const News = () =>  {
                                         </Button>
                                     </CardFooter>
                                 </Card>
-
-                              </>
                             ))
                             :  <p>No artircles.</p>
                         }

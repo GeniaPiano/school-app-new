@@ -1,12 +1,8 @@
-
-
 import {Heading, HStack, IconButton, List, Spinner, Text} from "@chakra-ui/react";
-
 import {useStudents} from "../../hooks/useStudents";
 import {useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
-import {StudentsListItem} from "./StudentsListItem";
 import {ViewWrapper} from "../common/ViewWrapper";
 import {FiEdit, FiInfo, FiTrash2} from "react-icons/fi";
 import {CourseInfo} from "../CourseInfo/CourseInfo";
@@ -14,8 +10,8 @@ import {useCounter} from "../../providers/CounterPovider";
 import {FormStateProvider} from "../../providers/FormStateProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
-import {IoPersonAddOutline} from "react-icons/io5";
 import {useSearch} from "../../providers/SearchProvider";
+import PaginatedUserList from "../PaginatedUserList/PaginatedUserList";
 
 
 
@@ -48,7 +44,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 setLoading(false)
             }
         })();
-    }, [courseId, counterStudent, counterCourse, searchStudent])
+    }, [courseId, counterStudent, counterCourse, searchStudent, courseName, getAllStudents, getStudentsByGroup])
 
 
     return (
@@ -68,21 +64,20 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 </>
 
             )} </>
-            {mainList && <Text fontWeight="700" color="brand.800">{titleStudents}</Text>}
+            {mainList && <Text fontWeight="700" color="brand.800" m={5}>{titleStudents}</Text>}
             <List>
                 <FormStateProvider forAdding={false}>
                     <>  {loading? <Spinner/> : (
-                        <> {students.length !== 0
-                            ? students.map((student) =>
-                                <StudentsListItem
-                                    key={student.student.id}
-                                    studentData={student}
-                                    studentId={student.student.id}
-                                    mainList={mainList}
-                                    courseName={courseName? courseName : ''}
-                                />
-                            )
-                            : <Text my={10}> No students. </Text>}
+                        <>
+                            {
+                                students.length !== 0
+                                ? <PaginatedUserList
+                                        data={students}
+                                        itemsPerPage={5}
+                                        mainList={mainList}
+                                        courseName={courseName}
+                                        user='student'/> : <Text my={10}> No students. </Text>
+                            }
                         </>
                     )} </>
                 </FormStateProvider>
