@@ -127,12 +127,13 @@ export class CourseRecord implements CourseEntity {
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `courses` SET `name` = :name, `teacher_id` = :teacher_id WHERE `id` = :id, `description` = :description, `photoUrl` = :photoUrl", {
+        await pool.execute("UPDATE `courses` SET `name` = :name, `teacher_id` = :teacher_id, `description` = :description, `price` = :price, `photoUrl` = :photoUrl WHERE `id` = :id", {
             id: this.id,
             name: this.name,
             teacher_id: this.teacher_id,
             description: this.description,
             photoUrl: this.photoUrl,
+            price: this.price,
         });
 
         await pool.execute("DELETE FROM `courses_teachers` WHERE `course_id` = :course_id", {
@@ -147,8 +148,6 @@ export class CourseRecord implements CourseEntity {
         }
 
     }
-
-
 
 
     //POBRANIE LICZBY STUDENTÓW DANEGO KURSU

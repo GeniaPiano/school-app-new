@@ -54,10 +54,12 @@ export const updateCourse = async (req: Request, res: Response, next: NextFuncti
         if (name) {
             course.name = name;
         }
-        course.teacher_id = teacher_id ? teacher_id :  null;
-        course.description = description ?  description : null;
+        course.teacher_id = teacher_id === null ? null : teacher_id;
+        course.description = description === '' ? null : description;
         course.price = price;
         course.photoUrl = photoUrl;
+
+        console.log(req.body)
         await course.update();
         res.json(course);
      }

@@ -13,7 +13,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     try {
         const { email, password} = req.body;
         const user = await UserRecord.getUserByEmail(email)
-                if (!user) {
+        if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
@@ -39,25 +39,25 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 export const checkToken = async(req: Request, res: Response, next: NextFunction) => {
-        const token = req.header('Authorization')?.slice(7);
-        if (token) {
-            try {
-                const decoded: JwtPayload | string = jwt.verify(token, process.env.JWT) as JwtPayload;
-                if (typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
-                    const id = (decoded as JwtPayload).id
-                    const role = (decoded as JwtPayload).role;
-                    const user = await UserRecord.getUserById(id);
-                    if (user) {
-                        const clearedUser = userWithoutPassword(user);
-                        return res.status(200).json({id, role, ...clearedUser});
-                    }
-                } else {
-                    console.error('Invalid token format');
+    const token = req.header('Authorization')?.slice(7);
+    if (token) {
+        try {
+            const decoded: JwtPayload | string = jwt.verify(token, process.env.JWT) as JwtPayload;
+            if (typeof decoded === 'object' && 'id' in decoded && 'role' in decoded) {
+                const id = (decoded as JwtPayload).id
+                const role = (decoded as JwtPayload).role;
+                const user = await UserRecord.getUserById(id);
+                if (user) {
+                    const clearedUser = userWithoutPassword(user);
+                    return res.status(200).json({id, role, ...clearedUser});
                 }
-            } catch (err) {
-                console.error('Token verification failed:', err);
+            } else {
+                console.error('Invalid token format');
             }
+        } catch (err) {
+            console.error('Token verification failed:', err);
         }
+    }
     return res.status(401).json({ error: 'Unauthorized' });
 }
 
