@@ -13,13 +13,11 @@ export const AdminRoleView = () => {
         <Router>
          <MainLayout data={sidebarLinksData}>
                 <Routes>
-
-                     <Route exact path='/' element={<Navigate to={'/news'} />}  />
+                     <Route exact path='/' element={<Navigate to={'/courses'} />}  />
                      <Route path='/news' element={<News/>}/>
                      <Route  path='/courses/:courseId?' element={<CoursesView />} />
                      <Route path='/students' element={<StudentsView/>} />
                      <Route path='/teachers' element={<TeachersView/>} />
-
                     <Route path='*' element={<NotFoundView/>} />
                  </Routes>
          </MainLayout>
