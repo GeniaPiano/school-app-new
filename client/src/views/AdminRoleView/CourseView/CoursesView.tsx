@@ -2,34 +2,30 @@ import {
     Box,
     Flex,
     useDisclosure,
-    SimpleGrid, Menu, MenuList, MenuButton, MenuItem, MenuGroup,
+    TableContainer,
+    Table,
+    TableCaption,
 } from "@chakra-ui/react";
-import {useContext, useEffect, useState} from "react";
-import {useParams, NavLink, Navigate} from "react-router-dom";
-import {StudentsList} from "../../../components/students/StudentsList";
+import {useEffect, useState} from "react";
+import {useParams, Navigate} from "react-router-dom";
 import {useCourses} from "../../../hooks/useCourses";
 import {CourseEntity} from "../../../types/course";
-import {NavSizeContext} from "../../../providers/NavSizeProvider";
 import {CourseAddForm} from "../../../components/courseForm/CourseAddForm";
 import {useCounter} from "../../../providers/CounterPovider";
-import {firstLetterToUpper} from "../../../utils/firstLetterToUpper";
 import {Header} from "../../../components/Header/Header";
-import {ChevronDownIcon} from "@chakra-ui/icons";
 import {FormStateProvider} from "../../../providers/FormStateProvider";
-import {useCourseInfo} from "../../../providers/CourseProvider";
+import {PaginatedCoursesListForAdmin} from "../../../components/PaginatedCoursesListForAmin/PaginatedCoursesListForAdmin";
 
 
 export const CoursesView = () => {
-    const {navSize} = useContext(NavSizeContext)
     const {courseId}: string = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [courses, setCourses] = useState <CourseEntity[]| null> (null);
-    const [selectedCourse, setSelectedCourse] = useState < string
-        >('')
+    const [courses, setCourses] = useState <CourseEntity[]> ([]);
+    const [selectedCourse, setSelectedCourse] = useState <string>('')
     const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
     const {getAllCourses} = useCourses();
     const {counterCourse} = useCounter();
-    const {openModal, openEditModal, openDeleteModal} = useCourseInfo();
+
 
 
     useEffect(() => {
@@ -49,7 +45,7 @@ export const CoursesView = () => {
               console.log(e)
           }
         })()
-    }, [courseId, counterCourse])
+    }, [courseId, counterCourse, getAllCourses])
 
 
     if (!courseId && courses && courses.length > 0) return (
@@ -58,54 +54,40 @@ export const CoursesView = () => {
 
     return (
         <FormStateProvider forAdding={true}>
-        <Flex color="gray.500" h="95vh" mt="2.5vh" flexDir="column">
+        <Box
+            color="gray.500" h="95vh" mt="2.5vh" flexDir="column" width="90%"
+        >
             <Box>
-                <Flex w="95%" alignItems="center"  gap={50}>
+                <Flex w="95%" alignItems={{base: "center", md: "space-between"}}  gap={50}>
                     <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
 
-            <SimpleGrid spacing={4} columns={[1, 2, 3, 6, 7, 8]}>
+                <TableContainer border='1px solid'
+                                borderColor="gray.300"
+                                borderRadius='md'
+                                overflowX="auto"
+                                whiteSpace="wrap"
+                >
+                    <Table>
+                        {courses.length > 0 ? ( // Sprawdzenie, czy courses nie jest puste
+                            <PaginatedCoursesListForAdmin data={courses} itemsPerPage={6} />
+                        ) : (
+                            <TableCaption>No courses available</TableCaption>
+                        )}
+                    </Table>
+                </TableContainer>
                <> {
                     courses && courses.map((oneCourse) => {
                         return(
-                           <NavLink key={oneCourse.id} to={`/courses/${oneCourse.id}`}>
-                               <Flex
-                                   key={oneCourse.id}
-                                   alignItems="center"
-                                   textAlign="center"
-                                   justifyContent="space-between"
-                                   width={navSize === "large"?  {base: "60%", md: "100%"} : {base: "80%", md: "100%"}}
-                                   p={{base: "5px 8px", md: "8px", lg: "10px"}}
-                                   borderRadius="8px"
-                                   fontWeight={activeCourseId === oneCourse.id ? "600" : "400" }
-                                   bg={activeCourseId === oneCourse.id ? "brand.800" : "gray.300" }
-                                   color={activeCourseId === oneCourse.id ? "white" : "gray.500" }
-                               >
-                                <Box   _hover={{color:"white"}}>
-                                    {firstLetterToUpper(oneCourse.name)}
-                                </Box>
-                                   <Menu>
-                                       <MenuButton >
-                                           <ChevronDownIcon size="l" />
-                                       </MenuButton>
-                                       <MenuList>
-                                           <MenuGroup >
-                                               <MenuItem _hover={{bg:"pink.50"}}  color="pink.400" onClick={()=> {openModal(oneCourse.id)}}>info</MenuItem>
-                                               <MenuItem _hover={{bg:"pink.50"}} color="pink.400" onClick={()=> {openEditModal(oneCourse.id)}} >edit</MenuItem>
-                                               {/*<MenuItem _hover={{bg:"pink.5s0"}} color="pink.400">add student </MenuItem>*/}
-                                               <MenuItem _hover={{bg:"pink.5s0"}} color="pink.400" onClick={()=> {openDeleteModal(courseId)}}>delete </MenuItem>
-                                           </MenuGroup>
-                                       </MenuList>
-                                   </Menu>
+                           <p key={oneCourse.id} >
 
-                               </Flex>
-                           </NavLink>)})
+                           </p>)})
                                } </>
-            </SimpleGrid>
+
             </Box>
-            <StudentsList courseName={selectedCourse} mainList={false}/>
-        </Flex>
+
+        </Box>
         </FormStateProvider>
     )
 }

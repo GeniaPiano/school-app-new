@@ -4,7 +4,7 @@ import {Button, ButtonGroup, List} from "@chakra-ui/react";
 import {TeacherListItem} from "../teachers/TeacherListItem";
 
 
-const PaginatedUserList = ({ data, itemsPerPage, mainList, courseName, user, teacher }) => {
+export const PaginatedUserList = ({ data, itemsPerPage, mainList, courseName, user, teacher }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -54,4 +54,3 @@ const PaginatedUserList = ({ data, itemsPerPage, mainList, courseName, user, tea
     );
 };
 
-export default PaginatedUserList;

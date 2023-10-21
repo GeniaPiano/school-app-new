@@ -8,6 +8,10 @@ import {TeacherRecord} from "../records/teacher.record";
 export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
  try {
      const coursesList: CourseRecord[] = await CourseRecord.listAll();
+     coursesList.map(async course => {
+         const oneCourse = await CourseRecord.getOne(course.id)
+        // const teacherName = oneCourse.getTeacherName(course.teacher_id)
+     } )
      res.json( {
          coursesList,
      });
