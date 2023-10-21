@@ -20,8 +20,10 @@ export const getCoursesWithAllDetails = async (req: Request, res: Response, next
     const courses = await CourseRecord.listAll();
     const coursesWithDetails = await Promise.all(courses.map(async course => {
         const rates = await RateCourseRecord.listAllForOneCourse(course.id)
+        const countStudents = await course.countStudents();
         return {
             ...course,
+            countStudents,
             rates,
         }
     }))
