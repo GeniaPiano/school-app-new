@@ -14,6 +14,7 @@ import {Header} from "../../../components/Header/Header";
 import {FormStateProvider} from "../../../providers/FormStateProvider";
 import {PaginatedCoursesListForAdmin} from "../../../components/PaginatedCoursesListForAmin/PaginatedCoursesListForAdmin";
 import {CourseAllDetails} from "../../../types/course";
+import {CourseInfo} from "../../../components/CourseInfo/CourseInfo";
 
 
 export const CoursesView = () => {
@@ -72,6 +73,7 @@ export const CoursesView = () => {
             </Box>
 
         </Box>
+        <CourseInfo />
         </FormStateProvider>
     )
 }
