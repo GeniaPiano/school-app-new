@@ -110,6 +110,20 @@ export class CourseRecord implements CourseEntity {
         return results.length === 0 ? null : new CourseRecord(results[0]);
     }
 
+    static async listCoursesWithAllData():Promise<any> {
+        const allCourses = await CourseRecord.listAll();
+        allCourses.map(course => {
+            const teacherName = course.teacher_id === null ? null : course.getTeacherName(course.teacher_id);
+            const countStudents = course.countStudents();
+            const rateCourse = course.getCourseRate(course.id);
+        })
+    }
+
+    async getCourseRate(course_id: string) {
+
+    }
+
+
 
     async delete(): Promise<void> {
         if (await this.countStudents() > 0 ) {
