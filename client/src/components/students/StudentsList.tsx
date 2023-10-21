@@ -1,6 +1,5 @@
 import {Heading, HStack, IconButton, List, Spinner, Text} from "@chakra-ui/react";
 import {useStudents} from "../../hooks/useStudents";
-import {useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {SingleStudentRes} from "../../types/student";
 import {ViewWrapper} from "../common/ViewWrapper";
@@ -11,22 +10,21 @@ import {FormStateProvider} from "../../providers/FormStateProvider";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {NavSizeContext} from "../../providers/NavSizeProvider";
 import {useSearch} from "../../providers/SearchProvider";
-import PaginatedUserList from "../PaginatedUserList/PaginatedUserList";
-
-
+import {PaginatedUserList} from "../PaginatedUserList/PaginatedUserList";
 
 interface Props {
     courseName?: string;
     mainList:boolean;
+    courseId: string;
 }
 
-export const StudentsList = ({courseName, mainList}: Props) => {
+export const StudentsList = ({courseName, mainList, courseId}: Props) => {
     const {searchStudent} = useSearch()
 
     const [students, setStudents] = useState < SingleStudentRes[]> ([])
     const [loading, setLoading] = useState <boolean>(true)
     const {openModal, openEditModal, openDeleteModal} = useCourseInfo();
-    const {courseId} = useParams();
+    // const {courseId} = useParams();
     const {getStudentsByGroup, getAllStudents} = useStudents();
     const {counterStudent, counterCourse}= useCounter()
     const {navSize} = useContext(NavSizeContext)
@@ -44,8 +42,7 @@ export const StudentsList = ({courseName, mainList}: Props) => {
                 setLoading(false)
             }
         })();
-    }, [courseId, counterStudent, counterCourse, searchStudent, courseName, getAllStudents, getStudentsByGroup])
-
+    }, [courseId, counterStudent, counterCourse, searchStudent])
 
     return (
         <ViewWrapper>

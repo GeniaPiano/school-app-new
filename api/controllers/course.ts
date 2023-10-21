@@ -21,8 +21,13 @@ export const getCoursesWithAllDetails = async (req: Request, res: Response, next
     const coursesWithDetails = await Promise.all(courses.map(async course => {
         const rates = await RateCourseRecord.listAllForOneCourse(course.id)
         const countStudents = await course.countStudents();
+        const teacherName = course.teacher_id !== null
+            ?`${(await TeacherRecord.getOne(course.teacher_id)).name} ${(await TeacherRecord.getOne(course.teacher_id)).last_name}`
+            : null;
+
         return {
             ...course,
+            teacherName,
             countStudents,
             rates,
         }

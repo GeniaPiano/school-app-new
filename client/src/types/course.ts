@@ -1,4 +1,6 @@
 import {TeacherEntity} from "./teacher";
+import {RateCourseEntity} from "./rateCourse";
+
 
 export interface CourseEntity {
     id: string;
@@ -18,6 +20,16 @@ export interface GetSingleCourseResponse {
 export type CourseResponse = {
     coursesList: CourseEntity[] | [];
 };
+
+export interface CourseAllDetails extends CourseEntity {
+    countStudents: number;
+    teacherName: string | null;
+    rates: RateCourseEntity[];
+}
+
+export type CourseAllDetailsResponse = {
+    courses: CourseAllDetails[]
+}
 
 export type CoursesForStudentResponse = {
     coursesAvailable: CourseEntity[] | [],

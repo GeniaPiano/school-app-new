@@ -7,23 +7,20 @@ import {
     TableCaption,
 } from "@chakra-ui/react";
 import {useEffect, useState} from "react";
-import {useParams, Navigate} from "react-router-dom";
 import {useCourses} from "../../../hooks/useCourses";
-import {CourseEntity} from "../../../types/course";
 import {CourseAddForm} from "../../../components/courseForm/CourseAddForm";
 import {useCounter} from "../../../providers/CounterPovider";
 import {Header} from "../../../components/Header/Header";
 import {FormStateProvider} from "../../../providers/FormStateProvider";
 import {PaginatedCoursesListForAdmin} from "../../../components/PaginatedCoursesListForAmin/PaginatedCoursesListForAdmin";
+import {CourseAllDetails} from "../../../types/course";
 
 
 export const CoursesView = () => {
-    const {courseId}: string = useParams();
+
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [courses, setCourses] = useState <CourseEntity[]> ([]);
-    const [selectedCourse, setSelectedCourse] = useState <string>('')
-    const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
-    const {getAllCourses} = useCourses();
+    const [courses, setCourses] = useState <CourseAllDetails[]> ([]);
+    const {getCoursesAllDetails} = useCourses();
     const {counterCourse} = useCounter();
 
 
@@ -31,26 +28,13 @@ export const CoursesView = () => {
     useEffect(() => {
         (async () => {
           try {
-              const coursesList = await getAllCourses();
+              const coursesList = await getCoursesAllDetails();
               setCourses(coursesList)
-              if (!courseId &&  coursesList.length > 0) {
-                                  setSelectedCourse(coursesList[0].name)
-                              } else {
-                                  const selectedCourseObj = coursesList.find(course => course.id === courseId);
-                                  if (selectedCourseObj) {
-                                      setSelectedCourse(selectedCourseObj.name);
-                                      setActiveCourseId(selectedCourseObj.id)
-                                  }}
           } catch (e) {
               console.log(e)
           }
         })()
-    }, [courseId, counterCourse, getAllCourses])
-
-
-    if (!courseId && courses && courses.length > 0) return (
-        <Navigate to={`/courses/${courses[0].id}`}/>
-    )
+    }, [counterCourse, getCoursesAllDetails])
 
     return (
         <FormStateProvider forAdding={true}>
@@ -70,7 +54,7 @@ export const CoursesView = () => {
                                 whiteSpace="wrap"
                 >
                     <Table>
-                        {courses.length > 0 ? ( // Sprawdzenie, czy courses nie jest puste
+                        {courses.length > 0 ? (
                             <PaginatedCoursesListForAdmin data={courses} itemsPerPage={6} />
                         ) : (
                             <TableCaption>No courses available</TableCaption>
