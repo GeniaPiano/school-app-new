@@ -3,21 +3,31 @@ import {NextFunction, Request, Response} from "express";
 import {ValidationError} from "../utils/errors";
 import {CreateCourseReq, TeacherEntity} from "../types";
 import {TeacherRecord} from "../records/teacher.record";
-
+import {RateCourseRecord} from "../records/rateCourse.record";
 
 export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
  try {
      const coursesList: CourseRecord[] = await CourseRecord.listAll();
-     coursesList.map(async course => {
-         const oneCourse = await CourseRecord.getOne(course.id)
-        // const teacherName = oneCourse.getTeacherName(course.teacher_id)
-     } )
      res.json( {
          coursesList,
      });
    } catch(err) {
      next(err)
  }
+}
+
+export const getCoursesWithAllDetails = async (req: Request, res: Response, next: NextFunction) => {
+    const courses = await CourseRecord.listAll();
+    const coursesWithDetails = await Promise.all(courses.map(async course => {
+        const rates = await RateCourseRecord.listAllForOneCourse(course.id)
+        return {
+            ...course,
+            rates,
+        }
+    }))
+    res.json({
+        courses: coursesWithDetails,
+    })
 }
 
 export const getCoursesWithoutTeachers = async (req: Request, res: Response, next: NextFunction) => {

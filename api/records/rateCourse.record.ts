@@ -14,9 +14,10 @@ export class RateCourseRecord implements RateCourseEntity {
     stars: 1 | 2 | 3 | 4 | 5;
 
     constructor(obj: RateCourseRecord) {
-        if (!obj.stars | obj.opinion > 2000) {
+        if (!obj.stars || obj.opinion !== null && obj.opinion.length > 2000) {
             throw new ValidationError('Missing data or data not correct.')
         }
+
         this.id = obj.id;
         this.course_id = obj.course_id;
         this.student_id = obj.student_id;
@@ -48,8 +49,22 @@ export class RateCourseRecord implements RateCourseEntity {
     }
 
     static async listAll() {
-        await pool.execute("SELECT * FROM `course_student_rates`")
+        const [results] = await pool.execute("SELECT * FROM `course_student_rates`") as RateCoursesRecordResults;
+        return results.map(obj => new RateCourseRecord(obj));
+            }
+
+    static async listAllForOneCourse(courseId: string): Promise<RateCourseRecord[]> {
+        const [results] = await pool.execute("SELECT * FROM `course_student_rates`  WHERE `course_id` = :course_id ",{
+            course_id: courseId
+        }) as RateCoursesRecordResults;
+
+        return results.map((obj) => new RateCourseRecord(obj));
     }
+
+
+
+
+
 
 
 

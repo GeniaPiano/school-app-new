@@ -16,6 +16,7 @@ import {authRouter} from "./routers/auth"
 import {adminRouter} from "./routers/admin"
 import {shopRouter} from "./routers/shop";
 import {datoRouter} from "./routers/dato";
+import {rateCourseRouter} from "./routers/rateCourse";
 
 
 const app = express();
@@ -36,6 +37,7 @@ app.use('/api/student', studentRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/shop', shopRouter);
+app.use('/api/rate-course', rateCourseRouter);
 app.use('/api/dato', datoRouter)
 app.use(handleError);
 
