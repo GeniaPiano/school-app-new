@@ -1,38 +1,28 @@
 import {HStack} from "@chakra-ui/react";
 import {AiFillStar} from "react-icons/ai";
+
 interface Props {
-    average: number;
+    stars: number;
 }
-
-export const StarsRate = ({average}:Props) => {
-
-    const createArray = (length) => {
-      const array = []
-      for (let i = 1; i <= length; i++) {
+export const StarsRate = ({stars} :Props) => {
+    const createArray = () => {
+        const array = []
+        for (let i = 1; i <= stars; i++) {
             array.push(i);
         }
-      return array
+        return array
     }
+    const numberOfStars = createArray()
 
-    const numberOfColored = Math.floor(average)
-    const numberOfUnColored = 5 - numberOfColored
-    const colored = createArray(numberOfColored)
-    const unColored = createArray(numberOfUnColored)
 
-    if (!average) return  (
+    return (
         <HStack>
-            <AiFillStar style={{color: '#CCCCCC'}}/>
-            <AiFillStar style={{color: '#CCCCCC'}}/>
-            <AiFillStar style={{color: '#CCCCCC'}}/>
-            <AiFillStar style={{color: '#CCCCCC'}}/>
-            <AiFillStar style={{color: '#CCCCCC'}}/>
+            {numberOfStars.map(star => (
+                <HStack key={star}>
+                    <AiFillStar color="orange"/>
+                </HStack>
+            ))}
+
         </HStack>
     )
-
-     return (
-         <HStack>
-             {colored.map(one => <AiFillStar key={one} style={{color: 'teal'}} />)}
-             {unColored.map(one => <AiFillStar key={one} style={{color: '#CCCCCC'}}/>)}
-         </HStack>
-     )
 }
