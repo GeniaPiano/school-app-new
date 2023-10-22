@@ -9,7 +9,7 @@ import {
     ModalFooter,
     Text
 } from "@chakra-ui/react";
-import {Link} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
 import {useCourseInfo} from "../../providers/CourseProvider";
 import {GetSingleCourseResponse} from "../../types/course";
@@ -25,8 +25,13 @@ interface Props {
 }
 export const BasicInfo = ({courseData }: Props) => {
 
-    const {changeIsEditing, changeIsDelete} = useCourseInfo();
+    const {changeIsEditing, changeIsDelete, closeModal} = useCourseInfo();
     const average = averageRateCourse(courseData.rates)
+    const navigate = useNavigate();
+    const handleNavigate = () => {
+        closeModal();
+        navigate(`/courses/${courseData.id}`)
+    }
 
 
     return (
@@ -36,7 +41,6 @@ export const BasicInfo = ({courseData }: Props) => {
                 <HStack mb={2}>
                     <Badge colorScheme="pink" mr={2}>Number of students </Badge>
                     <Text> {courseData && courseData.countStudents} </Text>
-
                 </HStack>
                 <HStack mb={10}>
                     <Badge colorScheme="pink" mr={50}>Teacher name </Badge>
@@ -79,7 +83,7 @@ export const BasicInfo = ({courseData }: Props) => {
 
             </ModalBody>
             <ModalFooter>
-                <Link colorScheme='teal' mr={10}>See student list</Link>
+                <Button onClick={handleNavigate} colorScheme='teal' mr={10}>See student list</Button>
                 <Button color="gray.600" mr={3} onClick={()=> changeIsEditing(true)}>Edit</Button>
                 <Button  color="pink.500" onClick={()=> changeIsDelete(true)}>Delete</Button>
             </ModalFooter>

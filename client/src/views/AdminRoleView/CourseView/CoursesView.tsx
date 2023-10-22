@@ -39,15 +39,12 @@ export const CoursesView = () => {
 
     return (
         <FormStateProvider forAdding={true}>
-        <Box
-            color="gray.500" h="95vh" mt="2.5vh" flexDir="column" width="90%"
-        >
+        <Box   color="gray.500" h="95vh" mt="2.5vh" flexDir="column" width="90%" >
             <Box>
                 <Flex w="95%" alignItems={{base: "center", md: "space-between"}}  gap={50}>
                     <Header title="courses" buttonText='+ add new course' onOpen={onOpen}/>
                 </Flex>
                 <CourseAddForm isOpen={isOpen} onClose={onClose}/>
-
                 <TableContainer border='1px solid'
                                 borderColor="gray.300"
                                 borderRadius='md'

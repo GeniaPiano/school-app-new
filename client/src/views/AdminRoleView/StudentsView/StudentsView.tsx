@@ -1,4 +1,5 @@
 import {
+    Box,
     Flex,
     Modal,
     ModalContent,
@@ -22,7 +23,7 @@ export const StudentsView = () =>  {
     const {error} = useError()
 
         return (
-            <Flex  color="gray.500" h="95vh" mt="2.5vh" flexDirection="column" >
+            <Box   color="gray.500" h="95vh" mt="2.5vh" flexDir="column" width="90%" >
                 <Header title="students" buttonText="+ add new student" onOpen={onOpen} />
                 <SearchBar searchType="student" />
                 {error && <ErrorText text={error} color="pink.500" />}
@@ -40,7 +41,7 @@ export const StudentsView = () =>  {
                    <Flex my={5}>
                        <StudentsList isSearch={true} mainList={true}/>
                    </Flex>
-            </Flex>
+            </Box>
         )
 
 }
