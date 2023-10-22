@@ -55,12 +55,10 @@ export const CourseInfo = () => {
         setPrice(newPrice)
     }
 
-    const { isOpen, closeModal, courseId, isEditing, changeIsPosted, changeIsEditing, isLoadingEvent, changeIsLoadingEvent, isPostedEvent, changeIsPostedEvent,
-        isPosted, isConfirmed, toggleIsConfirmed, isDelete, changeIsDelete, changeConfirmClose, confirmClose} = useCourseInfo();
-
+    const courseInfo = useCourseInfo();
     const {updateCourse, deleteCourse} = useCourses();
     const {incrementCourseCounter, counterCourse} = useCounter()
-    const {getCourseById} = useCourses();
+    const {getOneAllDetails} = useCourses();
     const {getAllTeachers} = useTeachers();
     const { onClose } = useDisclosure()
     const cancelRef = useRef() as  NonNullable<ModalProps["initialFocusRef"]>
@@ -68,24 +66,24 @@ export const CourseInfo = () => {
 
 
     useEffect(() => {
-        if (isOpen && courseId) {
+        if (courseInfo.isOpen && courseInfo.courseId) {
             (async () => {
                 try {
-                    const results = await getCourseById(courseId);
+                    const results = await getOneAllDetails(courseInfo.courseId);
                     setCourseData(results);
-                    setPhotoUrl(results.course.photoUrl)
-                    setName(results.course.name)
-                    setPrice(String(results.course.price))
-                    setDescription(results.course.description === null ? '' : results.course.description)
+                    setPhotoUrl(results.photoUrl)
+                    setName(results.name)
+                    setPrice(String(results.price))
+                    setDescription(results.description === null ? '' : results.description)
                     setSelectTeacher(results.teacher ? results.teacher.id : null)
                     setInitialFormData((prev) => {
                         return {
                             ...prev,
-                            name: results.course.name,
+                            name: results.name,
                             teacher: {id: results.teacher ? results.teacher.id : null},
-                            description: results.course.description ? description : '',
-                            price: String(results.course.price),
-                            photoUrl: results.course.photoUrl,
+                            description: results.description ? description : '',
+                            price: String(results.price),
+                            photoUrl: results.photoUrl,
                         }
                     })
                 } catch (error) {
@@ -93,10 +91,10 @@ export const CourseInfo = () => {
                 }
             })();
         }
-    }, [isOpen, courseId, counterCourse, setDescription])
+    }, [courseInfo.isOpen, courseInfo.courseId, counterCourse, setDescription])
 
     useEffect(()=> {
-        if (isOpen) {
+        if (courseInfo.isOpen) {
             (async () => {
                 try {
                     const results = await getAllTeachers('');
@@ -106,7 +104,7 @@ export const CourseInfo = () => {
                 }
             })()
         }
-    },[isOpen])
+    },[courseInfo.isOpen])
 
     const handleInputChange = (e) => {
         setName(e.target.value)
@@ -117,7 +115,7 @@ export const CourseInfo = () => {
         }
 
     const cancelEditing =()=>{
-        changeIsEditing(false)
+        courseInfo.changeIsEditing(false)
         setName(name)
         }
 
@@ -146,55 +144,55 @@ export const CourseInfo = () => {
             },3000)
             return
         }
-        const response = await updateCourse(courseId, name, selectTeacher, description, price, photoUrl )
+        const response = await updateCourse(courseInfo.courseId, name, selectTeacher, description, price, photoUrl )
         if (response.success) {
-            changeIsEditing(false)
-            changeIsPosted(true)
-            toggleIsConfirmed()
+            courseInfo.changeIsEditing(false)
+            courseInfo.changeIsPosted(true)
+            courseInfo.toggleIsConfirmed()
 
 
             setTimeout(()=>{
-                toggleIsConfirmed()
+                courseInfo.toggleIsConfirmed()
             }, 1000)
             setTimeout(()=> {
-                changeIsPosted(false)
+                courseInfo.changeIsPosted(false)
                 incrementCourseCounter()
             }, 2000)
         }
     }
 
     const handleCloseModal = () => {
-        if (isEditing) {
+        if (courseInfo.isEditing) {
             const diff = checkDifference()
             if (diff === 'diff') {
-               changeConfirmClose(true)
+                courseInfo.changeConfirmClose(true)
             } else {
-                closeModal()
+                courseInfo.closeModal()
             }
         } else {
-            closeModal()
+            courseInfo.closeModal()
         }
     }
 
 
     const handleDeleteCourse = async() => {
-        const {id} = courseData?.course
+        const {id} = courseData
         if(id) {
             try {
                 const response = await deleteCourse(id)
                 if (response.success) {
-                    changeIsPostedEvent(true)
-                    changeIsLoadingEvent(true)
-                    closeModal();
+                    courseInfo.changeIsPostedEvent(true)
+                    courseInfo.changeIsLoadingEvent(true)
+                    courseInfo.closeModal();
 
                     setTimeout(() => {
-                        changeIsLoadingEvent(false);
+                        courseInfo.changeIsLoadingEvent(false);
                          // zamknięcie alertu po skonczeniu operacji
                     }, 1500);
 
                     setTimeout(()=> {
-                        changeIsPostedEvent(false);
-                        toggleIsConfirmed();
+                        courseInfo.changeIsPostedEvent(false);
+                        courseInfo.toggleIsConfirmed();
 
                         incrementCourseCounter();
                         navigate('/courses')
@@ -210,13 +208,13 @@ export const CourseInfo = () => {
 
     return (
         <>
-        <Modal isOpen={isOpen} onClose={handleCloseModal} colorScheme="teal">
+        <Modal isOpen={courseInfo.isOpen} onClose={handleCloseModal} colorScheme="teal">
             <ModalOverlay />
             <ModalContent>
                 <ModalCloseButton color="gray.500" />
-                {courseData && (
-                    isEditing
-                        ?   <UpdateCourseForm course={courseData.course}
+                 {courseData && (
+                    courseInfo.isEditing
+                        ?   <UpdateCourseForm course={courseData}
                                               handleInputChange={handleInputChange}
                                               handleSelectChange={handleSelectChange}
                                               description={description}
@@ -232,15 +230,15 @@ export const CourseInfo = () => {
                                               photoUrl={photoUrl}
                                               handleSelectPhotoUrl={handleSelectPhotoUrl}
                             />
-                        :  <> { isPosted
-                            ? ( !isConfirmed ?  <ModalUpdated/> : <ModalPosting/> )
+                        :  <> { courseInfo.isPosted
+                            ? ( !courseInfo.isConfirmed ?  <ModalUpdated/> : <ModalPosting/> )
                             :  <>
-                                {isDelete ?  (courseData.countStudents > 0
-                                   ? <ModalWarning name={courseData.course.name}  closeModal={closeModal}/>
-                                   : <ModalConfirmation name={courseData.course.name}
-                                                        closeModal={closeModal}
+                                {courseInfo.isDelete ?  (courseData.countStudents > 0
+                                   ? <ModalWarning name={courseData.name}  closeModal={courseInfo.closeModal}/>
+                                   : <ModalConfirmation name={courseData.name}
+                                                        closeModal={courseInfo.closeModal}
                                                         handleDeleteCourse={handleDeleteCourse}
-                                                        changeIsDelete={changeIsDelete}/> )
+                                                        changeIsDelete={courseInfo.changeIsDelete}/> )
                                     : <BasicInfo courseData={courseData}/> }
                             </>
                     } </>
@@ -251,15 +249,15 @@ export const CourseInfo = () => {
             </ModalContent>
         </Modal>
 
-           <> {isPostedEvent &&  (
+           <> {courseInfo.isPostedEvent &&  (
                 <AlertDialog
-                isOpen={isPostedEvent}
+                isOpen={courseInfo.isPostedEvent}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                        <AlertDialogBody justifyContent="center" py={15}>
-                           {isLoadingEvent ? <Loader colorScheme="red" loadingText='deleting...' />
+                           {courseInfo.isLoadingEvent ? <Loader colorScheme="red" loadingText='deleting...' />
                              :(<Flex justifyContent='center' alignItems="center" gap={25}>
                                  <Box color='teal'>deleted</Box>
                                  <CheckIcon color="teal"/>
@@ -270,8 +268,8 @@ export const CourseInfo = () => {
                 </AlertDialog>
             )} </>
 
-            {confirmClose && (
-             <AlertDialog isOpen={confirmClose} onClose={onClose} leastDestructiveRef={cancelRef2} >
+            {courseInfo.confirmClose && (
+             <AlertDialog isOpen={courseInfo.confirmClose} onClose={onClose} leastDestructiveRef={cancelRef2} >
                  <AlertDialogOverlay>
                      <AlertDialogContent>
                          <AlertDialogBody>
@@ -283,13 +281,13 @@ export const CourseInfo = () => {
                                  ref={cancelRef2}
                                  onClick={() => {
                                      onClose();
-                                     closeModal();
-                                     changeConfirmClose(false);
+                                     courseInfo.closeModal();
+                                     courseInfo.changeConfirmClose(false);
                                  }}
                              >
                                  Yes, leave.
                              </Button>
-                             <Button colorScheme='pink' onClick={() => changeConfirmClose(false)} ml={3}>
+                             <Button colorScheme='pink' onClick={() => courseInfo.changeConfirmClose(false)} ml={3}>
                                  No, come back to form.
                              </Button>
                          </AlertDialogFooter>

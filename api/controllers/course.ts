@@ -1,9 +1,11 @@
 import {CourseRecord} from "../records/course.record";
 import {NextFunction, Request, Response} from "express";
 import {ValidationError} from "../utils/errors";
-import {CreateCourseReq, TeacherEntity} from "../types";
+import {CourseEntity, CreateCourseReq, TeacherEntity} from "../types";
 import {TeacherRecord} from "../records/teacher.record";
 import {RateCourseRecord} from "../records/rateCourse.record";
+import {userWithoutPassword} from "../utils/dataWithoutPassword";
+import {StudentRecord} from "../records/student.record";
 
 export const getAllCourses = async (req: Request, res: Response, next: NextFunction) => {
  try {
@@ -48,6 +50,30 @@ export const getCoursesWithoutTeachers = async (req: Request, res: Response, nex
     }
 }
 
+export const getOneCourseAllDetails = async (req: Request, res:Response, next: NextFunction) => {
+    try {
+        const course = await CourseRecord.getOne(req.params.id)
+        const countStudents = await course.countStudents();
+        const teacher =await TeacherRecord.getOne(course.teacher_id);
+        const rates = await RateCourseRecord.listAllForOneCourse(course.id);
+        const ratesWithAuthorName = await Promise.all(rates.map(async oneRate => {
+            const author = await StudentRecord.getOne(oneRate.student_id)
+            return {
+                ...oneRate,
+                authorName: `${author.name} ${author.last_name}`
+            }
+        }))
+        res.json({
+            ...course,
+            countStudents,
+            teacher: teacher === null ? null : userWithoutPassword(teacher),
+            rates: ratesWithAuthorName,
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const getOneCourse = async (req: Request, res: Response, next: NextFunction) => {
 
     const {courseId} = req.params
@@ -60,7 +86,7 @@ export const getOneCourse = async (req: Request, res: Response, next: NextFuncti
     res.json({
         course,
         countStudents,
-        teacher,
+        teacher: userWithoutPassword(teacher)
     })
 }
 

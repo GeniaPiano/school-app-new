@@ -44,7 +44,6 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
     const changeIsLoadingEvent = (bool: boolean) => setIsLoadingEvent(bool)
     const [isPostedEvent, setIsPostedEvent] = useState(false);
     const changeIsPostedEvent = (bool: boolean) => setIsPostedEvent(bool)
-
     const changeIsPosted = (bool: boolean) => setIsPosted(bool)
     const toggleIsConfirmed = () => setIsConfirmed(prev=> !prev)
     const openModal = (courseId: string) => {
@@ -93,7 +92,8 @@ export const CourseInfoProvider: FC<CourseProviderProps> = ({children}) => {
             isLoadingEvent,
             changeIsLoadingEvent,
             isPostedEvent,
-            changeIsPostedEvent
+            changeIsPostedEvent,
+
         }}
     >
         {children}

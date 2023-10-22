@@ -5,3 +5,7 @@ export interface RateCourseEntity  {
     stars: 1 | 2 | 3 | 4 | 5;
     opinion?: string;
 }
+
+export interface RateCourseWithAuthor extends RateCourseEntity {
+    authorName: string;
+}

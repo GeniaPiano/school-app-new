@@ -5,7 +5,7 @@ import {
     getOneCourse,
     updateCourse,
     deleteCourse,
-    getCoursesWithoutTeachers, getCoursesWithAllDetails
+    getCoursesWithoutTeachers, getCoursesWithAllDetails, getOneCourseAllDetails
 } from "../controllers/course";
 
 import {getCoursesForStudent} from "../controllers/student";
@@ -16,6 +16,7 @@ courseRouter
     .get('/get-courses-all-details', getCoursesWithAllDetails)
     .get('/courses-without-teacher', getCoursesWithoutTeachers)
     .get('/courses-for-student/:id', getCoursesForStudent)
+    .get('/get-one-all-details/:id', getOneCourseAllDetails)
     .get('/:courseId', getOneCourse)
     .patch('/:courseId',  updateCourse)
     .post('/', createCourse)
