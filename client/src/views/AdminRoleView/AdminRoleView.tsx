@@ -1,11 +1,11 @@
 import {MainLayout} from "../../layouts/MainLayout";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
-import {CoursesView} from "./CourseView/CoursesView";
 import {StudentsView} from "./StudentsView/StudentsView";
 import {TeachersView} from "./TeachersView/TeachersView";
-import {News} from "../News/News";
 import {NotFoundView} from "../NotFoundView/NotFoundView";
 import {sidebarLinksData} from "./sidebarLinksData";
+import {StudentListOneCourse} from "./StudentListOneCourse/StudentListOneCourse";
+import {CoursesView} from "./CourseView/CoursesView";
 
 export const AdminRoleView = () => {
     return (
@@ -14,8 +14,8 @@ export const AdminRoleView = () => {
          <MainLayout data={sidebarLinksData}>
                 <Routes>
                      <Route exact path='/' element={<Navigate to={'/courses'} />}  />
-                     <Route path='/news' element={<News/>}/>
-                     <Route  path='/courses/:courseId?' element={<CoursesView />} />
+                    <Route  path='/courses' element={<CoursesView />} />
+                     <Route  path='/courses/:courseId' element={<StudentListOneCourse />} />
                      <Route path='/students' element={<StudentsView/>} />
                      <Route path='/teachers' element={<TeachersView/>} />
                     <Route path='*' element={<NotFoundView/>} />

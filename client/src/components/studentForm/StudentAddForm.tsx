@@ -126,7 +126,7 @@ export const StudentAddForm = ({isOpen, onClose}: Props) => {
             <ModalOverlay />
             <ModalContent  color="gray.500">
                 <ModalCloseButton onClick={handleCloseMainModal}/>
-                <ModalHeader>Add new student to </ModalHeader>
+                <ModalHeader>Add new student</ModalHeader>
                 <ModalBody>
                     <form>
                        {userFormData.map(oneForm => (

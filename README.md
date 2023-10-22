@@ -61,14 +61,17 @@ Simplify fitness studio management of fitness and dance institution studio.
 <h1 align="center">Screens:</h1> 
 <img src="https://www.datocms-assets.com/107048/1697613974-3.jpg" alt="graphql" height="400"/>
 <img alt="" src="https://www.datocms-assets.com/107048/1697613984-5.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1698008103-screenshot_a.jpg" height="400">
+<img src="https://www.datocms-assets.com/107048/1698008108-screenshot_b.jpg" alt="" height="400">
+<img src="https://www.datocms-assets.com/107048/1698008117-screenshot_d.jpg" alt="">
+<img src="https://www.datocms-assets.com/107048/1698008122-screenshot_e.jpg" alt="">
 <img alt="" src="https://www.datocms-assets.com/107048/1697613967-1.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1697613971-2.jpg" height="400">
 <img alt=""  src="https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586209-screenshot_8.jpg" height="400">
-<img alt="" src="https://www.datocms-assets.com/107048/1696586252-screenshot_7.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586262-screenshot_5.jpg" height="400">
-![](https://www.datocms-assets.com/107048/1696586217-screenshot_4.jpg)
+
 
 
 

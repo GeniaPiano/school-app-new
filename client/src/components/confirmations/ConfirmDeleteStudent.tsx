@@ -69,7 +69,7 @@ export const  ConfirmDeleteStudent = ({student, mainList, courseName}: Props) =>
     const {isLoadingData, isPostedData, changeIsPostedData, changeIsLoadingData} = usePostingData();
 
     return (
-        <> <Button size="sm" colorScheme="pink" variant="ghost"  onClick={onOpen}> delete </Button>
+        <> <Button size="sx" colorScheme="pink" variant="ghost"  onClick={onOpen}> delete </Button>
 
             <AlertDialog isOpen={isOpen} onClose={onClose} placement='bottom-start' >
 

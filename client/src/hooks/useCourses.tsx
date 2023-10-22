@@ -1,9 +1,17 @@
 import {useCallback} from "react";
 import axios from "axios";
 import {COURSE_URL} from "../../config/api";
-import {CourseEntity, CourseResponse, CoursesForStudentResponse, GetSingleCourseResponse} from "../types/course";
+import {
+    CourseAllDetails,
+    CourseAllDetailsResponse,
+    CourseEntity,
+    CourseResponse,
+    CoursesForStudentResponse,
+    GetSingleCourseResponse
+} from "../types/course";
 
 export const useCourses = () => {
+
     const getAllCourses = (useCallback( async () => {
         try {
             const results = await axios.get<CourseResponse>(COURSE_URL);
@@ -12,6 +20,19 @@ export const useCourses = () => {
             console.log(e)
         }
     }, []))
+
+
+
+    const getCoursesAllDetails = (useCallback(async () => {
+            try {
+                const results = await axios.get<CourseAllDetailsResponse>(`${COURSE_URL}/get-courses-all-details`);
+                return results.data.courses as CourseAllDetails[];
+            } catch (e) {
+                console.log(e)
+            }
+        }, []))
+
+
 
     const getCoursesForStudent = (useCallback(async(id: string)=> {
         try {
@@ -34,6 +55,16 @@ export const useCourses = () => {
         success: true,
         data: CourseEntity,
     }
+
+    const getOneAllDetails = (useCallback( async (courseId: string):Promise<GetSingleCourseResponse> => {
+        try {
+            const results = await axios.get(`${COURSE_URL}/get-one-all-details/${courseId}`);
+            console.log('hook', results)
+            return results.data
+        } catch (e) {
+            console.log(e)
+        }
+    }, []))
 
     const addCourse = async(name: string,
                             teacher_id: string,
@@ -107,6 +138,8 @@ return {
     addCourse,
     updateCourse,
     deleteCourse,
+    getCoursesAllDetails,
+    getOneAllDetails,
 }
 
 }

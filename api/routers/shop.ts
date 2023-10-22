@@ -29,11 +29,11 @@ shopRouter
 
     .post('/checkout', async(req: Request, res: Response)=>{
         const items: ShopItem[] = req.body.items
-
+        console.log(items)
         const lineItems: Promise<LineItem>[] = items.map(async item => {
             const course = await CourseRecord.getOne(item.id)
             return {
-                price: course.price === 50 ? process.env.STRIPE_DANCE_PRICE : process.env.STRIPE_SPORT_PRICE,
+                price: course.price === 50 ? process.env.STRIPE_50_PRICE : process.env.STRIPE_40_PRICE,
                 quantity: item.quantity
             }
         });
