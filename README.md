@@ -5,8 +5,9 @@
 </h1> 
 
 School Management, showcasing my skills as a junior developer. This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
-
-LIVE PREVIEW:
+## VIDEO PRESENTATION:
+[https://www.youtube.com/watch?v=19mNZ9KRGwI](https://www.youtube.com/watch?v=19mNZ9KRGwI)
+## LIVE PREVIEW:
 [https://menager.networkmanager.pl/](https://menager.networkmanager.pl/)
 
 Key Features:
