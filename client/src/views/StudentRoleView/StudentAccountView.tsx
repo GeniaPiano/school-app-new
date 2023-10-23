@@ -19,11 +19,11 @@ export const StudentAccountView = () => {
     const {coursesChosen} = courses
 
     return (
-        <Flex color="gray.500" h="95vh" mt="2.5vh" width="80%" flexDir="column" mb="5em" mr="4.5em">
+        <Flex color="gray.500" h="95vh"  width="80%" flexDir="column" mb="5em" mr="4.5em">
             <Box>
-                <Heading mr={30}
+                <Heading
                          color="gray.500"
-                         m="20px 0 30px"
+                         m="10px 0 10px px"
                          fontWeight="400"
                          fontSize="xx-large"
                          as="h1"> Your account

@@ -60,13 +60,12 @@ export const Login = ({ toggleRegister}:Props) => {
 
     return (
        <>
-        <ChangeColorModeBtn/>
         <Box display="flex"
              justifyContent="center"
              alignItems="center"
              width="100%"
              height="100vh"
-             pt={20}
+             pt={10}
         >
 
 

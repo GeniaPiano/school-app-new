@@ -15,7 +15,7 @@ export const StudentInfoHeader = ({handleSignOut}:Props) => {
     return (
         <Flex alignContent="flex-end" color="gray.500">
             <Divider/>
-            <Flex mt={4} alignItems="center" gap="5px">
+            <Flex mt={2} alignItems="center" gap="5px">
                 <Flex flexDir="column" justifyItems="flex-end" >
                     <HStack>
                         <ChangeColorModeBtn/>
@@ -26,11 +26,11 @@ export const StudentInfoHeader = ({handleSignOut}:Props) => {
                                 fontSize="12px"
                                 size="xs" >
                             logout</Button>
-                        <Text  ml={5} color="myPink.600" fontSize="12px" fontWeight="500"> {"email" in user ? user.email :''}</Text>
+                        <Text color="myPink.600" fontSize="12px" fontWeight="500"> {"email" in user ? user.email :''}</Text>
                     </HStack>
                             {/*cart icon */}
                          <Button
-                             mt={2}
+
                              onClick={cart.onOpenCart}
                              porition="relative"
                              color='myPink.500'>

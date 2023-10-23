@@ -2,7 +2,7 @@ import {
     Accordion,
     AccordionButton, AccordionIcon,
     AccordionItem, AccordionPanel,
-    Badge, Flex,
+    Badge, Flex,Box,
     Button,
     HStack,
     ModalBody,
@@ -55,23 +55,26 @@ export const BasicInfo = ({courseData }: Props) => {
                     )}
                     {courseData.rates.length > 0 && (
                         <>
-                            <Accordion  allowMultiple>
+                            <Accordion allowMultiple>
                                 <AccordionItem>
                                     <h2>
                                         <AccordionButton>
                                             <HStack as="span" flex='1' textAlign='left'>
+
                                                 <Text mr={4}>Rate:  {typeof average === 'string' ? average : average.toFixed(2)} </Text>
-                                                <AccordionIcon mr={4} />
+                                                <AccordionIcon mr={20} />
                                                 <StarsRateAverage average={average}/>
                                             </HStack>
                                         </AccordionButton>
                                     </h2>
-                                    <AccordionPanel pb={4}>
+                                    <AccordionPanel pb={4} >
                                         {courseData.rates.map(rate=> (
-                                            <Flex  key={rate.id} justifyContent="space-between">
+                                           <Box my={10}> <Flex  key={rate.id} justifyContent="space-between">
                                                 <Text>{rate.authorName}</Text>
                                                 <StarsRate stars={rate.stars}/>
                                             </Flex>
+                                               {rate.opinion  && <Text color='teal.500'  fontSize="xs" >{rate.opinion}</Text>}
+                                           </Box>
                                         ))}
                                     </AccordionPanel>
                                 </AccordionItem>

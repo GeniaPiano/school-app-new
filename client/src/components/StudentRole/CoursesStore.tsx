@@ -3,33 +3,21 @@ import {
     SimpleGrid,
 
 } from "@chakra-ui/react";
-import {CourseEntity} from "../../types/course";
-import {SHOP_URL} from "../../../config/api";
-import {loadStripe} from '@stripe/stripe-js';
+import {CourseAllDetails} from "../../types/course";
 import {CourseCard} from "./CourseCard";
 
 interface Props {
-    coursesAvailable: CourseEntity[];
+    coursesAvailable: CourseAllDetails[];
 }
 export const CoursesStore = ({coursesAvailable} :Props) => {
 
-    const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY)
-    const handleOrder = async(id: string) => {
-        const stripeRes = await fetch(`${SHOP_URL}/order`);
-        const {id: sessionId} = await stripeRes.json();
-        const stripe = await stripePromise;
-        const { error } = await stripe.redirectToCheckout({sessionId})
-        console.log(error);
-        // console.log('stripe error:', error)
-    }
-
     return (
-        <SimpleGrid  columns={{base: 1, md: 2, lg: 3}} spacing={4} my={5} gap={3}>
+        <SimpleGrid  columns={{base: 1, md: 2, lg: 4}} spacing={4} my={5} gap={3}>
             {coursesAvailable.length > 0 && coursesAvailable.map((course)=> (
               <GridItem key={course.id}  >
-                    <CourseCard course={course} handleOrder={handleOrder}/>
+                    <CourseCard course={course} />
               </GridItem>
                 ))}
-    </SimpleGrid>
+        </SimpleGrid>
     )
 }

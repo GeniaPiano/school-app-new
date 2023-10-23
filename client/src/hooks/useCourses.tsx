@@ -59,7 +59,6 @@ export const useCourses = () => {
     const getOneAllDetails = (useCallback( async (courseId: string):Promise<GetSingleCourseResponse> => {
         try {
             const results = await axios.get(`${COURSE_URL}/get-one-all-details/${courseId}`);
-            console.log('hook', results)
             return results.data
         } catch (e) {
             console.log(e)

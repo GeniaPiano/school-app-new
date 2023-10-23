@@ -12,14 +12,13 @@ import {
     useColorModeValue
 } from "@chakra-ui/react";
 import {firstLetterToUpper} from "../../utils/firstLetterToUpper";
-import {StarIcon} from "@chakra-ui/icons";
-import {AccordionInfo} from "../common/AccordionInfo";
-import {CourseEntity} from "../../types/course";
+import {AccordionDescriptionAndRates} from "../common/AccordionDescriptionAndRates";
+import {CourseAllDetails} from "../../types/course";
 import {HiShoppingCart} from "react-icons/hi";
 import {useCart} from "../../hooks/useCart";
 
 interface Props {
-    course: CourseEntity;
+    course: CourseAllDetails;
 }
 export const CourseCard = ({course}: Props) => {
     const color = useColorModeValue('gray.600', 'gray.50')
@@ -34,7 +33,6 @@ export const CourseCard = ({course}: Props) => {
         <Card bg={bgCard}
               key={course.id}
               color={color}
-
         >
             <CardBody>
                 <Image
@@ -77,13 +75,9 @@ export const CourseCard = ({course}: Props) => {
                     <Box>
                         {course.price.toFixed(2)} PLN
                     </Box>
-                    <Flex>
-                        <StarIcon color="myPink.500"/>
-                        <StarIcon color="myPink.500"/>
-                        <StarIcon color="myPink.500"/>
-                    </Flex>
                 </HStack>
-                <AccordionInfo info={course.description}/>
+                <AccordionDescriptionAndRates info={course.description}  courseId={course.id}/>
+
             </CardBody>
         </Card>
     )
