@@ -21,10 +21,10 @@ Key Features:
 
  Planned Features:
 User Ratings: Clients can rate and review courses.
-- Administrative Reports: Gain insights into your studio's performance.
+- Administrative Reports: Gain insights into studio's performance.
 - Class Cancellation: Instructors can cancel classes with automatic refunds.
 - User Ratings: Clients can rate and review courses.
-- 
+
 Conclusion:
 Simplify fitness studio management of fitness and dance institution studio.
 
