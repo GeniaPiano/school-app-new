@@ -17,7 +17,7 @@ Key Features:
 - User Authentication: Secure registration and login with JWT.
 - Stripe Integration: Seamless payment processing for course payments.
 - Student Course Purchase: Students can purchase courses, enhancing user engagement.
-- The application features a variety of forms, each equipped with both server-side and client-side validation to ensure data accuracy and security.
+- Variety of forms, with both server-side and client-side validation.
 
  Planned Features:
 User Ratings: Clients can rate and review courses.
@@ -44,16 +44,16 @@ Simplify fitness studio management of fitness and dance institution studio.
 </p>
 
 - **Backend:**
-  - Node.js: The backend of this application is powered by Node.js, which provides a server-side runtime environment.
+  - Node.js: The backend of this application is powered by Node.js
   - Express.js: Express is used for handling routing and creating a RESTful API.
-  - SQL Database: The application utilizes a SQL database to store and manage data.
+  - SQL Database
   - GraphQL: GraphQL is integrated for data fetching from Dato CMS.
   - TypeScript
 
 - **Frontend:**
-  - React: The frontend is built using React, a popular JavaScript library for building user interfaces.
-  - Chakra UI: Chakra UI is used for styling the frontend components, providing a modern and responsive design.
+  - React
   - TypeScript
+  - Chakra UI 
 
 - **Deployment:**
   - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
