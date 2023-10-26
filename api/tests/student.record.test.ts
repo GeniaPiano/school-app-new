@@ -6,6 +6,15 @@ afterAll(async () => {
     await pool.end();
 })
 
+test('StudentRecord returns correct data from database', async () => {
+    try {
+        const student = await StudentRecord.getOne('535bb083-4291-4962-bb63-03496a82b73a')
+        expect(student.name).toBe('Anna')
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 test('StudentRecord returns created record', async () => {
     try {
         const student = new StudentRecord({
@@ -39,11 +48,3 @@ test('StudentRecord returns created record', async () => {
     } })
 
 
-test('StudentRecord returns correct data from database', async () => {
-    try {
-        const student = await StudentRecord.getOne('535bb083-4291-4962-bb63-03496a82b73a')
-        expect(student.name).toBe('Anna')
-    } catch (err) {
-        console.log(err)
-    }
-})
