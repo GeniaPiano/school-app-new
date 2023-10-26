@@ -10,6 +10,8 @@ School Management, showcasing my skills as a junior developer. This small web ap
 ## LIVE PREVIEW:
 [https://menager.networkmanager.pl/](https://menager.networkmanager.pl/)
 
+
+
 Key Features:
 
 - Admin Panel: managing of courses and instructors, including setting the prices.
@@ -65,13 +67,14 @@ Simplify fitness studio management of fitness and dance institution studio.
 <img alt="" src="https://www.datocms-assets.com/107048/1698008103-screenshot_a.jpg" height="400">
 <img src="https://www.datocms-assets.com/107048/1698008108-screenshot_b.jpg" alt="" height="400">
 <img src="https://www.datocms-assets.com/107048/1698008117-screenshot_d.jpg" alt="">
-<img src="https://www.datocms-assets.com/107048/1698008122-screenshot_e.jpg" alt="">
+<img src="https://www.datocms-assets.com/107048/1698343959-bbb.jpg" alt="">
 <img alt="" src="https://www.datocms-assets.com/107048/1697613967-1.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1697613971-2.jpg" height="400">
 <img alt=""  src="https://www.datocms-assets.com/107048/1696586170-screenshot_3.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586209-screenshot_8.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586262-screenshot_5.jpg" height="400">
+<img alt="" src="https://www.datocms-assets.com/107048/1698343855-aaaa.jpg" height="400">
 
 
 
