@@ -74,8 +74,6 @@ Simplify fitness studio management of fitness and dance institution studio.
 <img alt="" src="https://www.datocms-assets.com/107048/1696586183-screenshot_1.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586209-screenshot_8.jpg" height="400">
 <img alt="" src="https://www.datocms-assets.com/107048/1696586262-screenshot_5.jpg" height="400">
-<img alt="" src="https://www.datocms-assets.com/107048/1698343855-aaaa.jpg" height="400">
-
 
 
 
