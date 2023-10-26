@@ -16,3 +16,10 @@ export const getRatesForCourse = async(req: Request, res: Response, next: NextFu
     );
    res.json({rates: ratesWithAuthorNameAndAverage})
 }
+
+export const getRateById = async(req: Request, res: Response, next: NextFunction) => {
+    const {id} = req.params
+    const rate =  await RateCourseRecord.findOne(id);
+    res.json(rate)
+
+}

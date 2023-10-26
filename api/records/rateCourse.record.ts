@@ -44,7 +44,7 @@ export class RateCourseRecord implements RateCourseEntity {
 
     async update():Promise<void> {
         await pool.execute("UPDATE `course_student_rates` SET `stars` = :stars, `opinion` = :opinion `id` = :id", {
-            id: this.id,
+            id: this.id
         });
     }
 
@@ -52,6 +52,14 @@ export class RateCourseRecord implements RateCourseEntity {
         const [results] = await pool.execute("SELECT * FROM `course_student_rates`") as RateCoursesRecordResults;
         return results.map(obj => new RateCourseRecord(obj));
             }
+
+    static async findOne(id: string): Promise<RateCourseRecord> {
+        const [results] = await pool.execute("SELECT * FROM `course_student_rates` WHERE id = :id", {
+            id,
+        }) as RateCoursesRecordResults;
+        const rateArray =  results.map(obj => new RateCourseRecord(obj) )
+        return rateArray[0]
+    }
 
     static async listAllForOneCourse(courseId: string): Promise<RateCourseRecord[]> {
         const [results] = await pool.execute("SELECT * FROM `course_student_rates`  WHERE `course_id` = :course_id ",{
