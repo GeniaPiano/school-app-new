@@ -5,12 +5,11 @@
 </h1> 
 
 School Management, showcasing my skills as a junior developer. This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
-### VIDEO PRESENTATION:
+#### Video presentation:
 [https://www.youtube.com/watch?v=19mNZ9KRGwI](https://www.youtube.com/watch?v=19mNZ9KRGwI)
-### LIVE PREVIEW:
+#### Live preview:
 [https://menager.networkmanager.pl/](https://menager.networkmanager.pl/)
-
-### LAST PULL REQUEST:
+#### Last pull request:
 [https://github.com/GeniaPiano/school-app-new/pull/9](https://github.com/GeniaPiano/school-app-new/pull/9)
 
 
