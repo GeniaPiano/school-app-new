@@ -5,30 +5,47 @@
 </h1> 
 
 School Management, showcasing my skills as a junior developer. This small web application allows you to manage data for various types of institutions, such as language schools or dance studios.
-## VIDEO PRESENTATION:
+### VIDEO PRESENTATION:
 [https://www.youtube.com/watch?v=19mNZ9KRGwI](https://www.youtube.com/watch?v=19mNZ9KRGwI)
-## LIVE PREVIEW:
+### LIVE PREVIEW:
 [https://menager.networkmanager.pl/](https://menager.networkmanager.pl/)
 
+### LAST PULL REQUEST:
+[https://github.com/GeniaPiano/school-app-new/pull/9](https://github.com/GeniaPiano/school-app-new/pull/9)
 
 
-Key Features:
 
-- Admin Panel: managing of courses and instructors, including setting the prices.
+# Key Features:
+
+### Admin Panel: 
+ 
+- Course Management: admins can create, edit adn remove courses with ease, offering students a variety od options.
+- Instructor Oversight: Manage instructors
+- Price Configuration: Set and adjust prices for courses.
+- Statistics: preview of basic stats
+
+### Student Panel
+ 
+- students can manage their profile
+- enroll in courses 
+- make payment
+- provide courses rating.
+
+### Other features:
+
 - SQL Database: All data is securely stored and managed in a SQL database.
 - User Authentication: Secure registration and login with JWT.
-- Stripe Integration: Seamless payment processing for course payments.
-- Student Course Purchase: Students can purchase courses, enhancing user engagement.
-- Variety of forms, with both server-side and client-side validation.
+- Stripe Integration: Payment processing for course payments.
+- Data Validation: Implemented validation mechanisms for data, enhancing security.
 
- Planned Features:
-User Ratings: Clients can rate and review courses.
+#### Planned Features:
+
+- User Ratings: Clients can rate and review courses.
 - Administrative Reports: Gain insights into studio's performance.
 - Class Cancellation: Instructors can cancel classes with automatic refunds.
 - User Ratings: Clients can rate and review courses.
 
-Conclusion:
-Simplify fitness studio management of fitness and dance institution studio.
+
 
 
 **Note: The application is currently under active development, and I am working on adding new features and improvements.**
