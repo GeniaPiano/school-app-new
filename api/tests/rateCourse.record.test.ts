@@ -2,8 +2,6 @@ import {RateCourseRecord} from "../records/rateCourse.record";
 import {pool} from "../utils/db";
 import {v4 as uuid} from "uuid";
 
-
-
 afterAll(async () => {
     await pool.end();
 })

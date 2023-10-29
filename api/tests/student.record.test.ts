@@ -1,7 +1,6 @@
 import {StudentRecord} from "../records/student.record";
 import {pool} from "../utils/db";
 
-
 afterAll(async () => {
     await pool.end();
 })
