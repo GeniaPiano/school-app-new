@@ -72,6 +72,11 @@ School Management, showcasing my skills as a junior developer. This small web ap
   - React
   - TypeScript
   - Chakra UI 
+  
+- **Testing**
+  - unit and integration tests with JEST
+  - integration tests - React Testing library
+    
 
 - **Deployment:**
   - Linux Server: The application is deployed on a Linux server for hosting and serving the application.
